@@ -9,30 +9,30 @@
     /* font 
     font: var(--headline-xl); 식으로 사용
     */
-    --headline-xl: 900 40px/125%;
-    --headline-l: 900 32px/125%;
-    --headline-m: 900 28px/125%;
-    --headline-s: 900 24px/125%;
+    --headline-xl: 900 40px/125% "Pretendard", sans-serif;
+    --headline-l: 900 32px/125% "Pretendard", sans-serif;
+    --headline-m: 900 28px/125% "Pretendard", sans-serif;
+    --headline-s: 900 24px/125% "Pretendard", sans-serif;
 
     /* -h-: heavy, -b-: bold, -s-: semibold, -m-: medium, -r-: regular;*/
-    --title-h-l: 900 24px/125%;
-    --title-h-m: 900 20px/125%;
-    --title-h-s: 900 18px/125%;
-    --title-b-l: 700 24px/125%;
-    --title-b-m: 700 20px/125%;
-    --title-b-s: 700 18px/125%;
-    --title-s-l: 600 24px/125%;
-    --title-s-m: 600 20px/125%;
-    --title-s-s: 600 18px/125%;
+    --title-h-l: 900 24px/125% "Pretendard", sans-serif;
+    --title-h-m: 900 20px/125% "Pretendard", sans-serif;
+    --title-h-s: 900 18px/125% "Pretendard", sans-serif;
+    --title-b-l: 700 24px/125% "Pretendard", sans-serif;
+    --title-b-m: 700 20px/125% "Pretendard", sans-serif;
+    --title-b-s: 700 18px/125% "Pretendard", sans-serif;
+    --title-s-l: 600 24px/125% "Pretendard", sans-serif;
+    --title-s-m: 600 20px/125% "Pretendard", sans-serif;
+    --title-s-s: 600 18px/125% "Pretendard", sans-serif;
 
-    --subtitle-s-l: 600 20px/130%;
-    --subtitle-s-m: 600 18px/130%;
-    --subtitle-m-l: 500 20px/130%;
-    --subtitle-m-m: 500 18px/130%;
+    --subtitle-s-l: 600 20px/130% "Pretendard", sans-serif;
+    --subtitle-s-m: 600 18px/130% "Pretendard", sans-serif;
+    --subtitle-m-l: 500 20px/130% "Pretendard", sans-serif;
+    --subtitle-m-m: 500 18px/130% "Pretendard", sans-serif;
     
-    --body-s-xl: 600 18px/140%;
-    --body-s-l: 600 16px/140%;
-    --body-s-m: 600 14px/140%;
+    --body-s-xl: 600 18px/140% "Pretendard", sans-serif;
+    --body-s-l: 600 16px/140% "Pretendard", sans-serif;
+    --body-s-m: 600 14px/140% "Pretendard", sans-serif;
     --body-s-s: 600 12px/140%;
     --body-m-xl: 500 18px/140%;
     --body-m-l: 500 16px/140%;
