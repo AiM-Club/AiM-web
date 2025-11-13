@@ -1,0 +1,15 @@
+import styled from "styled-components";
+
+export const HeaderWrapper = styled.div`
+    height: 7.5rem;
+    box-sizing: border-box;
+    padding: 0 5rem;
+    display: flex;
+    align-items: center;
+    
+`;
+
+export const Logo = styled.img`
+    height:100%;
+    aspect-ratio: 1;
+`;

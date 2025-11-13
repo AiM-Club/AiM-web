@@ -21,8 +21,11 @@ export const SidebarWrapper = styled.div`
 `;
 
 
-export const MainContent = styled.main`
+export const MainWrapper = styled.main`
   flex: 1;
-  padding: 2rem;
   overflow-y: auto;
+`;
+
+export const MainContent = styled.div`
+    padding: 0 5rem;
 `;

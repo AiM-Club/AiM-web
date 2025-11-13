@@ -12,10 +12,10 @@ const DefaultLayout = ({children}:DefaultLayoutProps) => {
         <S.LayoutWrapper>
             <S.ContentWrapper>
                     <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>
-                    <S.MainContent>
+                    <S.MainWrapper>
                         <Header />
-                        {children}
-                    </S.MainContent>
+                        <S.MainContent>{children}</S.MainContent>
+                    </S.MainWrapper>
             </S.ContentWrapper>
         </S.LayoutWrapper>
     )
