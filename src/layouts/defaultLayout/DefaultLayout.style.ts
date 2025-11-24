@@ -5,7 +5,7 @@ export const LayoutWrapper = styled.div`
   flex-direction: column;
   min-height: 100vh;
   width: 100vw;
-  background-color: var(--color-main-sub);
+  background-color: var(--background-primary);
 `;
 
 export const ContentWrapper = styled.div`
