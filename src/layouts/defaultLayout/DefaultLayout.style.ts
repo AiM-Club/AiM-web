@@ -16,7 +16,11 @@ export const ContentWrapper = styled.div`
 export const SidebarWrapper = styled.div`
   width: 7rem;
   height: 100vh;
-  background-color: var(--color-main);
+  background: linear-gradient(
+    to bottom,
+    var(--background-secondary),
+    var(--background-primary)
+  );
   overflow-y: auto;
 `;
 
