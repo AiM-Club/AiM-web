@@ -5,13 +5,15 @@ import * as S from "./DefaultLayout.style.ts";
 
 interface DefaultLayoutProps {
   children: ReactNode;
+  variant? : "default" | "login"
 }
 
-const DefaultLayout = ({children}:DefaultLayoutProps) => {
+const DefaultLayout = ({children, variant="default"}:DefaultLayoutProps) => {
+    const showsidebar = variant==="default";
     return(
         <S.LayoutWrapper>
             <S.ContentWrapper>
-                    <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>
+                    { showsidebar && <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>}
                     <S.MainWrapper>
                         <Header />
                         <S.MainContent>{children}</S.MainContent>
