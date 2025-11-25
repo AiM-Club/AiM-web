@@ -1,3 +1,4 @@
 export enum PageEndPoints {
-    HOME = "/",
+  HOME = "/",
+  LOGIN = "/login",
 }
