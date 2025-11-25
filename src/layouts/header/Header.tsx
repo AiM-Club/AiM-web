@@ -1,4 +1,4 @@
-import logo from "@/assets/AimLogo.svg";
+import logo from "@/assets/AimLogo.png";
 import * as S from "./Header.style";
 import Button from "@/components/button/Button";
 const Header = () => {

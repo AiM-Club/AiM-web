@@ -11,6 +11,6 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const Logo = styled.img`
-    height:100%;
-    aspect-ratio: 1;
+    height: 1.75rem;
+    cursor: pointer;
 `;
