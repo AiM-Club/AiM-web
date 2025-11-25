@@ -46,7 +46,7 @@ export const MenuText = styled.div<{ $isActive: boolean}>`
     props.$isActive ? `var(--title-h-l)` : `var(--subtitle-m-m)`
   };
   color: ${(props) =>
-    props.$isActive ? `var(--text-primary--default)` : `var(--text-secondary)`
+    props.$isActive ? `var(--text-primary-default)` : `var(--text-secondary)`
   };
   padding-right: ${(props) =>
     props.$isActive ? `2rem` : `0.625rem`

@@ -91,7 +91,7 @@
     --surpace-secondary: oklch(0.2439 0.0019 286.26);
     --surpace-tertiary: oklch(0.3556 0.0022 247.89);
 
-    --text-primary--default: oklch(1 0 0);
+    --text-primary-default: oklch(1 0 0);
     --text-primary-hover: oklch(0.8411 0.0995 354.22);
     --text-primary-selected: oklch(0.6552 0.2389 2.49);
     --text-secondary: oklch(0.6759 0.0019 247.85);
