@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
         <S.Logo src={logo}/>
-        <Button>sss</Button>
+        <Button>로그인</Button>
     </S.HeaderWrapper>
   )
 };
