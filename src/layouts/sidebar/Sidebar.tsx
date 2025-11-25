@@ -23,17 +23,24 @@ const Sidebar = () =>{
     navigate(path);
     };
 
+    const isActive = (path: string) => {
+        if (path === PageEndPoints.HOME) {
+            return location.pathname === path;
+        }
+        return location.pathname.startsWith(path);
+    };
+
     return(
         <S.SidebarContainer>
             <S.MenuList>
             {menuItems.map((item) => (
                 <S.MenuItem
                     key={item.id}
-                    $isActive={location.pathname === item.path}
+                    $isActive={isActive(item.path)}
                     onClick={() => handleMenuClick(item.path)}
                 >
                     <S.MenuText
-                        $isActive={location.pathname === item.path}
+                        $isActive={isActive(item.path)}
                     >
                         {item.label}
                     </S.MenuText>
