@@ -22,14 +22,18 @@ export const SidebarWrapper = styled.div`
     var(--background-primary)
   );
   overflow-y: auto;
+  overflow: visible;
 `;
 
 
 export const MainWrapper = styled.main`
   flex: 1;
   overflow-y: auto;
+  position: relative;
+  z-index:10;
 `;
 
 export const MainContent = styled.div`
-    padding: 0 5rem;
+    padding: 0 10rem;
+    
 `;
