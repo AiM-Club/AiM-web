@@ -3,4 +3,5 @@ export enum PageEndPoints {
     MYPAGE="/mypage",
     COMMUNITY="/community",
     CHALLENGE_MAIN="/challenge"
+    LOGIN = "/login",
 }

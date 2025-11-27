@@ -26,7 +26,6 @@ export const SidebarWrapper = styled.div`
   overflow: visible;
 `;
 
-
 export const MainWrapper = styled.main`
   flex: 1;
   overflow-y: auto;
@@ -41,5 +40,4 @@ export const MainWrapper = styled.main`
 export const MainContent = styled.div`
   padding: 0 10rem;
   min-height: calc(100vh - 7.5rem);
-  
 `;
