@@ -78,14 +78,14 @@
     --green-300:oklch(0.9551 0.1402 119.45);
     --green-200:oklch(0.9694 0.0963 119.34);
     --green-100:oklch(0.9802 0.0607 118.45);
-    --green-900:oklch(0.9912 0.029 115.3);
+    --green-000:oklch(0.9912 0.029 115.3);
 
     /* color */
     --color-main: oklch(1 0 0);
     --color-main-sub: oklch(0.9363 0.0116 264.51);
     --color-sub: oklch(0.173 0 0);
     --color-primary: oklch(0.8533 0.1796 121.43);
-    --color-point :oklch(0.6233 0.2474 7.76);
+    --color-point:oklch(0.6233 0.2474 7.76);
 
     --surpace-primary: oklch(0.3205 0.0023 247.9);
     --surpace-secondary: oklch(0.2439 0.0019 286.26);
@@ -106,9 +106,9 @@
     --button-secondary-enabled: oklch(0.9221 0.159 118.98);
     --button-secondary-hover: oklch(0.9694 0.0963 119.34);
 
-    --button-secondary-disabled: oklch(0.3205 0.0023 247.9);
-    --button-secondary-enabled: oklch(0.3556 0.0022 247.89);
-    --button-secondary-hover: oklch(0.4849 0.002 247.87);
+    --button-tertiary-disabled: oklch(0.3205 0.0023 247.9);
+    --button-tertiary-enabled: oklch(0.3556 0.0022 247.89);
+    --button-tertiary-hover: oklch(0.4849 0.002 247.87);
 
     --border-primary-default: oklch(0.6552 0.2389 2.49);
     --border-primary-enabled: oklch(0.6552 0.2389 2.49);
