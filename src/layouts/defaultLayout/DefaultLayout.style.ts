@@ -38,6 +38,9 @@ export const MainWrapper = styled.main`
 `;
 
 export const MainContent = styled.div`
-  padding: 0 10rem;
+  width: calc(100% - 23rem);
+  max-width: 1440px;
+  margin-left: 8rem;
   min-height: calc(100vh - 7.5rem);
+  color: var(--text-primary-default);
 `;
