@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Background from "@/assets/Background.png";
 
 export const LayoutWrapper = styled.div`
   display: flex;
@@ -31,9 +32,14 @@ export const MainWrapper = styled.main`
   overflow-y: auto;
   position: relative;
   z-index:10;
+  background-image: url(${Background});
+  background-repeat: no-repeat;
+  background-position: center 7.5rem; 
+  background-size: 100% auto;
 `;
 
 export const MainContent = styled.div`
-    padding: 0 10rem;
-    
+  padding: 0 10rem;
+  min-height: calc(100vh - 7.5rem);
+  
 `;
