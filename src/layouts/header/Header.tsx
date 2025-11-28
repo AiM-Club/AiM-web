@@ -1,11 +1,73 @@
-import logo from "@/assets/AimLogo.svg";
+import logo from "@/assets/AimLogo.png";
 import * as S from "./Header.style";
 import Button from "@/components/button/Button";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useActiveMenu } from "@/utils/useActiveMenu";
+import SubMenuLeft from "@/assets/SubMenuLeft.png";
+import SubMenuRight from "@/assets/SubMenuRight.png";
+
+interface SubMenuItem {
+  id: string;
+  label: string;
+  path: string;
+}
+
+const subMenuConfig: Record<string, SubMenuItem[]> = {
+  "/challenge": [
+    { id: "challenge-vs", label: "VS모집", path: "/challenge/vs" },
+    { id: "challenge-vs", label: "VS대결", path: "/challenge/vs" },
+    { id: "challenge-multi", label: "솔로", path: "/challenge/multi" },
+    { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
+  ],
+  "/community": [
+    { id: "community-board", label: "Q & A", path: "/community/board" },
+    { id: "community-notice", label: "후기", path: "/community/notice" },
+  ],
+  "/mypage": [
+    { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
+    { id: "mypage-history", label: "내 게시글", path: "/mypage/history" },
+     { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
+    { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
+  ],
+};
+
 const Header = () => {
+  const navigate = useNavigate();
+  const { isActive } = useActiveMenu();
+  const location = useLocation();
+
+  const getCurrentSubMenu = (): SubMenuItem[] => {
+    const mainPath = Object.keys(subMenuConfig).find(path => 
+      location.pathname.startsWith(path)
+    );
+    return mainPath ? subMenuConfig[mainPath] : [];
+  };
+
+  const currentSubMenu = getCurrentSubMenu();
+  
+  const handleSubMenuClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <S.HeaderWrapper>
         <S.Logo src={logo}/>
-        <Button>sss</Button>
+        {currentSubMenu.length > 0 && (
+          <S.SubMenuList>
+            <img src={SubMenuLeft} />
+            {currentSubMenu.map((item) => (
+              <S.SubMenuItem
+              key={item.id}
+              $isActive={isActive(item.path)}
+              onClick={() => handleSubMenuClick(item.path)}
+              >
+                {item.label}
+              </S.SubMenuItem>
+            ))}
+            <img src={SubMenuRight} />
+          </S.SubMenuList>
+        )}
+        <Button>로그인</Button>
     </S.HeaderWrapper>
   )
 };
