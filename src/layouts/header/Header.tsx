@@ -6,6 +6,10 @@ import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
 
+interface HeaderProps {
+  variant?: "default" | "login";
+}
+
 interface SubMenuItem {
   id: string;
   label: string;
@@ -31,7 +35,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   ],
 };
 
-const Header = () => {
+const Header = ({ variant = "default" }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
@@ -67,7 +71,7 @@ const Header = () => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-        <Button>로그인</Button>
+         {variant === "default" ? <Button>로그인</Button> : <></>}
     </S.HeaderWrapper>
   )
 };

@@ -37,10 +37,12 @@ export const MainWrapper = styled.main`
   background-size: 100% auto;
 `;
 
-export const MainContent = styled.div`
+export const MainContent = styled.div<{ variant: "default" | "login" }>`
   width: calc(100% - 23rem);
   max-width: 1440px;
-  margin-left: 8rem;
   min-height: calc(100vh - 7.5rem);
   color: var(--text-primary-default);
+
+  margin: ${({ variant }) =>
+    variant === "login" ? "0 auto" : "0 0 0 8rem"};
 `;
