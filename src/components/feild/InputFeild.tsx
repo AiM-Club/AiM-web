@@ -7,13 +7,19 @@ interface InputFeildProps {
   error?: string;
   value: string;
   setValue: (value: string) => void;
+  checkDuplicate?: boolean;
 }
 
-export const InputFeild = ({ label, placeholder, error, value, setValue }: InputFeildProps) => {
+export const InputFeild = ({ label, placeholder, error, value, setValue, checkDuplicate = false }: InputFeildProps) => {
+
   return (
     <S.InputFeildWrapper>
       <S.LabelText>{label}</S.LabelText>
-      <S.InputFeildInput value={value} onChange={(e) => setValue(e.target.value)} $label={label} placeholder={placeholder} />
+      <S.InputFeildInput $checkDuplicate={checkDuplicate} value={value} onChange={(e) => setValue(e.target.value)} $label={label} placeholder={placeholder} />
+      {checkDuplicate &&
+        <S.DuplicateBtnWrapper>
+          중복 확인
+        </S.DuplicateBtnWrapper>}
       {error && label == "비밀번호" ? <S.ErrorText>{error}</S.ErrorText> : <></>}
     </S.InputFeildWrapper>
   )
