@@ -1,11 +1,18 @@
 import { useState } from "react";
 import * as S from "./GenderSelect.style";
 
-export const GenderSelect = () => {
-  const [selectedGender, setSelectedGender] = useState<string>("");
+interface GenderSelectProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+export const GenderSelect = ({ value = "", onChange }: GenderSelectProps) => {
+  const [selectedGender, setSelectedGender] = useState<string>(value);
 
   const handleGenderSelect = (gender: string) => {
     setSelectedGender(gender);
+    //?
+    onChange?.(gender);
   }
 
   return (

@@ -1,7 +1,11 @@
 import * as S from "./BirthSelect.style";
 import { useState } from "react";
 
-export const BirthSelect = () => {
+interface BirthSelectProps {
+  onChange?: (value: string) => void;
+}
+
+export const BirthSelect = ({ onChange }: BirthSelectProps) => {
   const [selectedTap, setSelectedTap] = useState<"year" | "month" | "day" | "">("");
   const [selectedYear, setSelectedYear] = useState<string>("년도");
   const [selectedMonth, setSelectedMonth] = useState<string>("월");
@@ -17,13 +21,28 @@ export const BirthSelect = () => {
   }
 
   const handleBirthSelect = (tap: "year" | "month" | "day", value: string) => {
+    let newYear = selectedYear;
+    let newMonth = selectedMonth;
+    let newDay = selectedDay;
+
     if (tap === "year") {
+      newYear = value;
       setSelectedYear(value);
     } else if (tap === "month") {
+      newMonth = value;
       setSelectedMonth(value);
     } else if (tap === "day") {
+      newDay = value;
       setSelectedDay(value);
     }
+
+    // 모든 값이 선택되었을 때만 날짜 문자열 생성
+    if (newYear !== "년도" && newMonth !== "월" && newDay !== "일") {
+      const birthDate = `${newYear}-${newMonth}-${newDay}`;
+      onChange?.(birthDate);
+      console.log(birthDate);
+    }
+
   }
 
   return (
