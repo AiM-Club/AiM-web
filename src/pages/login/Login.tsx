@@ -4,12 +4,35 @@ import { PageTopic } from "@/components/text/PageTopic";
 import { InputField } from "@/components/field/InputField";
 import { SubmitBtn } from "@/components/button/SubmitBtn";
 import { SocialLoginBtn } from "@/components/button/SocialLoginBtn";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { handleGoogleLogin, handleKakaoLogin } from "@/utils/oauth";
+import { loginSchema, type LoginSchemaType } from "@/types/schemas/LoginSchematype";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+// import { FieldError } from "@/components/error/FieldError";
 
 export const Login = () => {
-  const [id, setId] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
+  })
+
+  const id = watch("id");
+  const password = watch("password");
+  const isFormValid = Boolean(
+    id &&
+    password &&
+    typeof id === "string" &&
+    typeof password === "string" &&
+    id.trim().length > 0 &&
+    password.trim().length > 0
+  );
 
   // 리다이렉트 후 돌아왔을 때 code 처리
   useEffect(() => {
@@ -27,6 +50,17 @@ export const Login = () => {
     }
   }, []);
 
+  const handleSubmitError = () => {
+    setHasSubmitError(true);
+  }
+
+  const handleLoginClick = (data: LoginSchemaType) => {
+    setHasSubmitError(false);
+    console.log(data);
+    alert("로그인");
+    //백엔드 전송 코드
+  }
+
   return (
     <DefaultLayout variant="login">
       <S.LoginWrapper>
@@ -34,12 +68,17 @@ export const Login = () => {
           <PageTopic text="로그인" size="m" />
         </S.TopicText>
         <S.InputWrapper>
-          <InputField label="아이디" value={id} setValue={setId} placeholder="아이디를 입력해 주세요" />
-          <InputField label="비밀번호" value={password} setValue={setPassword} placeholder="비밀번호를 입력해 주세요" />
+          <div>
+            <InputField label="아이디" register={register("id")} placeholder="아이디를 입력해 주세요" />
+          </div>
+          <div>
+            <InputField label="비밀번호" register={register("password")} placeholder="비밀번호를 입력해 주세요" />
+            {/* FieldError로 api 연결 후 비밀번호가 일치하지 않습니다 에러 띄우기 */}
+          </div>
         </S.InputWrapper>
         <S.BtnGap>
           <S.ButtonWrapper>
-            <SubmitBtn text="로그인" fill={true} active={id.trim().length > 0 && password.trim().length > 0} />
+            <SubmitBtn text="로그인" fill={true} active={isFormValid && !hasSubmitError ? true : false} onSubmit={handleSubmit(handleLoginClick, handleSubmitError)} />
             <SubmitBtn text="회원가입" fill={false} />
           </S.ButtonWrapper>
           <S.ButtonWrapper>
