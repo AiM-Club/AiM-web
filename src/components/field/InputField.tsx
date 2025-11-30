@@ -1,7 +1,7 @@
 // 아이디나 비밀번호처럼 input를 입력할 수 있는 component
-import * as S from "./InputFeild.style";
+import * as S from "./InputField.style";
 
-interface InputFeildProps {
+interface InputFieldProps {
   label: string;
   placeholder: string;
   error?: string;
@@ -10,17 +10,17 @@ interface InputFeildProps {
   checkDuplicate?: boolean;
 }
 
-export const InputFeild = ({ label, placeholder, error, value, setValue, checkDuplicate = false }: InputFeildProps) => {
+export const InputField = ({ label, placeholder, error, value, setValue, checkDuplicate = false }: InputFieldProps) => {
 
   return (
-    <S.InputFeildWrapper>
+    <S.InputFieldWrapper>
       <S.LabelText>{label}</S.LabelText>
-      <S.InputFeildInput $checkDuplicate={checkDuplicate} value={value} onChange={(e) => setValue(e.target.value)} $label={label} placeholder={placeholder} />
+      <S.InputFieldInput $checkDuplicate={checkDuplicate} value={value} onChange={(e) => setValue(e.target.value)} $label={label} placeholder={placeholder} />
       {checkDuplicate &&
         <S.DuplicateBtnWrapper>
           중복 확인
         </S.DuplicateBtnWrapper>}
       {error && label == "비밀번호" ? <S.ErrorText>{error}</S.ErrorText> : <></>}
-    </S.InputFeildWrapper>
+    </S.InputFieldWrapper>
   )
 }

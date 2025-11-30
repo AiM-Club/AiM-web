@@ -1,7 +1,7 @@
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout"
 import * as S from "@/styles/Login.style";
 import { PageTopic } from "@/components/text/PageTopic";
-import { InputFeild } from "@/components/feild/InputFeild";
+import { InputField } from "@/components/field/InputField";
 import { SubmitBtn } from "@/components/button/SubmitBtn";
 import { SocialLoginBtn } from "@/components/button/SocialLoginBtn";
 import { useState, useEffect } from "react";
@@ -34,8 +34,8 @@ export const Login = () => {
           <PageTopic text="로그인" size="m" />
         </S.TopicText>
         <S.InputWrapper>
-          <InputFeild label="아이디" value={id} setValue={setId} placeholder="아이디를 입력해 주세요" />
-          <InputFeild label="비밀번호" value={password} setValue={setPassword} placeholder="비밀번호를 입력해 주세요" />
+          <InputField label="아이디" value={id} setValue={setId} placeholder="아이디를 입력해 주세요" />
+          <InputField label="비밀번호" value={password} setValue={setPassword} placeholder="비밀번호를 입력해 주세요" />
         </S.InputWrapper>
         <S.BtnGap>
           <S.ButtonWrapper>

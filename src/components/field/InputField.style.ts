@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const InputFeildWrapper = styled.div`
+export const InputFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -12,7 +12,7 @@ export const LabelText = styled.label`
   font: var(--body-m-xl);
 `;
 
-export const InputFeildInput = styled.input.attrs<{ $label: string; $checkDuplicate: boolean }>((props) => ({
+export const InputFieldInput = styled.input.attrs<{ $label: string; $checkDuplicate: boolean }>((props) => ({
   type: props.$label === "비밀번호" ? "password" : "text",
 }))`
   padding: ${(props) => (props.$checkDuplicate ? " 1rem 5.875rem 1rem 1.25rem" : "1rem 1.25rem")};
