@@ -13,7 +13,7 @@ export const LabelText = styled.label`
 `;
 
 export const InputFieldInput = styled.input.attrs<{ $label: string; $checkDuplicate: boolean }>((props) => ({
-  type: props.$label === "비밀번호" ? "password" : "text",
+  type: props.$label === "비밀번호" || props.$label === "비밀번호 확인" ? "password" : "text",
 }))`
   padding: ${(props) => (props.$checkDuplicate ? " 1rem 5.875rem 1rem 1.25rem" : "1rem 1.25rem")};
   font: var(--body-r-l);
@@ -25,6 +25,15 @@ export const InputFieldInput = styled.input.attrs<{ $label: string; $checkDuplic
 
   &::placeholder {
     color: var(--text-secondary);
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-internal-autofill-selected {
+    -webkit-box-shadow: 0 0 0px 1000px var(--surpace-primary) inset !important;
+    -webkit-text-fill-color: var(--text-primary-default) !important;
+    background-color: var(--surpace-primary) !important;
   }
 `;
 
