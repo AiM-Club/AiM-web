@@ -6,13 +6,16 @@ import { SubmitBtn } from "@/components/button/SubmitBtn";
 import { SocialLoginBtn } from "@/components/button/SocialLoginBtn";
 import { useEffect, useState } from "react";
 import { handleGoogleLogin, handleKakaoLogin } from "@/utils/oauth";
-import { loginSchema, type LoginSchemaType } from "@/types/schemas/LoginSchematype";
+import { loginSchema, type LoginSchemaType } from "@/types/schemas/LoginSchemaType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
 // import { FieldError } from "@/components/error/FieldError";
 
 export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -79,7 +82,7 @@ export const Login = () => {
         <S.BtnGap>
           <S.ButtonWrapper>
             <SubmitBtn text="로그인" fill={true} active={isFormValid && !hasSubmitError ? true : false} onSubmit={handleSubmit(handleLoginClick, handleSubmitError)} />
-            <SubmitBtn text="회원가입" fill={false} />
+            <SubmitBtn text="회원가입" fill={false} onSubmit={() => navigate(PageEndPoints.JOIN)} />
           </S.ButtonWrapper>
           <S.ButtonWrapper>
             <SocialLoginBtn type="google" onClick={handleGoogleLogin} />

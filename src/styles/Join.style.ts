@@ -4,8 +4,7 @@ export const JoinWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 29.126rem;
-  margin: auto;
-  margin-top: 6.25rem;
+  margin: 6.25rem auto;
   gap: 3rem;
 `;
 
