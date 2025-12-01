@@ -5,6 +5,7 @@ interface Item {
   title: string;
   tag: string;
 }
+
 const mockData: Item[] = [
   { id: 1, title: "제목", tag: "#분야" },
   { id: 2, title: "제목", tag: "#분야" },

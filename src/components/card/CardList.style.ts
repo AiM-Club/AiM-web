@@ -17,6 +17,7 @@ export const CardWrapper = styled.div<{ $color: string;}>`
   &:hover {
      background-image: ${(props)=>(props.$color === "pink" ? `url(${CardPinkHover})` : `url(${CardBgHover})`)};
   }
+
 `;
 
 export const Title = styled.div`
@@ -52,7 +53,6 @@ export const ListItem = styled.div`
   padding: 0.7rem 1rem;
   border-radius: 6px;
   height: 2.625rem;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
