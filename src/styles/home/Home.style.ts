@@ -15,3 +15,9 @@ export const CardWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const BattleWrapper = styled.div`
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+`;

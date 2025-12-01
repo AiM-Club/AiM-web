@@ -1,7 +1,9 @@
-import CardList from "@/components/card/CardList";
+import CardList from "@/components/card/cardlist/CardList";
+import CardVS from "@/components/card/cardvs/CardVS";
 import MainSlider from "@/components/slider/MainSlider";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/home/Home.style.ts";
+import { cardVSData } from "./Constants";
 
 const Home = () => {
     
@@ -14,6 +16,11 @@ const Home = () => {
                     <CardList title="HOT 후기글" color="green"/>
                     <CardList title="TOP 10" color="pink"/>
                 </S.CardWrapper>
+                <S.BattleWrapper>
+                    {cardVSData.map((item) => (
+                        <CardVS key={item.id} data={item} />
+                    ))}
+                </S.BattleWrapper>
             </S.HomeWrapper>
         </DefaultLayout>
     )
