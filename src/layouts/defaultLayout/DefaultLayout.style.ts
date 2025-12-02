@@ -45,4 +45,8 @@ export const MainContent = styled.div<{ variant: "default" | "login" }>`
 
   margin: ${({ variant }) =>
     variant === "login" ? "0 auto" : "0 0 0 8rem"};
+
+  @media (min-width: 1920px) {
+    margin-left: calc((100vw - 1440px - 14rem) / 2);
+  }
 `;
