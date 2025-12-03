@@ -15,8 +15,8 @@ const DefaultLayout = ({children, variant="default"}:DefaultLayoutProps) => {
             <S.ContentWrapper>
                     { showsidebar && <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>}
                     <S.MainWrapper>
-                        <Header />
-                        <S.MainContent>{children}</S.MainContent>
+                        <Header variant={variant}/>
+                        <S.MainContent variant={variant}>{children}</S.MainContent>
                     </S.MainWrapper>
             </S.ContentWrapper>
         </S.LayoutWrapper>

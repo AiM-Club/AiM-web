@@ -9,7 +9,7 @@ export type ButtonVariant =
 
 export interface StyledButtonProps {
   variant?: ButtonVariant;
-  isClicked?: boolean;
+  $isClicked?: boolean;
   bgImg?: string;
 }
 
