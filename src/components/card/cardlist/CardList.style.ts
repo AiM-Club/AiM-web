@@ -18,6 +18,9 @@ export const CardWrapper = styled.div<{ $color: string;}>`
      background-image: ${(props)=>(props.$color === "pink" ? `url(${CardPinkHover})` : `url(${CardBgHover})`)};
   }
 
+  @media (max-width: 1378px) {
+    flex: 0 1 calc(50% - 0.5rem);
+  }
 `;
 
 export const Title = styled.div`
