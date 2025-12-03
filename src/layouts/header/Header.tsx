@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
+import { PageEndPoints } from "@/constants/endpoints";
 
 interface HeaderProps {
   variant?: "default" | "login";
@@ -71,7 +72,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-         {variant === "default" ? <Button>로그인</Button> : <></>}
+         {variant === "default" ? <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button> : <></>}
     </S.HeaderWrapper>
   )
 };
