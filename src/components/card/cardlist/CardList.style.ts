@@ -5,12 +5,12 @@ import CardPink from "@/assets/CardPink.png";
 import CardPinkHover from "@/assets/CardPinkHover.png";
 
 export const CardWrapper = styled.div<{ $color: string;}>`
-  min-width: 23.563rem;
+  flex: 1;
   height: 35.5rem;
-  // aspect-ratio: 377/568;
   background-image: ${(props)=>(props.$color === "pink" ? `url(${CardPink})` : `url(${CardBg})`)};
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-position: center;
   display: flex;
   flex-direction: column;
 
