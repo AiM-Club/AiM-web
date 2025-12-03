@@ -4,6 +4,7 @@ import * as SelectMenu from "@radix-ui/react-select";
 export const Trigger = styled(SelectMenu.Trigger)`
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.25rem;
     width: 5.688rem;
     padding: 0.5rem 0.938rem;
@@ -13,6 +14,11 @@ export const Trigger = styled(SelectMenu.Trigger)`
     font: var(--body-r-m);
     cursor: pointer;
     color: var(--text-primary-default);
+    
+    & > [data-radix-select-value] {
+        flex: 1;
+        text-align: center;
+    }
     
     &:hover {
         background-color: var(--surpace-tertiary);
