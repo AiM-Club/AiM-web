@@ -4,6 +4,7 @@ export const SubmitBtnWrapper = styled.div<{ $fill: boolean; $active?: boolean }
   display: flex;
   justify-content: center;
   border-radius: 0.25rem;
+  width: 100%;
   cursor: ${(prop) => (prop.$active || !prop.$fill ? "pointer" : "default")};
   color: var(--text-primary-default);
   font: var(--body-m-l);

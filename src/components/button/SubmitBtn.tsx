@@ -5,11 +5,18 @@ interface SubminBtnProps {
   text: string;
   fill: boolean;
   active?: boolean;
+  onSubmit?: () => void;
 }
 
-export const SubmitBtn = ({ text, fill, active }: SubminBtnProps) => {
+export const SubmitBtn = ({ text, fill, active, onSubmit }: SubminBtnProps) => {
   return (
-    <S.SubmitBtnWrapper $fill={fill} $active={active}>
+    <S.SubmitBtnWrapper
+      $fill={fill}
+      $active={active}
+      onClick={onSubmit}
+      as="button"
+      type="button"
+    >
       {text}
     </S.SubmitBtnWrapper>
   )
