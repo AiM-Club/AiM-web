@@ -6,7 +6,6 @@ export const HomeWrapper = styled.div`
   flex-direction: column;
   gap: 2rem;
   margin: 2rem auto;
-  background-color: red;
 `;
 
 export const CardWrapper = styled.div`
