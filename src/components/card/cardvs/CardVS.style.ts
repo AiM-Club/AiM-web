@@ -28,6 +28,7 @@ export const RankImg = styled.img`
 `;
 
 export const CardWrapper = styled.div`
+  flex: 1;
   min-width: 16.625rem;
   height: 26.313rem;
   margin: 0.375rem;
@@ -39,6 +40,9 @@ export const CardWrapper = styled.div`
     height: 27.063rem;
     margin: 0;
     background-image: url(${CardVSHover});
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   &:hover ${CardContent} {
@@ -48,6 +52,10 @@ export const CardWrapper = styled.div`
 
   &:hover ${UserName} {
     background-image: url(${VSTitleHover});
+  }
+
+  @media (max-width: 1378px) {
+    flex: 0 1 calc(50% - 0.5rem);
   }
 `;
 
