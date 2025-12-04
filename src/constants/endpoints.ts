@@ -5,4 +5,5 @@ export enum PageEndPoints {
   CHALLENGE_MAIN = "/challenge",
   LOGIN = "/login",
   JOIN = "/join",
+  SEARCH = "/search",
 }
