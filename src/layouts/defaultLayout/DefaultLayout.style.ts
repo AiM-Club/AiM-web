@@ -47,7 +47,7 @@ export const MainContent = styled.div<{ variant: "default" | "login" | "home" }>
   padding-top: ${({ variant }) => variant === "home" ? "0" : "6.25rem"};
   margin: ${({ variant }) =>
     variant === "login" ? "0 auto" : "0 0 0 8rem"};
-
+  margin-bottom: 6.25rem;
   ${({ variant }) =>
     variant === "default" &&
     `
