@@ -25,7 +25,7 @@ const Sidebar = () =>{
 
     const isActive = (path: string) => {
         if (path === PageEndPoints.HOME) {
-            return location.pathname === path;
+            return location.pathname === path || location.pathname.startsWith('/search');
         }
         return location.pathname.startsWith(path);
     };
