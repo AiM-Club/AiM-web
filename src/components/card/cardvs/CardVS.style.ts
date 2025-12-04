@@ -8,6 +8,7 @@ export const CardContent = styled.div`
   height: 26.313rem;
   display: flex;
   flex-direction: column;
+  background-color: var(--surpace-secondary);
 `;
 
 export const UserName = styled.div`
