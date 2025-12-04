@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Button from "../button/Button";
 
 export const PaginationWrapper = styled.div`
     display: flex;
