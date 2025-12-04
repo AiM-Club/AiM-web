@@ -5,11 +5,11 @@ import * as S from "./DefaultLayout.style.ts";
 
 interface DefaultLayoutProps {
   children: ReactNode;
-  variant? : "default" | "login"
+  variant? : "default" | "login" | "home";
 }
 
 const DefaultLayout = ({children, variant="default"}:DefaultLayoutProps) => {
-    const showsidebar = variant==="default";
+    const showsidebar = variant==="default" || variant==="home";
     return(
         <S.LayoutWrapper>
             <S.ContentWrapper>
