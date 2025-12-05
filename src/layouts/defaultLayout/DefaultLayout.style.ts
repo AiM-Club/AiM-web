@@ -37,7 +37,20 @@ export const MainWrapper = styled.main`
   background-size: 100% auto;
 `;
 
-export const MainContent = styled.div`
-  padding: 0 10rem;
+export const MainContent = styled.div<{ variant: "default" | "login" }>`
+  width: ${({ variant }) => variant === "login" ? "100%" : "calc(100% - 23rem)"};
+  max-width: 1440px;
   min-height: calc(100vh - 7.5rem);
+  color: var(--text-primary-default);
+
+  margin: ${({ variant }) =>
+    variant === "login" ? "0 auto" : "0 0 0 8rem"};
+
+  ${({ variant }) =>
+    variant === "default" &&
+    `
+    @media (min-width: 1920px) {
+      margin-left: calc((100vw - 1440px - 14rem) / 2);
+    }
+  `}
 `;

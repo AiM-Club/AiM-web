@@ -9,14 +9,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 
 const Button = ({
   variant = "primary",
-  isClicked = false,
+  $isClicked = false,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <StyledButton
       variant={variant}
-      isClicked={isClicked}
+      $isClicked={$isClicked}
       {...props}
     >
       {children}

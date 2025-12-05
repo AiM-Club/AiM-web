@@ -5,6 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
+import { PageEndPoints } from "@/constants/endpoints";
+
+interface HeaderProps {
+  variant?: "default" | "login";
+}
 
 interface SubMenuItem {
   id: string;
@@ -31,7 +36,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   ],
 };
 
-const Header = () => {
+const Header = ({ variant = "default" }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
@@ -67,7 +72,7 @@ const Header = () => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-        <Button>로그인</Button>
+         {variant === "default" ? <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button> : <></>}
     </S.HeaderWrapper>
   )
 };
