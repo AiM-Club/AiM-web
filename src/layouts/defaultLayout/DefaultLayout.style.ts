@@ -24,6 +24,10 @@ export const SidebarWrapper = styled.div`
   );
   overflow-y: auto;
   overflow: visible;
+  transition: width 0.3s ease, aspect-ratio 0.3s ease;
+  @media (max-width: 1024px) {
+      width: 5rem;
+    }
 `;
 
 export const MainWrapper = styled.main`
@@ -48,6 +52,7 @@ export const MainContent = styled.div<{ variant: "default" | "login" | "home" }>
   margin: ${({ variant }) =>
     variant === "login" ? "0 auto" : "0 0 0 8rem"};
   margin-bottom: 6.25rem;
+  transition: width 0.3s ease, aspect-ratio 0.3s ease;
   ${({ variant }) =>
     variant === "default" &&
     `
@@ -55,4 +60,10 @@ export const MainContent = styled.div<{ variant: "default" | "login" | "home" }>
       margin-left: calc((100vw - 1440px - 14rem) / 2);
     }
   `}
+
+  @media (max-width: 1024px) {
+    width: ${({ variant }) => variant === "login" ? "100%" : "calc(100% - 17.5rem)"};
+    margin: ${({ variant }) =>
+    variant === "login" ? "0 auto" : "0 0 0 5.25rem"};
+  }
 `;
