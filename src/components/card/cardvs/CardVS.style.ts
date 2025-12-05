@@ -29,7 +29,7 @@ export const RankImg = styled.img`
 `;
 
 export const CardWrapper = styled.div`
-  min-width: 17.375rem;
+  // min-width: 17.375rem;
   height: 27.063rem;
   box-sizing: border-box;
   padding: 0.375rem;
@@ -37,9 +37,12 @@ export const CardWrapper = styled.div`
   flex-direction: column;
 
   &:hover {
-    min-width: 17.375rem;
+    // min-width: 17.375rem;
     height: 27.063rem;
     background-image: url(${CardVSHover});
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   &:hover ${CardContent} {

@@ -30,14 +30,26 @@ export const SearchTopic = styled.div`
 `;
 
 export const ResultListWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     width: 100%;
+    transition: grid-template-columns 0.3s ease;
 
-    & > * {
-        flex: 1 1 calc((100% - 6rem) / 4);
-        min-width: 0;
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1025px) and (max-width: 1340px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media (min-width: 1680px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 1920px) {
+        grid-template-columns: repeat(4, 1fr);
     }
 `;
 
