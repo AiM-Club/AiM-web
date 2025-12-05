@@ -18,9 +18,14 @@ export const SearchInputWrapper = styled.form`
     border-radius: 0.25rem;
     padding: 0 1.25rem;
     gap: 0.75rem;
+    transition: max-width 0.3s ease;
 
     &:focus-within ${SearchIcon} {
         color: var(--text-primary-default);
+    }
+
+    @media (max-width: 1340px) {
+        max-width: 13rem;
     }
 `;
 
@@ -30,6 +35,7 @@ export const InputField = styled.input`
     font: var(--body-r-l);
     border: none;
     outline: none;
+    width: 100%;
     background-color: transparent;
     color: var(--text-primary-default);
 
