@@ -72,7 +72,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-         {variant === "default" ? <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button> : <></>}
+         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
     </S.HeaderWrapper>
   )
 };
