@@ -19,11 +19,15 @@ export const Logo = styled.img`
 export const SubMenuList = styled.nav`
   position: absolute;
   top: 0;
-  left: 50%;
+  left: calc(50% - 3.5rem);
   transform: translateX(-50%);
   display: flex;
   height: 4.625rem;
   align-items: center;
+
+  @media (max-width: 1024px) {
+    left: calc(50% - 2.5rem);
+  }
 `;
 
 export const SubMenuItem = styled.div<{ $isActive: boolean}>`
