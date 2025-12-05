@@ -24,18 +24,26 @@ const Search = () => {
                         <SearchInput />
                         <Select placeholder="정렬" />
                     </S.SearchMenuWrapper>
-                    <S.ResultListWrapper>
-                        {searchVsData.map((item) => (
-                            <CardVS key={item.id} data={item} />
-                        ))}
-                    </S.ResultListWrapper>
-                    <S.PaginationWrapper>
-                        <Pagination 
-                            currentPage={1}
-                            totalPage={1}
-                            callback={() => {}}
-                        />
-                    </S.PaginationWrapper>
+                    {keyword ? (
+                        <>
+                            <S.ResultListWrapper>
+                                {searchVsData.map((item) => (
+                                    <CardVS key={item.id} data={item} />
+                                ))}
+                            </S.ResultListWrapper>
+                            <S.PaginationWrapper>
+                                <Pagination 
+                                    currentPage={1}
+                                    totalPage={1}
+                                    callback={() => {}}
+                                />
+                            </S.PaginationWrapper>
+                        </>
+                    ) : (
+                        <S.EmptyState>
+                            검색 결과가 없습니다
+                        </S.EmptyState>
+                    )}
                 </S.ResultWrapper>
             </S.SearchWrapper>
         </DefaultLayout>

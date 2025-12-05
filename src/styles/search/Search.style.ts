@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import SearchFrame from "@/assets/SearchFrame.svg";
 
 export const SearchWrapper = styled.div`
     display: flex;
@@ -44,4 +45,16 @@ export const PaginationWrapper = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
+`;
+
+export const EmptyState = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 20rem;
+    background-image: url(${SearchFrame});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 `;
