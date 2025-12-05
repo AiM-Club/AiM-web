@@ -62,8 +62,8 @@ export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }
   `}
 
   @media (max-width: 1024px) {
-    width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 17.5rem)"};
+    width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 7.5rem)"};
     margin: ${({ $variant }) =>
-    $variant === "login" ? "0 auto" : "0 0 0 5.25rem"};
+    $variant === "login" ? "0 auto" : "0 0 0 1.25rem"};
   }
 `;
