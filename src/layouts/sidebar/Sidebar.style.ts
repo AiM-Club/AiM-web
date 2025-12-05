@@ -58,4 +58,14 @@ export const MenuText = styled.div<{ $isActive: boolean}>`
   padding-right: ${(props) =>
     props.$isActive ? `2rem` : `0.625rem`
   };
+
+  @media (max-width: 1024px) {
+    font: ${(props) =>
+    props.$isActive ? `var(--title-h-m)` : `var(--subtitle-m-s)`
+  };
+
+  padding-right: ${(props) =>
+    props.$isActive ? `1.2rem` : `0.375rem`
+  };
+  }
 `;
