@@ -12,7 +12,7 @@ export const SearchWrapper = styled.div`
 export const ResultWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 6.25rem;
     width: 100%;
 `;
 
@@ -63,10 +63,11 @@ export const EmptyState = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    min-height: 20rem;
+    min-width: 100%;
+    flex-shrink: 0;
     background-image: url(${SearchFrame});
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    aspect-ratio: 1196 / 312;
 `;
