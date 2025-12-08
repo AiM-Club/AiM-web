@@ -24,8 +24,9 @@ export const SearchMenuWrapper = styled.div`
 
 export const SearchTopic = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    gap: 1rem;
+    font: var(--headline-h-l);
+    align-items: center;
     width: 100%;
 `;
 

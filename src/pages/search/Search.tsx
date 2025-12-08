@@ -7,6 +7,7 @@ import { PageTopic } from "@/components/text/PageTopic";
 import { searchVsData } from "./Constants";
 import CardVS from "@/components/card/cardvs/CardVS";
 import Pagination from "@/components/pagination/Pagination";
+import titleUnion from "@/assets/TitleUnion.svg";
 
 
 const Search = () => {
@@ -18,7 +19,8 @@ const Search = () => {
             <S.SearchWrapper>
                 <S.ResultWrapper>
                     <S.SearchTopic>
-                        <PageTopic text={`'${keyword}' 검색 결과`} size="l" />
+                        <img src={titleUnion} />
+                        `{keyword}` 검색 결과
                     </S.SearchTopic>
                     <S.SearchMenuWrapper>
                         <SearchInput />
