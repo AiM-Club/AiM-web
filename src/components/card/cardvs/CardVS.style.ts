@@ -8,6 +8,7 @@ export const CardContent = styled.div`
   height: 26.313rem;
   display: flex;
   flex-direction: column;
+  background-color: var(--surpace-secondary);
 `;
 
 export const UserName = styled.div`
@@ -28,22 +29,25 @@ export const RankImg = styled.img`
 `;
 
 export const CardWrapper = styled.div`
-  min-width: 16.625rem;
-  height: 26.313rem;
-  margin: 0.375rem;
+  // min-width: 17.375rem;
+  height: 27.063rem;
+  box-sizing: border-box;
+  padding: 0.375rem;
   display: flex;
   flex-direction: column;
 
   &:hover {
-    min-width: 17.375rem;
+    // min-width: 17.375rem;
     height: 27.063rem;
-    margin: 0;
     background-image: url(${CardVSHover});
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   &:hover ${CardContent} {
-    margin: 0.375rem;
     border: 3px solid var(--border-primary-hover);
+    background-color: var(--surpace-primary);
   }
 
   &:hover ${UserName} {

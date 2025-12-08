@@ -19,11 +19,15 @@ export const Logo = styled.img`
 export const SubMenuList = styled.nav`
   position: absolute;
   top: 0;
-  left: 50%;
+  left: calc(50% - 3.5rem);
   transform: translateX(-50%);
   display: flex;
   height: 4.625rem;
   align-items: center;
+
+  @media (max-width: 1024px) {
+    left: calc(50% - 2.5rem);
+  }
 `;
 
 export const SubMenuItem = styled.div<{ $isActive: boolean}>`
@@ -38,9 +42,19 @@ export const SubMenuItem = styled.div<{ $isActive: boolean}>`
   align-items: center;
   background-color: var(--surpace-primary);
   border: none;
+  transition: width 0.3s ease, aspect-ratio 0.3s ease;
 
   &:hover {
   color: ${(props) =>
       props.$isActive ? `var(--text-primary-default)` : `var(--text-primary-hover)`};
+  }
+
+  @media (max-width: 1300px) {
+    padding-inline: 1.5rem;
+    font: var(--title-h-s);
+  }
+
+  @media (max-width: 1024px) {
+    padding-inline: 1.5rem;
   }
 `;

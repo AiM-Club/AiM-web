@@ -9,7 +9,7 @@ import { cardVSData } from "./Constants";
 const Home = () => {
     
     return(
-        <DefaultLayout>
+        <DefaultLayout variant="home">
             <MainSlider />
             <S.HomeWrapper>
                 <S.CardWrapper>

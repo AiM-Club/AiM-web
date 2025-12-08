@@ -42,21 +42,21 @@
 
 @font-face {
   font-family: 'Vitro Core';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201@1.0/VitroCore-Bold.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Vitro_core.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Vitro Core';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201@1.0/VitroCore-ExtraBold.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Vitro_core.woff') format('woff');
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Vitro Core';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201@1.0/VitroCore-Black.woff') format('woff');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Vitro_core.woff') format('woff');
   font-weight: 900;
   font-style: normal;
 }

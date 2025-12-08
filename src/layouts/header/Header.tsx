@@ -8,7 +8,7 @@ import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
 
 interface HeaderProps {
-  variant?: "default" | "login";
+  variant?: "default" | "login" | "home";
 }
 
 interface SubMenuItem {
@@ -72,7 +72,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-         {variant === "default" ? <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button> : <></>}
+         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
     </S.HeaderWrapper>
   )
 };
