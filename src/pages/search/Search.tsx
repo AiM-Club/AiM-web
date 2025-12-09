@@ -3,11 +3,9 @@ import * as S from "@/styles/search/Search.style";
 import SearchInput from "@/components/field/SearchInput";
 import Select from "@/components/Select/Select";
 import { useSearchParams } from "react-router-dom";
-import { PageTopic } from "@/components/text/PageTopic";
 import { searchVsData } from "./Constants";
-import CardVS from "@/components/card/cardvs/CardVS";
-import Pagination from "@/components/pagination/Pagination";
 import titleUnion from "@/assets/TitleUnion.svg";
+import CardBoard from "@/components/board/CardBoard";
 
 
 const Search = () => {
@@ -27,20 +25,7 @@ const Search = () => {
                         <Select placeholder="정렬" />
                     </S.SearchMenuWrapper>
                     {keyword ? (
-                        <>
-                            <S.ResultListWrapper>
-                                {searchVsData.map((item) => (
-                                    <CardVS key={item.id} data={item} />
-                                ))}
-                            </S.ResultListWrapper>
-                            <S.PaginationWrapper>
-                                <Pagination 
-                                    currentPage={1}
-                                    totalPage={1}
-                                    callback={() => {}}
-                                />
-                            </S.PaginationWrapper>
-                        </>
+                        <CardBoard data={searchVsData}/>
                     ) : (
                         <S.EmptyState>
                             검색 결과가 없습니다
