@@ -1,11 +1,18 @@
 import styled from "styled-components";
-
+import SearchFrame from "@/assets/SearchFrame.svg";
 
 export const CardBoardWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 6.25rem;
     width: 100%;
+`;
+
+
+export const SearchMenuWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 3rem;
 `;
 
 export const ResultListWrapper = styled.div`
@@ -32,8 +39,29 @@ export const ResultListWrapper = styled.div`
     }
 `;
 
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    width: 100%;
+`;
+
 export const PaginationWrapper = styled.div`
     display: flex;
     justify-content: center;
+    margin-top: 6.25rem;
     width: 100%;
+`;
+
+export const EmptyState = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    flex-shrink: 0;
+    background-image: url(${SearchFrame});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: 1196 / 312;
 `;

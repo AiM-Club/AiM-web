@@ -1,7 +1,5 @@
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/search/Search.style";
-import SearchInput from "@/components/field/SearchInput";
-import Select from "@/components/Select/Select";
 import { useSearchParams } from "react-router-dom";
 import { searchVsData } from "./Constants";
 import titleUnion from "@/assets/TitleUnion.svg";
@@ -20,17 +18,7 @@ const Search = () => {
                         <img src={titleUnion} />
                         `{keyword}` 검색 결과
                     </S.SearchTopic>
-                    <S.SearchMenuWrapper>
-                        <SearchInput />
-                        <Select placeholder="정렬" />
-                    </S.SearchMenuWrapper>
-                    {keyword ? (
-                        <CardBoard data={searchVsData}/>
-                    ) : (
-                        <S.EmptyState>
-                            검색 결과가 없습니다
-                        </S.EmptyState>
-                    )}
+                    <CardBoard data={searchVsData}/>
                 </S.ResultWrapper>
             </S.SearchWrapper>
         </DefaultLayout>
