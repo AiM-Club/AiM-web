@@ -4,8 +4,6 @@ import SearchInput from "@/components/field/SearchInput";
 import Select from "@/components/Select/Select";
 import { useSearchParams } from "react-router-dom";
 import { searchVsData } from "./Constants";
-import CardVS from "@/components/card/cardvs/CardVS";
-import Pagination from "@/components/pagination/Pagination";
 import titleUnion from "@/assets/TitleUnion.svg";
 import CardBoard from "@/components/board/CardBoard";
 
