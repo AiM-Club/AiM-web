@@ -24,6 +24,10 @@ export const SidebarWrapper = styled.div`
   );
   overflow-y: auto;
   overflow: visible;
+  transition: width 0.3s ease, aspect-ratio 0.3s ease;
+  @media (max-width: 1024px) {
+      width: 5rem;
+    }
 `;
 
 export const MainWrapper = styled.main`
@@ -33,24 +37,33 @@ export const MainWrapper = styled.main`
   z-index:10;
   background-image: url(${Background});
   background-repeat: no-repeat;
-  background-position: center 7.5rem; 
+  background-position: center 32.5rem; 
   background-size: 100% auto;
 `;
 
-export const MainContent = styled.div<{ variant: "default" | "login" }>`
-  width: ${({ variant }) => variant === "login" ? "100%" : "calc(100% - 23rem)"};
+export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }>`
+  width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 23rem)"};
   max-width: 1440px;
+  padding-left: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
+  padding-right: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
   min-height: calc(100vh - 7.5rem);
   color: var(--text-primary-default);
-
-  margin: ${({ variant }) =>
-    variant === "login" ? "0 auto" : "0 0 0 8rem"};
-
-  ${({ variant }) =>
-    variant === "default" &&
+  padding-top: ${({ $variant }) => $variant === "home" ? "0" : "6.25rem"};
+  margin: ${({ $variant }) =>
+    $variant === "login" ? "0 auto" : "0 0 0 8rem"};
+  margin-bottom: 6.25rem;
+  transition: width 0.3s ease, aspect-ratio 0.3s ease;
+  ${({ $variant }) =>
+    $variant === "default" &&
     `
     @media (min-width: 1920px) {
       margin-left: calc((100vw - 1440px - 14rem) / 2);
     }
   `}
+
+  @media (max-width: 1024px) {
+    width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 7.5rem)"};
+    margin: ${({ $variant }) =>
+    $variant === "login" ? "0 auto" : "0 0 0 1.25rem"};
+  }
 `;

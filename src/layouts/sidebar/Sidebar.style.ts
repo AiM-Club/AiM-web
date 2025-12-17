@@ -9,7 +9,7 @@ export const SidebarContainer = styled.aside`
   overflow: visible;
   position: relative;
   width: 13rem;
-  z-index: 10;
+  z-index: 15;
 `;
 export const MenuList = styled.nav`
   display: flex;
@@ -34,10 +34,17 @@ export const MenuItem = styled.button<{ $isActive: boolean}>`
   background-repeat: no-repeat;
   cursor: pointer;
   z-index:20;
+  transition: width 0.2s ease, aspect-ratio 0.3s ease;
 
   &:hover {
   background-image: ${(props) =>
       props.$isActive ? `url(${SideBtnSelected})` : `url(${SideBtnHover})`};
+  }
+
+  @media (max-width: 1024px) {
+    width: ${(props) =>
+    props.$isActive ? `9rem` : `6.25rem`
+  };
   }
 `;
 
@@ -51,4 +58,14 @@ export const MenuText = styled.div<{ $isActive: boolean}>`
   padding-right: ${(props) =>
     props.$isActive ? `2rem` : `0.625rem`
   };
+
+  @media (max-width: 1024px) {
+    font: ${(props) =>
+    props.$isActive ? `var(--title-h-m)` : `var(--subtitle-m-s)`
+  };
+
+  padding-right: ${(props) =>
+    props.$isActive ? `1.2rem` : `0.375rem`
+  };
+  }
 `;

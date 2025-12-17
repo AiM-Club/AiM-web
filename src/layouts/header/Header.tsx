@@ -8,7 +8,7 @@ import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
 
 interface HeaderProps {
-  variant?: "default" | "login";
+  variant?: "default" | "login" | "home";
 }
 
 interface SubMenuItem {
@@ -19,7 +19,7 @@ interface SubMenuItem {
 
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
-    { id: "challenge-vs", label: "VS모집", path: "/challenge/vs" },
+    { id: "challenge-vs", label: "VS모집", path: PageEndPoints.CHALLENGE_VS },
     { id: "challenge-vs", label: "VS대결", path: "/challenge/vs" },
     { id: "challenge-multi", label: "솔로", path: "/challenge/multi" },
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
@@ -72,7 +72,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-         {variant === "default" ? <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button> : <></>}
+         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
     </S.HeaderWrapper>
   )
 };
