@@ -1,6 +1,7 @@
 //첫 글자가 초록색인 페이지 타이틀 component
 import * as S from "./PageTopic.style";
 
+// 로그인 페이지와 회원가입 페이지를 제외한 size는 l로 넘깁니다.
 interface PageTopicProps {
   text: string;
   size: "m" | "l";

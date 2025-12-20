@@ -1,0 +1,15 @@
+<svg width="377" height="568" viewBox="0 0 377 568" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0H110L116 6H0V0Z" fill="#DAF471"/>
+<rect width="349" height="62" transform="translate(0 6)" fill="#DAF471"/>
+<path d="M377 33.9962V68H349V6H349.423L377 33.9962Z" fill="#DAF471"/>
+<path d="M6 122V74V68H0V116L6 122Z" fill="#DAF471"/>
+<path d="M6 74H371V68H6V74Z" fill="#DAF471"/>
+<path d="M371 434L377 428V68H371V74V434Z" fill="#DAF471"/>
+<rect x="6.75" y="74.75" width="363.5" height="486.5" fill="#3B3C3D"/>
+<rect x="6.75" y="74.75" width="363.5" height="486.5" stroke="#DAF471" stroke-width="1.5"/>
+<path d="M6 526V562H42L48 568H12L0 556V520L6 526Z" fill="#DAF471"/>
+<path d="M112 562H116V566L112 562Z" fill="#DAF471"/>
+<rect x="116" y="562" width="145" height="4" fill="#DAF471"/>
+<path d="M265 562H261V566L265 562Z" fill="#DAF471"/>
+<path d="M377 556L365 568H329L335 562H371V526L377 520V556Z" fill="#DAF471"/>
+</svg>
