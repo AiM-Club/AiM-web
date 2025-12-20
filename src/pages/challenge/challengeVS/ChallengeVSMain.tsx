@@ -12,7 +12,7 @@ const ChallengeVSMain = () => {
                     <img src={titleUnion} />
                     IT분야 _ VS 모집글
                 </S.SearchTopic>
-                <CardBoard data={searchVsData} writePath="/challenge/challengeVS/write"/>
+                <CardBoard data={searchVsData} writePath="/challenge/challengeSolo/write"/>
             </S.ChallengeVSMainWrapper>
         </DefaultLayout>
     )
