@@ -3,6 +3,7 @@ export enum PageEndPoints {
   MYPAGE = "/mypage",
   COMMUNITY = "/community",
   QNA = "/community/qna",
+  REVIEW = "/community/review",
   CHALLENGE_MAIN = "/challenge",
   CHALLENGE_VS = "/challenge/vs",
   CHALLENGE_SOLO = "/challenge/solo",

@@ -26,7 +26,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   ],
   "/community": [
     { id: "community-qna", label: "Q & A", path: PageEndPoints.QNA },
-    { id: "community-notice", label: "후기", path: "/community/notice" },
+    { id: "community-review", label: "후기", path: PageEndPoints.REVIEW },
   ],
   "/mypage": [
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
