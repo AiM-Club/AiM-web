@@ -17,10 +17,10 @@ const CardBoard = ({data, writePath}: CardBoardProps) => {
 
     return (
         <S.CardBoardWrapper>
-            <S.SearchMenuWrapper>
+            {/* <S.SearchMenuWrapper>
                 <SearchInput />
                 <Select placeholder="정렬" />
-            </S.SearchMenuWrapper>
+            </S.SearchMenuWrapper> */}
             {data.length > 0 ? (
                 <>
                     <S.ResultListWrapper>
