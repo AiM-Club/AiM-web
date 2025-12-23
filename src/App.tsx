@@ -9,6 +9,7 @@ import Challenge from "./pages/challenge/Challenge"
 import Search from "./pages/search/Search"
 import ChallengeVSMain from "./pages/challenge/challengeVS/ChallengeVSMain"
 import ChallengeVSSolo from "./pages/challenge/challengeSolo/ChallengeVSSolo"
+import QnA from "./pages/community/qna/QnA"
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path={PageEndPoints.HOME} element={<Home />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
+        <Route path={PageEndPoints.QNA} element={<QnA />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
         <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
         <Route path={PageEndPoints.CHALLENGE_SOLO} element={<ChallengeVSSolo />} />

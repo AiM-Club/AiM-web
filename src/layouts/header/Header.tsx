@@ -25,7 +25,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
   ],
   "/community": [
-    { id: "community-board", label: "Q & A", path: "/community/board" },
+    { id: "community-qna", label: "Q & A", path: PageEndPoints.QNA },
     { id: "community-notice", label: "후기", path: "/community/notice" },
   ],
   "/mypage": [
