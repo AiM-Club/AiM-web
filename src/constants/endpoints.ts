@@ -1,6 +1,7 @@
 export enum PageEndPoints {
   HOME = "/",
   MYPAGE = "/mypage",
+  MYPOST = "/mypage/myPost",
   COMMUNITY = "/community",
   QNA = "/community/qna",
   REVIEW = "/community/review",

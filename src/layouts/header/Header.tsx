@@ -30,7 +30,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   ],
   "/mypage": [
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
-    { id: "mypage-history", label: "내 게시글", path: "/mypage/history" },
+    { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
      { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
     { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
   ],
