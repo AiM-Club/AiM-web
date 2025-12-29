@@ -44,8 +44,8 @@ export const MainWrapper = styled.main`
 export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }>`
   width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 23rem)"};
   max-width: 1440px;
-  padding-left: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
-  padding-right: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
+  padding-left: ${({ $variant }) => $variant === "home" ? "0" : "7.5%"};
+  padding-right: ${({ $variant }) => $variant === "home" ? "0" : "7.5%"};
   min-height: calc(100vh - 7.5rem);
   color: var(--text-primary-default);
   padding-top: ${({ $variant }) => $variant === "home" ? "0" : "6.25rem"};

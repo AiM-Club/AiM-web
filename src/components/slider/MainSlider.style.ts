@@ -7,8 +7,8 @@ export const SliderWrapper = styled.div`
   background-color: var(--gray-600);
 
   @media (max-width: 1024px) {
-    width: calc(100% - 10rem);
-    margin-left: 5rem;
+    width: 85%;
+    margin-left: 7.5%;
   }
 `;
 
