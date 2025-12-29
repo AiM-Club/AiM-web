@@ -54,7 +54,7 @@ export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }
   margin-bottom: 6.25rem;
   transition: width 0.3s ease, aspect-ratio 0.3s ease;
   ${({ $variant }) =>
-    $variant === "default" &&
+    $variant !== "login" &&
     `
     @media (min-width: 1920px) {
       margin-left: calc((100vw - 1440px - 14rem) / 2);
