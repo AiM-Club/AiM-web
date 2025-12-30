@@ -5,8 +5,9 @@ export const LayoutWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100vw;
+  max-width: 100vw;
   background-color: var(--background-primary);
+  position: relative;
 `;
 
 export const ContentWrapper = styled.div`

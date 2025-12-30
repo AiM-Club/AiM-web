@@ -4,6 +4,7 @@ import CardBoard from "@/components/board/CardBoard";
 import { searchVsData } from "@/pages/search/Constants";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
+import Button from "@/components/button/Button";
 
 const ChallengeVSSolo = () => {
     return (
@@ -16,8 +17,9 @@ const ChallengeVSSolo = () => {
                         { value: "completed", label: "진행 완료" }
                     ]}
                 />
-                <CardBoard data={searchVsData} writePath="/challenge/challengeVS/write"/>
+                <CardBoard data={searchVsData}/>
             </S.ChallengeVSMainWrapper>
+            <Button variant="fixed">작성</Button>
         </DefaultLayout>
     )
 }
