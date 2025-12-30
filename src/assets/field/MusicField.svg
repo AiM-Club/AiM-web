@@ -1,0 +1,25 @@
+<svg width="91" height="91" viewBox="0 0 91 91" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1248_73136)">
+<rect width="91" height="91" fill="#202021"/>
+<line x1="11" y1="68" x2="11" y2="73" stroke="#FB3084" stroke-width="2"/>
+<circle cx="40.5" cy="58.5" r="12.5" stroke="#FB3084" stroke-width="4"/>
+<path d="M53 59L53 31.5096M53 31.5096L53 19L70.5 27.9904L70.5 40.5L53 31.5096Z" stroke="#FB3084" stroke-width="4"/>
+<line x1="19" y1="66" x2="19" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="23" y1="69" x2="23" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="70" y1="61" x2="70" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="82" y1="69" x2="82" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="15" y1="64" x2="15" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="66" y1="63" x2="66" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="78" y1="70" x2="78" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="62" y1="69" x2="62" y2="73" stroke="#FB3084" stroke-width="2"/>
+<line x1="74" y1="66" x2="74" y2="73" stroke="#FB3084" stroke-width="2"/>
+<path d="M91 0H75L91 16V0Z" fill="#FB3084"/>
+<path d="M0 91H16L0 75V91Z" fill="#FB3084"/>
+</g>
+<rect x="0.75" y="0.75" width="89.5" height="89.5" stroke="#FB3084" stroke-width="1.5"/>
+<defs>
+<clipPath id="clip0_1248_73136">
+<rect width="91" height="91" fill="white"/>
+</clipPath>
+</defs>
+</svg>
