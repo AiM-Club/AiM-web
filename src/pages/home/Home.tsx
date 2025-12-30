@@ -5,9 +5,13 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import Select from "@/components/Select/Select";
 import * as S from "@/styles/home/Home.style.ts";
 import { cardVSData } from "./Constants";
+import { useExistId } from "@/api/auth";
 
 const Home = () => {
-    
+    const { data: promoListData} =
+    useExistId("test");
+    console.log(promoListData);
+
     return(
         <DefaultLayout variant="home">
             <MainSlider />

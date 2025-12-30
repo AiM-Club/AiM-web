@@ -10,7 +10,7 @@ export enum PageEndPoints {
 }
 
 export enum ApiEndpoints {
-  LOGIN = "/api/auth/login",
-  JOIN = "/api/auth/join",
-  SEARCH = "/api/search",
+  LOGIN = "/auth/login",
+  JOIN = "/auth/register",
+  EXIST_ID = "/auth/id-exist",
 }
