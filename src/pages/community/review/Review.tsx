@@ -4,6 +4,7 @@ import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import { searchVsData } from "@/pages/search/Constants";
 import * as S from "@/styles/community/review/Review.style";
+import Button from "@/components/button/Button";
 
 const Review = () => {
     return (
@@ -18,9 +19,10 @@ const Review = () => {
                             { value: "vsBattle", label: "VS 대결" }
                         ]}
                     />
-                    <CardBoard data={searchVsData} writePath="/community/review/write"/>
+                    <CardBoard data={searchVsData}/>
                 </S.ContentWrapper>
             </S.ReviewWrapper>
+            <Button variant="fixed">작성</Button>
         </DefaultLayout>
     )
 }

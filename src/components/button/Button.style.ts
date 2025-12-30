@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 
 export type ButtonVariant =
   | "primary"
+  | "fixed";
 
 export interface StyledButtonProps {
   variant?: ButtonVariant;
@@ -14,29 +15,32 @@ export interface StyledButtonProps {
 }
 
 export const variantStyles = {
-    primary: css`
-    width: 9.125rem;
-    height: 3.563rem;
-    color: var(--color-white);
-    font: var(--body-m-xl);
-    position: relative;
-
-    background-image: url(${MainBtn});
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    `,
+  primary: css`
+  
+  `,
+  fixed: css`
+    position: fixed;
+    z-index: 999;
+    bottom: 8%;
+    right: 10%;
+  `,
 };
 
 export const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
   outline: none;
   border: none;
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
+  width: 9.125rem;
+  height: 3.563rem;
+  background-image: url(${MainBtn});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-white);
+  font: var(--body-m-xl);
 
   &:focus {
     outline: none;

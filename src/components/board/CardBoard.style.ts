@@ -31,13 +31,6 @@ export const ResultListWrapper = styled.div`
     }
 `;
 
-export const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
-    width: 100%;
-`;
-
 export const PaginationWrapper = styled.div`
     display: flex;
     justify-content: center;

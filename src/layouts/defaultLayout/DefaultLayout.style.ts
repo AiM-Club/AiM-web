@@ -7,6 +7,7 @@ export const LayoutWrapper = styled.div`
   min-height: 100vh;
   width: 100vw;
   background-color: var(--background-primary);
+  position: relative;
 `;
 
 export const ContentWrapper = styled.div`
