@@ -46,6 +46,12 @@ export const MenuItem = styled.button<{ $isActive: boolean}>`
     props.$isActive ? `9rem` : `6.25rem`
   };
   }
+
+  @media (max-width: 850px) {
+    width: ${(props) =>
+    props.$isActive ? `7.625rem` : `6rem`
+  };
+  }
 `;
 
 export const MenuText = styled.div<{ $isActive: boolean}>`

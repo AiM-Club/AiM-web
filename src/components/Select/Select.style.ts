@@ -6,7 +6,7 @@ export const Trigger = styled(SelectMenu.Trigger)`
     align-items: center;
     justify-content: center;
     gap: 0.25rem;
-    width: 5.688rem;
+    width: 6.2rem;
     padding: 0.5rem 0.938rem;
     background-color: var(--surpace-primary);
     border: none;

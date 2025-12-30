@@ -10,17 +10,18 @@ import type { CardVSProps } from "@/types/VSBattle";
 interface CardBoardProps {
     data: CardVSProps[];
     writePath?: string;
+    isPagination?: boolean;
 }
 
-const CardBoard = ({data, writePath}: CardBoardProps) => {
+const CardBoard = ({data, writePath, isPagination = true}: CardBoardProps) => {
     const navigate = useNavigate();
 
     return (
         <S.CardBoardWrapper>
-            <S.SearchMenuWrapper>
+            {/* <S.SearchMenuWrapper>
                 <SearchInput />
                 <Select placeholder="정렬" />
-            </S.SearchMenuWrapper>
+            </S.SearchMenuWrapper> */}
             {data.length > 0 ? (
                 <>
                     <S.ResultListWrapper>
@@ -33,13 +34,15 @@ const CardBoard = ({data, writePath}: CardBoardProps) => {
                             <Button onClick={() => navigate(writePath)}>작성</Button>
                         </S.ButtonWrapper>
                     }
-                    <S.PaginationWrapper>
+                    {isPagination && (
+                        <S.PaginationWrapper>
                         <Pagination 
                             currentPage={1}
                             totalPage={1}
-                            callback={() => {}}
-                        />
-                    </S.PaginationWrapper>
+                                callback={() => {}}
+                            />
+                        </S.PaginationWrapper>
+                    )}
                 </>
             ) : (
                 <S.EmptyState>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HomeWrapper = styled.div`
-  width: calc(100% - 15.25rem);
+  width: calc(85%);
   display: flex;
   flex-direction: column;
   gap: 2rem;
