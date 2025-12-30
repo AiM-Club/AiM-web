@@ -7,12 +7,13 @@ import Mypage from "./pages/mypage/Mypage"
 import Community from "./pages/community/Community"
 import Challenge from "./pages/challenge/Challenge"
 import Search from "./pages/search/Search"
-import ChallengeVSMain from "./pages/challenge/challengeVS/ChallengeVSMain"
+import ChallengeVS from "./pages/challenge/challengeVS/ChallengeVS"
 import ChallengeVSSolo from "./pages/challenge/challengeSolo/ChallengeVSSolo"
 import QnA from "./pages/community/qna/QnA"
 import Review from "./pages/community/review/Review";
 import MyPost from "./pages/mypage/myPost/MyPost";
 import MyLiked from "./pages/mypage/myLiked/MyLiked";
+import ChallengeRecruit from "./pages/challenge/challengeRecruit/ChallengeRecruit";
 
 
 function App() {
@@ -28,8 +29,9 @@ function App() {
         <Route path={PageEndPoints.QNA} element={<QnA />} />
         <Route path={PageEndPoints.REVIEW} element={<Review />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
-        <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
+        <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVS />} />
         <Route path={PageEndPoints.CHALLENGE_SOLO} element={<ChallengeVSSolo />} />
+        <Route path={PageEndPoints.CHALLENGE_RECRUIT} element={<ChallengeRecruit />} />
         <Route path={PageEndPoints.LOGIN} element={<Login />} />
         <Route path={PageEndPoints.JOIN} element={<Join />} />
         <Route path={PageEndPoints.SEARCH} element={<Search />} />
