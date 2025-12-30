@@ -6,7 +6,8 @@ import styled, { css } from "styled-components";
 
 export type ButtonVariant =
   | "primary"
-  | "fixed";
+  | "fixed"
+  | "secondary";
 
 export interface StyledButtonProps {
   variant?: ButtonVariant;
@@ -23,6 +24,14 @@ export const variantStyles = {
     z-index: 999;
     bottom: 8%;
     right: 10%;
+  `,
+  secondary: css`
+    height: 3rem;
+    width: 5.688rem;
+    border-radius: 0.25rem;
+    background-image: none;
+    background-color: var(--surpace-primary);
+    color: var(--text-primary-default);
   `,
 };
 
