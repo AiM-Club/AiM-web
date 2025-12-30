@@ -12,6 +12,7 @@ import ChallengeVSSolo from "./pages/challenge/challengeSolo/ChallengeVSSolo"
 import QnA from "./pages/community/qna/QnA"
 import Review from "./pages/community/review/Review";
 import MyPost from "./pages/mypage/myPost/MyPost";
+import MyLiked from "./pages/mypage/myLiked/MyLiked";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path={PageEndPoints.HOME} element={<Home />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
+        <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
         <Route path={PageEndPoints.QNA} element={<QnA />} />
         <Route path={PageEndPoints.REVIEW} element={<Review />} />
