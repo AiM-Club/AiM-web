@@ -51,8 +51,10 @@ export const Content = styled(SelectMenu.Content)`
     border-radius: 0.25rem;
     z-index: 1000;
     width: 6.2rem;
+    max-width: 6.2rem;
     max-height: var(--radix-select-content-available-height);
     transform-origin: top left;
+    contain: layout;
 `;
 
 export const Viewport = styled(SelectMenu.Viewport)`
