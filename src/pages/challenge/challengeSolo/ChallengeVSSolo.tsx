@@ -11,13 +11,15 @@ const ChallengeVSSolo = () => {
         <DefaultLayout>
             <S.ChallengeVSMainWrapper>
                 <PageTopic text="SOLO 챌린지" size="l" />
-                <SearchField 
-                    categories={[
-                        { value: "ongoing", label: "진행 중" },
-                        { value: "completed", label: "진행 완료" }
-                    ]}
-                />
-                <CardBoard data={searchVsData}/>
+                <S.ContentWrapper>
+                    <SearchField 
+                        categories={[
+                            { value: "ongoing", label: "진행 중" },
+                            { value: "completed", label: "진행 완료" }
+                        ]}
+                    />
+                    <CardBoard data={searchVsData}/>
+                </S.ContentWrapper>
             </S.ChallengeVSMainWrapper>
             <Button variant="fixed">작성</Button>
         </DefaultLayout>
