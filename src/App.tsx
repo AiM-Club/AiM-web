@@ -8,6 +8,7 @@ import Community from "./pages/community/Community"
 import Challenge from "./pages/challenge/Challenge"
 import Search from "./pages/search/Search"
 import ChallengeVSMain from "./pages/challenge/challengeVS/ChallengeVSMain"
+import ChallengeVSMatch from "./pages/challenge/challengeVS/ChallengeVSMatch"
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
         <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
+        <Route path={PageEndPoints.CHALLENGE_MATCH} element={<ChallengeVSMatch />} />
         <Route path={PageEndPoints.LOGIN} element={<Login />} />
         <Route path={PageEndPoints.JOIN} element={<Join />} />
         <Route path={PageEndPoints.SEARCH} element={<Search />} />

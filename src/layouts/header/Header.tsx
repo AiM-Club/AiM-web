@@ -20,7 +20,7 @@ interface SubMenuItem {
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
     { id: "challenge-vs", label: "VS모집", path: PageEndPoints.CHALLENGE_VS },
-    { id: "challenge-vs", label: "VS대결", path: "/challenge/vs" },
+    { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_MATCH },
     { id: "challenge-multi", label: "솔로", path: "/challenge/multi" },
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
   ],
@@ -31,7 +31,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/mypage": [
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
     { id: "mypage-history", label: "내 게시글", path: "/mypage/history" },
-     { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
+    { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
     { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
   ],
 };
@@ -42,37 +42,37 @@ const Header = ({ variant = "default" }: HeaderProps) => {
   const location = useLocation();
 
   const getCurrentSubMenu = (): SubMenuItem[] => {
-    const mainPath = Object.keys(subMenuConfig).find(path => 
+    const mainPath = Object.keys(subMenuConfig).find(path =>
       location.pathname.startsWith(path)
     );
     return mainPath ? subMenuConfig[mainPath] : [];
   };
 
   const currentSubMenu = getCurrentSubMenu();
-  
+
   const handleSubMenuClick = (path: string) => {
     navigate(path);
   };
 
   return (
     <S.HeaderWrapper>
-        <S.Logo src={logo}/>
-        {currentSubMenu.length > 0 && (
-          <S.SubMenuList>
-            <img src={SubMenuLeft} />
-            {currentSubMenu.map((item) => (
-              <S.SubMenuItem
+      <S.Logo src={logo} />
+      {currentSubMenu.length > 0 && (
+        <S.SubMenuList>
+          <img src={SubMenuLeft} />
+          {currentSubMenu.map((item) => (
+            <S.SubMenuItem
               key={item.id}
               $isActive={isActive(item.path)}
               onClick={() => handleSubMenuClick(item.path)}
-              >
-                {item.label}
-              </S.SubMenuItem>
-            ))}
-            <img src={SubMenuRight} />
-          </S.SubMenuList>
-        )}
-         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
+            >
+              {item.label}
+            </S.SubMenuItem>
+          ))}
+          <img src={SubMenuRight} />
+        </S.SubMenuList>
+      )}
+      {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
     </S.HeaderWrapper>
   )
 };
