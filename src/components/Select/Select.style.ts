@@ -50,9 +50,7 @@ export const Content = styled(SelectMenu.Content)`
     background-color: var(--surpace-tertiary);
     border-radius: 0.25rem;
     z-index: 1000;
-    // width: 5.688rem;
-    // min-width: 5.688rem;
-    // max-width: 5.688rem;
+    width: 6.2rem;
     max-height: var(--radix-select-content-available-height);
     transform-origin: top left;
 `;
