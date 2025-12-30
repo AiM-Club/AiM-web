@@ -10,7 +10,7 @@ const ChallengeVSMain = () => {
             <S.ChallengeVSMainWrapper>
                 <S.SearchTopic>
                     <img src={titleUnion} />
-                    IT분야 _ VS 모집글
+                    IT분야 _ VS 모집글
                 </S.SearchTopic>
                 <CardBoard data={searchVsData} writePath="/challenge/challengeSolo/write"/>
             </S.ChallengeVSMainWrapper>
