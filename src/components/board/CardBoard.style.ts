@@ -7,14 +7,6 @@ export const CardBoardWrapper = styled.div`
     width: 100%;
 `;
 
-
-export const SearchMenuWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 3rem;
-`;
-
 export const ResultListWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);

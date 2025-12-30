@@ -1,9 +1,13 @@
 export enum PageEndPoints {
   HOME = "/",
   MYPAGE = "/mypage",
+  MYPOST = "/mypage/myPost",
   COMMUNITY = "/community",
+  QNA = "/community/qna",
+  REVIEW = "/community/review",
   CHALLENGE_MAIN = "/challenge",
   CHALLENGE_VS = "/challenge/vs",
+  CHALLENGE_SOLO = "/challenge/solo",
   LOGIN = "/login",
   JOIN = "/join",
   SEARCH = "/search",

@@ -21,16 +21,16 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
     { id: "challenge-vs", label: "VS모집", path: PageEndPoints.CHALLENGE_VS },
     { id: "challenge-vs", label: "VS대결", path: "/challenge/vs" },
-    { id: "challenge-multi", label: "솔로", path: "/challenge/multi" },
+    { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
   ],
   "/community": [
-    { id: "community-board", label: "Q & A", path: "/community/board" },
-    { id: "community-notice", label: "후기", path: "/community/notice" },
+    { id: "community-qna", label: "Q & A", path: PageEndPoints.QNA },
+    { id: "community-review", label: "후기", path: PageEndPoints.REVIEW },
   ],
   "/mypage": [
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
-    { id: "mypage-history", label: "내 게시글", path: "/mypage/history" },
+    { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
      { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
     { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
   ],

@@ -32,7 +32,8 @@ export const SubMenuList = styled.nav`
 
 export const SubMenuItem = styled.div<{ $isActive: boolean}>`
   font: var(--title-h-m);
-  color: var(--text-primary-default);
+  color: ${(props) =>
+      props.$isActive ? `var(--text-primary-selected)` : `var(--text-primary-default)`};
   height: 4.625rem;
   padding-inline: 3rem;
   align-items: center;
@@ -45,8 +46,8 @@ export const SubMenuItem = styled.div<{ $isActive: boolean}>`
   transition: width 0.3s ease, aspect-ratio 0.3s ease;
 
   &:hover {
-  color: ${(props) =>
-      props.$isActive ? `var(--text-primary-default)` : `var(--text-primary-hover)`};
+    color: ${(props) =>
+        props.$isActive ? `var(--text-primary-selected)` : `var(--text-primary-hover)`};
   }
 
   @media (max-width: 1300px) {

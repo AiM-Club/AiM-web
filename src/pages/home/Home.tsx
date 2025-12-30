@@ -1,5 +1,5 @@
 import CardList from "@/components/card/cardlist/CardList";
-import CardVS from "@/components/card/cardvs/CardVS";
+    import CardBoard from "@/components/board/CardBoard";
 import MainSlider from "@/components/slider/MainSlider";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import Select from "@/components/Select/Select";
@@ -19,9 +19,7 @@ const Home = () => {
                 </S.CardWrapper>
                 <Select placeholder="정렬" />
                 <S.BattleWrapper>
-                    {cardVSData.map((item) => (
-                        <CardVS key={item.id} data={item} />
-                    ))}
+                <CardBoard data={cardVSData}/>
                 </S.BattleWrapper>
             </S.HomeWrapper>
         </DefaultLayout>
