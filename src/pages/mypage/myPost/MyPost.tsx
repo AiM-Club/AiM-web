@@ -3,12 +3,12 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import { searchVsData } from "@/pages/search/Constants";
 import CardBoard from "@/components/board/CardBoard";
 import SearchField from "@/components/field/SearchField";
-import * as S from "@/styles/mypage/myPost/myPost.style";
+import * as S from "@/styles/mypage/myLiked/myLiked.style";
 
-const QnA = () => {
+const MyPost = () => {
     return (
         <DefaultLayout>
-            <S.myPostWrapper>
+            <S.myLikedWrapper>
                 <PageTopic text="내 게시글" size="l" />
                 <S.ContentWrapper>
                     <SearchField 
@@ -20,9 +20,9 @@ const QnA = () => {
                     />
                     <CardBoard data={searchVsData}/>
                 </S.ContentWrapper>
-            </S.myPostWrapper>
+            </S.myLikedWrapper>
         </DefaultLayout>
     )
 }
 
-export default QnA;
+export default MyPost;
