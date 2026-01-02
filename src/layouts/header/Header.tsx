@@ -6,9 +6,11 @@ import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
+import hamburgerBar from "@/assets/icons/hamburgerBar.svg";
 
 interface HeaderProps {
   variant?: "default" | "login" | "home";
+  onMenuClick?: () => void;
 }
 
 interface SubMenuItem {
@@ -19,8 +21,9 @@ interface SubMenuItem {
 
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
-    { id: "challenge-vs", label: "VS모집", path: PageEndPoints.CHALLENGE_VS },
-    { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_MATCH },
+    { id: "challenge-vs", label: "VS대결상세", path: PageEndPoints.CHALLENGE_MATCH },
+    { id: "challenge-recruit", label: "VS모집", path: PageEndPoints.CHALLENGE_RECRUIT },
+    { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_VS },
     { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
   ],
@@ -31,12 +34,12 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/mypage": [
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
     { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
-    { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
+    { id: "mypage-history", label: "좋아요", path: PageEndPoints.MYLIKED },
     { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
   ],
 };
 
-const Header = ({ variant = "default" }: HeaderProps) => {
+const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
@@ -56,7 +59,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
 
   return (
     <S.HeaderWrapper>
-      <S.Logo src={logo} />
+      <S.Logo src={logo} onClick={() => navigate(PageEndPoints.HOME)} />
       {currentSubMenu.length > 0 && (
         <S.SubMenuList>
           <img src={SubMenuLeft} />
@@ -72,8 +75,15 @@ const Header = ({ variant = "default" }: HeaderProps) => {
           <img src={SubMenuRight} />
         </S.SubMenuList>
       )}
-      {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
-    </S.HeaderWrapper>
+      {variant === "login" ? <></> : (
+        <>
+          <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>
+          <S.HamburgerButton className="hamburger-button" onClick={onMenuClick}>
+            <img src={hamburgerBar} alt="메뉴" />
+          </S.HamburgerButton>
+        </>
+      )}
+    </S.HeaderWrapper >
   )
 };
 

@@ -11,14 +11,9 @@ export const CategoryButton = styled.button<{ $isActive: boolean }>`
     transition: all 0.2s ease;
     
     background-color: ${({ $isActive }) => 
-        $isActive ? "var(--surpace-primary)" : "var(--surpace-secondary)"};
+        $isActive ? "var(--button-primary-default)" : "var(--surpace-secondary)"};
     color: ${({ $isActive }) => 
         $isActive ? "var(--text-primary-default)" : "var(--text-secondary)"};
-    
-    &:hover {
-        background-color: ${({ $isActive }) => 
-            $isActive ? "var(--surpace-primary)" : "var(--surpace-tertiary)"};
-    }
     
     &:focus {
         outline: none;

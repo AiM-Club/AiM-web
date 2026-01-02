@@ -14,28 +14,25 @@ export const ResultListWrapper = styled.div`
     width: 100%;
     transition: grid-template-columns 0.3s ease;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 840px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+        
+    @media (min-width: 840px) and (max-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (min-width: 1025px) and (max-width: 1340px) {
+    @media (min-width: 1025px) and (max-width: 1200px) {
         grid-template-columns: repeat(1, 1fr);
     }
 
-    @media (min-width: 1680px) {
+    @media (min-width: 1550px) {
         grid-template-columns: repeat(3, 1fr);
     }
 
     @media (min-width: 1920px) {
         grid-template-columns: repeat(4, 1fr);
     }
-`;
-
-export const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
-    width: 100%;
 `;
 
 export const PaginationWrapper = styled.div`

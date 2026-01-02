@@ -1,6 +1,6 @@
-import styled from "styled-components"; 
+import styled from "styled-components";
 
-export const ChallengeVSMainWrapper = styled.div`
+export const myLikedWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 6.25rem;

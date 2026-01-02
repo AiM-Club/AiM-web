@@ -5,8 +5,9 @@ export const LayoutWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100vw;
+  max-width: 100vw;
   background-color: var(--background-primary);
+  position: relative;
 `;
 
 export const ContentWrapper = styled.div`
@@ -25,9 +26,10 @@ export const SidebarWrapper = styled.div`
   overflow-y: auto;
   overflow: visible;
   transition: width 0.3s ease, aspect-ratio 0.3s ease;
+  
   @media (max-width: 1024px) {
-      width: 5rem;
-    }
+    display: none;
+  }
 `;
 
 export const MainWrapper = styled.main`
@@ -62,8 +64,14 @@ export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }
   `}
 
   @media (max-width: 1024px) {
-    width: ${({ $variant }) => $variant === "login" ? "100%" : "calc(100% - 7.5rem)"};
+    width: ${({ $variant }) => $variant === "login" ? "100%" : "100%"};
     margin: ${({ $variant }) =>
-    $variant === "login" ? "0 auto" : "0 0 0 1.25rem"};
+    $variant === "login" ? "0 auto" : "0"};
+  }
+
+  @media (max-width: 390px) {
+    min-height: calc(100vh - 3.75rem);
+    padding-left: ${({ $variant }) => $variant === "home" ? "0" : "5%"};
+    padding-right: ${({ $variant }) => $variant === "home" ? "0" : "5%"};
   }
 `;

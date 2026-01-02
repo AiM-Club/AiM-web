@@ -1,30 +1,30 @@
-import CardBoard from "@/components/board/CardBoard";
-import SearchField from "@/components/field/SearchField";
-import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
+import * as S from "@/styles/challenge/challengeVS/ChallengeVS.style";
+import CardBoard from "@/components/board/CardBoard";
 import { searchVsData } from "@/pages/search/Constants";
-import * as S from "@/styles/community/review/Review.style";
 import Button from "@/components/button/Button";
+import { PageTopic } from "@/components/text/PageTopic";
+import SearchField from "@/components/field/SearchField";
 
-const Review = () => {
+const ChallengeVS = () => {
     return (
         <DefaultLayout>
-            <S.ReviewWrapper>
-                <PageTopic text="후기" size="l" />
+            <S.ChallengeVSWrapper>
+                <PageTopic text="VS 대결" size="l" />
                 <S.ContentWrapper>
                     <SearchField 
                         categories={[
                             { value: "all", label: "ALL" },
-                            { value: "solo", label: "SOLO" },
-                            { value: "vsBattle", label: "VS 대결" }
+                            { value: "my", label: "MY" },
+                            { value: "inviataion", label: "VS 초대" }
                         ]}
                     />
                     <CardBoard data={searchVsData}/>
                 </S.ContentWrapper>
-            </S.ReviewWrapper>
+            </S.ChallengeVSWrapper>
             <Button variant="fixed">작성</Button>
         </DefaultLayout>
     )
 }
 
-export default Review;
+export default ChallengeVS;

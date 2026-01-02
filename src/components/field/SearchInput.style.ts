@@ -24,9 +24,9 @@ export const SearchInputWrapper = styled.form`
         color: var(--text-primary-default);
     }
 
-    @media (max-width: 1340px) {
-        max-width: 13rem;
-    }
+    // @media (max-width: 1340px) {
+    //     max-width: 13rem;
+    // }
 `;
 
 export const InputField = styled.input`

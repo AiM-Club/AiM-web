@@ -1,13 +1,12 @@
 import { ProgressBar } from "@/components/bar/ProgressBar";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
-import * as S from "@/styles/challenge/Challenge.style";
-import Select from "@/components/Select/Select";
+import * as S from "@/styles/Challenge.style";
 import { cardVSData } from "./Constants";
-import CardVS from "@/components/card/cardvs/CardVS";
-import SearchInput from "@/components/field/SearchInput";
 import { CardChallenge } from "@/components/card/cardChallenge/CardChallenge";
 import { ChallengeMainContent } from "@/components/content/CardContent";
+import SearchField from "@/components/field/SearchField";
+import CardBoard from "@/components/board/CardBoard";
 
 const Challenge = () => {
 
@@ -30,15 +29,8 @@ const Challenge = () => {
         </S.ChallengeRecordWrapper>
         <S.AllChallengeWrapper>
           <PageTopic text="ALL 챌린지" size="l" />
-          <S.SearchSortWrapper>
-            <SearchInput />
-            <Select placeholder="정렬" />
-          </S.SearchSortWrapper>
-          <S.ListWrapper>
-            {cardVSData.map((item) => (
-              <CardVS key={item.id} data={item} />
-            ))}
-          </S.ListWrapper>
+          <SearchField />
+          <CardBoard data={cardVSData} />
         </S.AllChallengeWrapper>
       </S.ChallengeWrapper>
     </DefaultLayout>

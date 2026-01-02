@@ -1,6 +1,6 @@
 import styled from "styled-components"; 
 
-export const ChallengeVSMainWrapper = styled.div`
+export const ChallengeVSWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 6.25rem;
@@ -12,5 +12,12 @@ export const SearchTopic = styled.div`
     gap: 1rem;
     font: var(--headline-h-l);
     align-items: center;
+    width: 100%;
+`;
+
+export const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
     width: 100%;
 `;
