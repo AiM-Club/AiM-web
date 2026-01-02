@@ -9,8 +9,11 @@ export type ButtonVariant =
   | "fixed"
   | "secondary";
 
+export type ButtonSize = "medium" | "large";
+
 export interface StyledButtonProps {
   variant?: ButtonVariant;
+  size?: "medium" | "large";
   $isClicked?: boolean;
   bgImg?: string;
 }
@@ -35,6 +38,19 @@ export const variantStyles = {
   `,
 };
 
+export const sizeStyles = {
+  medium: css`
+    width: 9.125rem;
+    height: 3.563rem;
+    font: var(--body-m-xl);
+  `,
+  large: css`
+    width: 14.5rem;
+    height: 3.375rem;
+    font: var(--body-m-l);
+  `,
+};
+
 export const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
   outline: none;
@@ -42,14 +58,11 @@ export const StyledButton = styled.button<StyledButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 9.125rem;
-  height: 3.563rem;
   background-image: url(${MainBtn});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: var(--color-white);
-  font: var(--body-m-xl);
 
   &:focus {
     outline: none;
@@ -57,5 +70,5 @@ export const StyledButton = styled.button<StyledButtonProps>`
   }
 
   ${({ variant = "primary" }) => variantStyles[variant]}
-
+  ${({ size = "medium" }) => sizeStyles[size]}
 `;

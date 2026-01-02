@@ -10,6 +10,11 @@ export const SliderWrapper = styled.div`
     width: 85%;
     margin-left: 7.5%;
   }
+
+  @media (max-width: 390px) {
+    width: 90%;
+    margin-left: 5%;
+  }
 `;
 
 export const ArrowWrapper = styled.div<{ position: "left" | "right" }>`

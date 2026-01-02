@@ -6,9 +6,11 @@ import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
+import hamburgerBar from "@/assets/icons/hamburgerBar.svg";
 
 interface HeaderProps {
   variant?: "default" | "login" | "home";
+  onMenuClick?: () => void;
 }
 
 interface SubMenuItem {
@@ -36,7 +38,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
   ],
 };
 
-const Header = ({ variant = "default" }: HeaderProps) => {
+const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
@@ -56,7 +58,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
 
   return (
     <S.HeaderWrapper>
-        <S.Logo src={logo}/>
+        <S.Logo src={logo} onClick={() => navigate(PageEndPoints.HOME)} />
         {currentSubMenu.length > 0 && (
           <S.SubMenuList>
             <img src={SubMenuLeft} />
@@ -72,7 +74,14 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             <img src={SubMenuRight} />
           </S.SubMenuList>
         )}
-         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
+         {variant === "login" ? <></> : (
+           <>
+             <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>
+             <S.HamburgerButton className="hamburger-button" onClick={onMenuClick}>
+               <img src={hamburgerBar} alt="메뉴" />
+             </S.HamburgerButton>
+           </>
+         )}
     </S.HeaderWrapper>
   )
 };
