@@ -6,6 +6,11 @@ export const HomeWrapper = styled.div`
   flex-direction: column;
   gap: 5rem;
   margin: 2rem auto;
+
+  @media (max-width: 390px) {
+    width: 90%;
+    margin: 1rem auto;
+  }
 `;
 
 export const CardWrapper = styled.div`
