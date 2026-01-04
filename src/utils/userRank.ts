@@ -10,6 +10,28 @@ const rankImgMap: Record<string, string> = {
   diamond: DiamondPng,
 };
 
+const rankStringMap: Record<string, string> = {
+  bronze: "브론즈",
+  silver: "실버",
+  gold: "골드",
+  diamond: "다이아몬드",
+};
+
+const tierOrder = ["bronze", "silver", "gold", "diamond"];
+
 export const getRankImg = (tier: string) => {
   return rankImgMap[tier];
+};
+
+export const getRankString = (tier: string) => {
+  return rankStringMap[tier];
+};
+
+export const getNextRank = (tier: string) => {
+  const currentIndex = tierOrder.indexOf(tier.toLowerCase());
+  if (currentIndex === -1 || currentIndex === tierOrder.length - 1) {
+    return null;
+  }
+  const nextTier = tierOrder[currentIndex + 1];
+  return rankStringMap[nextTier];
 };
