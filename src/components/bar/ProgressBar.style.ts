@@ -22,7 +22,7 @@ export const ProgressBar = styled.div<{ $height: number }>`
   width: 100%;
   background-color: var(--surpace-primary);
   height: ${(props) => props.$height}px;
-  border-radius: ${(props) => (props.$height <= 32 ? 0.25 : 0.5)}rem;
+  border-radius: ${(props) => (props.$height > 32 ? 0.5 : props.$height > 20 ? 0.25 : 0.125)}rem;
   overflow: hidden; /* 넘치는 부분 가리기 */
 `;
 
@@ -34,7 +34,7 @@ export const ProgressBarIcon = styled.img<{ $height: number; $progress: number }
   width: ${(props) => props.$progress}%; /* 부모 너비의 progress%만큼만 보이게 */
   object-fit: cover; /* 이미지 비율 유지하면서 영역 채우기 */
   object-position: left center; /* 이미지가 왼쪽에서부터 시작 */
-  border-radius: ${(props) => (props.$height <= 32 ? 0.25 : 0.5)}rem;
+  border-radius: ${(props) => (props.$height > 32 ? 0.5 : props.$height > 20 ? 0.25 : 0.125)}rem;
 `;
 
 export const ProgressBarFill = styled.div<{ $progress: number; $color: string }>`
