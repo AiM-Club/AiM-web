@@ -11,6 +11,10 @@ import greenCardBottomHover from "@/assets/CardGreenHoverBottom.png"
 import pinkCardBottomHover from "@/assets/CardPinkHoverBottom.png"
 import greenCardBottomHoverLong from "@/assets/CardGreenHoverLong.png"
 import pinkCardBottomHoverLong from "@/assets/CardPinkHoverLong.png"
+import pinkCardStraightTop from "@/assets/CardPinkStraightTop.png"
+import pinkCardStraightBottom from "@/assets/CardPinkStraightBottom.png"
+import pinkCardStraightHoverTop from "@/assets/CardPinkStraightHoverTop.png"
+import pinkCardStraightHoverBottom from "@/assets/CardPinkStraightHoverBottom.png"
 import RightArrow from "@/assets/BlackRightArrow.svg";
 import LeftArrow from "@/assets/BlackLeftArrow.svg";
 import { useState, useEffect } from "react";
@@ -26,6 +30,7 @@ import { useState, useEffect } from "react";
 interface CardChallengeProps {
   color: "green" | "pink";
   topic: string;
+  topicDirection?: "left" | "right" | null;
   openBtn: boolean;
   children: React.ReactNode;
   cardNum?: number;
@@ -42,7 +47,7 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, topic, openBtn, children, cardNum = 3, minWidth = 20, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
+export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = 20, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
@@ -50,6 +55,8 @@ export const CardChallenge = ({ color, topic, openBtn, children, cardNum = 3, mi
   const getCardImageTop = () => {
     if (color === "green") {
       return isHovered ? greenCardTopHover : greenCardTop;
+    } else if (color === "pink" && topicDirection === "left") {
+      return isHovered ? pinkCardStraightHoverTop : pinkCardStraightTop;
     } else {
       return isHovered ? pinkCardTopHover : pinkCardTop;
     }
@@ -58,6 +65,8 @@ export const CardChallenge = ({ color, topic, openBtn, children, cardNum = 3, mi
   const getCardImageBottom = () => {
     if (color === "green") {
       return isHovered ? backgroundHeight > 600 ? greenCardBottomHoverLong : greenCardBottomHover : backgroundHeight > 600 ? greenCardBottomLong : greenCardBottom;
+    } else if (color === "pink" && topicDirection === "left") {
+      return isHovered ? pinkCardStraightHoverBottom : pinkCardStraightBottom;
     } else {
       return isHovered ? backgroundHeight > 600 ? pinkCardBottomHoverLong : pinkCardBottomHover : backgroundHeight > 600 ? pinkCardBottomLong : pinkCardBottom;
     }
@@ -101,10 +110,10 @@ export const CardChallenge = ({ color, topic, openBtn, children, cardNum = 3, mi
       $height={backgroundHeight}
     >
       <S.CardBackgroundWrapper>
-        <S.CardBackgroundTop src={getCardImageTop()} />
+        <S.CardBackgroundTop $image={getCardImageTop().toString().split('/').pop()?.split('?')[0] || ''} src={getCardImageTop()} />
         <S.CardBackground src={getCardImageBottom()} $height={backgroundHeight} />
       </S.CardBackgroundWrapper>
-      <S.CardTopic $color={color}>{topic}</S.CardTopic>
+      <S.CardTopic $color={color} $direction={topicDirection}>{topic}</S.CardTopic>
       {openBtn && (
         color === "green" ?
           <S.OpenBtnWrapper $color={color}>

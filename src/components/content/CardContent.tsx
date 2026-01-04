@@ -25,6 +25,7 @@ interface ChallengeVSMatchProps {
   currentWeek: number;
   weekData?: WeekProps[];
   viewCard?: "left" | "right" | "both";
+  commentView?: boolean;
 }
 
 interface WeekProps {
@@ -107,7 +108,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard, commentView = true }: ChallengeVSMatchProps) => {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
@@ -178,7 +179,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
     <S.ChallengeVSMatchContentWrapper ref={setContentElement}>
       {viewCard === "left" || viewCard === "right" ?
         <S.ProfileWrapper>
-          <ProfileImage image={profileImg} width={10} />
+          <ProfileImage image={profileImg} width={wholeWidth * 0.018} />
           <S.RowProgressWrapper>
             <ProgressBar text="진도율" progress={progress} height={32} color={color} />
             <ProgressBar text="성공률" progress={success} height={32} color={color} />
@@ -190,10 +191,10 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
             </S.ProgressWrapper>
-            <ProfileImage image={profileImg} width={10} />
+            <ProfileImage image={profileImg} width={9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
-            <ProfileImage image={profileImg} width={10} />
+            <ProfileImage image={profileImg} width={9} />
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
@@ -227,7 +228,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
                       <S.TimerBtn>Start</S.TimerBtn>
                     </S.TimerWrapper>
                   </S.WeekTopicWrapper>
-                  <S.WeekCommentWrapper>
+                  {commentView && <S.WeekCommentWrapper>
                     {weekCommentData.map((data, index: number) => (
                       <S.CommentWrapper key={index}>
                         <Comment data={data} />
@@ -238,7 +239,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
                         ))}
                       </S.CommentWrapper>
                     ))}
-                  </S.WeekCommentWrapper>
+                  </S.WeekCommentWrapper>}
                   <S.WeekCommentInputWrapper>
                     <S.FileIconLabel>
                       <S.FileIconInput type="file" />
