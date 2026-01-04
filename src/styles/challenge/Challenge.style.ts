@@ -21,9 +21,10 @@ export const RecordTop = styled.div`
 
 export const ProgressWrapper = styled.div`
   display: flex;
-  flex-direction: fow;
+  flex-wrap: wrap;
+  flex-direction: row;
   width: 100%;
-  gap: 3%;
+  gap: 2rem 3%;
   margin-top: 5rem;
 `;
 
