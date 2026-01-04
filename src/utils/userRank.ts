@@ -1,7 +1,7 @@
-import BronzePng from "@/assets/Bronze.png";
-import SilverPng from "@/assets/Silver.png";
-import GoldPng from "@/assets/Gold.png";
-import DiamondPng from "@/assets/Diamond.png";
+import BronzePng from "@/assets/Bronze.svg";
+import SilverPng from "@/assets/Silver.svg";
+import GoldPng from "@/assets/Gold.svg";
+import DiamondPng from "@/assets/Diamond.svg";
 
 const rankImgMap: Record<string, string> = {
   bronze: BronzePng,
