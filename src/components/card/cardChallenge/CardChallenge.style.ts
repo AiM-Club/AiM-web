@@ -17,10 +17,11 @@ export const CardBackgroundWrapper = styled.div`
   height: 20rem;
 `;
 
-export const CardBackgroundTop = styled.img`
+export const CardBackgroundTop = styled.img<{ $image: string }>`
   display: flex;
   position: relative;
-  height: 20rem;
+  height: ${(props) =>
+    props.$image === "CardPinkStraightTop.png" || props.$image === "CardPinkStraightHoverTop.png" ? "30rem" : "20rem"};
   width: 100%;
 `;
 
@@ -34,9 +35,16 @@ export const CardBackground = styled.img<{ $height: number | null }>`
   height: ${(props) => (props.$height ? `${props.$height}px` : "25rem")};
 `;
 
-export const CardTopic = styled.div<{ $color: "green" | "pink" }>`
+export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null }>`
   display: flex;
-  justify-content: ${(props) => (props.$color == "pink" ? "flex-end" : "flex-start")};
+  justify-content: ${(props) =>
+    props.$direction == "right"
+      ? "flex-end"
+      : props.$direction == "left"
+        ? "flex-start"
+        : props.$color === "green"
+          ? "flex-start"
+          : "flex-end"};
   align-items: center;
   position: absolute;
   height: 4.5rem;
