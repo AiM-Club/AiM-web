@@ -8,7 +8,7 @@ export enum PageEndPoints {
   REVIEW = "/community/review",
   CHALLENGE_MAIN = "/challenge",
   CHALLENGE_VS = "/challenge/vs",
-  CHALLENGE_MATCH = "/challenge/vs/match",
+  CHALLENGE_VS_DETAIL = "/challenge/vs/:id",
   CHALLENGE_SOLO = "/challenge/solo",
   CHALLENGE_RECRUIT = "/challenge/recruit",
   LOGIN = "/login",

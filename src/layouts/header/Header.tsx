@@ -21,7 +21,7 @@ interface SubMenuItem {
 
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
-    { id: "challenge-vs", label: "VS대결상세", path: PageEndPoints.CHALLENGE_MATCH },
+    { id: "challenge-vs", label: "VS대결상세", path: PageEndPoints.CHALLENGE_VS_DETAIL },
     { id: "challenge-recruit", label: "VS모집", path: PageEndPoints.CHALLENGE_RECRUIT },
     { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_VS },
     { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
