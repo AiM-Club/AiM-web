@@ -3,6 +3,7 @@ export enum PageEndPoints {
   MYPAGE = "/mypage",
   MYPOST = "/mypage/myPost",
   MYLIKED = "/mypage/myLiked",
+  MYSETTINGS = "/mypage/settings",
   COMMUNITY = "/community",
   QNA = "/community/qna",
   REVIEW = "/community/review",

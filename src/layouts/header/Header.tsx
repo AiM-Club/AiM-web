@@ -21,7 +21,7 @@ interface SubMenuItem {
 
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
-    { id: "challenge-vs", label: "VS대결상세", path: PageEndPoints.CHALLENGE_VS_DETAIL },
+    { id: "challenge-vs-detail", label: "VS대결상세", path: PageEndPoints.CHALLENGE_VS_DETAIL },
     { id: "challenge-recruit", label: "VS모집", path: PageEndPoints.CHALLENGE_RECRUIT },
     { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_VS },
     { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
@@ -35,7 +35,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
     { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
     { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
     { id: "mypage-history", label: "좋아요", path: PageEndPoints.MYLIKED },
-    { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
+    { id: "mypage-settings", label: "설정", path: PageEndPoints.MYSETTINGS },
   ],
 };
 
