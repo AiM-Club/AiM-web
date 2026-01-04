@@ -32,7 +32,7 @@ const subMenuConfig: Record<string, SubMenuItem[]> = {
     { id: "community-review", label: "후기", path: PageEndPoints.REVIEW },
   ],
   "/mypage": [
-    { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
+    { id: "mypage-profile", label: "프로필", path: PageEndPoints.PROFILE },
     { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
     { id: "mypage-history", label: "좋아요", path: PageEndPoints.MYLIKED },
     { id: "mypage-settings", label: "설정", path: "/mypage/settings" },

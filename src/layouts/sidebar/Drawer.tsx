@@ -50,7 +50,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
             label: "마이페이지", 
             path: PageEndPoints.MYPAGE,
             subItems: [
-                { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
+                { id: "mypage-profile", label: "프로필", path: PageEndPoints.PROFILE },
                 { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
                 { id: "mypage-liked", label: "좋아요", path: PageEndPoints.MYLIKED },
                 { id: "mypage-settings", label: "설정", path: "/mypage/settings" },

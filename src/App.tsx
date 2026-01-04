@@ -15,6 +15,7 @@ import Review from "./pages/community/review/Review";
 import MyPost from "./pages/mypage/myPost/MyPost";
 import MyLiked from "./pages/mypage/myLiked/MyLiked";
 import ChallengeRecruit from "./pages/challenge/challengeRecruit/ChallengeRecruit";
+import Profile from "./pages/mypage/profile/Profile";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
+        <Route path={PageEndPoints.PROFILE} element={<Profile />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
         <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
