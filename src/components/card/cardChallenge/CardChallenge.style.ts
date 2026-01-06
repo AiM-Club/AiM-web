@@ -4,8 +4,7 @@ export const CardChallengeWrapper = styled.div<{ $cardNum: number; $minWidth: nu
   display: flex;
   flex-direction: column;
   position: relative;
-  min-width: ${(props) => props.$minWidth}rem;
-  flex-basis: ${(props) => 90 / props.$cardNum}%;
+  width: ${(props) => (props.$minWidth > 0 ? `${props.$minWidth}rem` : "auto")};
   flex-grow: 1;
   height: ${(props) => (props.$height ? `calc(${props.$height}px + 4rem)` : "20rem")};
 `;
