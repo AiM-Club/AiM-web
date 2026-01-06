@@ -18,6 +18,7 @@ import ChallengeRecruit from "./pages/challenge/challengeRecruit/ChallengeRecrui
 import Profile from "./pages/mypage/profile/Profile";
 import MySettings from "./pages/mypage/mySetting/MySettings"
 import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSoloDetail"
+import FieldVS from "./pages/fieldVS/FieldVS"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
+        <Route path={PageEndPoints.FIELDVS} element={<FieldVS />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.PROFILE} element={<Profile />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
