@@ -75,3 +75,11 @@ export const profileContent = styled.div`
     gap: 2rem;
     width: 100%;
 `;
+
+export const ChallengeWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+    gap: 2rem 3%;
+`;
