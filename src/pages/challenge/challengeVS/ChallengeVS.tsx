@@ -22,7 +22,7 @@ const ChallengeVS = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ChallengeVSWrapper>
-      <Button variant="fixed">작성</Button>
+      <Button $variant="fixed">작성</Button>
     </DefaultLayout>
   )
 }

@@ -7,18 +7,18 @@ import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
 
 const ChallengeRecruit = () => {
-    return (
-        <DefaultLayout>
-            <S.ChallengeRecruitWrapper>
-                <PageTopic text="VS 모집글" size="l" />
-                <S.ContentWrapper>
-                    <SearchField />
-                    <CardBoard data={searchVsData}/>
-                </S.ContentWrapper>
-            </S.ChallengeRecruitWrapper>
-            <Button variant="fixed">작성</Button>
-        </DefaultLayout>
-    )
+  return (
+    <DefaultLayout>
+      <S.ChallengeRecruitWrapper>
+        <PageTopic text="VS 모집글" size="l" />
+        <S.ContentWrapper>
+          <SearchField />
+          <CardBoard data={searchVsData} />
+        </S.ContentWrapper>
+      </S.ChallengeRecruitWrapper>
+      <Button $variant="fixed">작성</Button>
+    </DefaultLayout>
+  )
 }
 
 export default ChallengeRecruit;
