@@ -18,6 +18,7 @@ import ChallengeRecruit from "./pages/challenge/challengeRecruit/ChallengeRecrui
 import MySettings from "./pages/mypage/mySetting/MySettings"
 import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSoloDetail"
 import ChallengeVSInvite from "./pages/challenge/challengeVS/ChallengeVSInvite"
+import ChallengeRecruitWrite from "./pages/challenge/challengeRecruit/ChallengeRecruitWrite"
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path={PageEndPoints.CHALLENGE_SOLO} element={<ChallengeVSSolo />} />
         <Route path={PageEndPoints.CHALLENGE_SOLO_DETAIL} element={<ChallengeVSSoloDetail />} />
         <Route path={PageEndPoints.CHALLENGE_RECRUIT} element={<ChallengeRecruit />} />
+        <Route path={PageEndPoints.CHALLENGE_RECRUIT_WRITE} element={<ChallengeRecruitWrite />} />
         <Route path={PageEndPoints.LOGIN} element={<Login />} />
         <Route path={PageEndPoints.JOIN} element={<Join />} />
         <Route path={PageEndPoints.SEARCH} element={<Search />} />
