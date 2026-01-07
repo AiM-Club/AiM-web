@@ -34,7 +34,7 @@ interface CardChallengeProps {
   openBtn: boolean;
   children: React.ReactNode;
   cardNum?: number;
-  minWidth?: number;
+  minWidth?: number | null;
   setCardHeight?: (height: number | null) => void;
   viewCard?: "left" | "right" | "both";
   setViewCard?: (view: "left" | "right" | "both") => void;
@@ -47,7 +47,7 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = 20, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
+export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
@@ -106,7 +106,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       $cardNum={cardNum}
-      $minWidth={minWidth}
+      $minWidth={minWidth ?? 0}
       $height={backgroundHeight}
     >
       <S.CardBackgroundWrapper>
