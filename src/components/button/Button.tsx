@@ -5,19 +5,19 @@ import type {
 } from "./Button.style";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    StyledButtonProps {}
+  StyledButtonProps { }
 
 const Button = ({
-  variant = "primary",
-  size = "medium",
+  $variant = "primary",
+  $size = "medium",
   $isClicked = false,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <StyledButton
-      variant={variant}
-      size={size}
+      $variant={$variant}
+      $size={$size}
       $isClicked={$isClicked}
       {...props}
     >

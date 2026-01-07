@@ -3,25 +3,19 @@ import MainBtn from "@/assets/LoginBtn.png";
 // Button.style.ts
 import styled, { css } from "styled-components";
 
-
-export type ButtonVariant =
-  | "primary"
-  | "fixed"
-  | "secondary";
+export type ButtonVariant = "primary" | "fixed" | "secondary";
 
 export type ButtonSize = "medium" | "large";
 
 export interface StyledButtonProps {
-  variant?: ButtonVariant;
-  size?: "medium" | "large";
+  $variant?: ButtonVariant;
+  $size?: "medium" | "large";
   $isClicked?: boolean;
-  bgImg?: string;
+  $bgImg?: string;
 }
 
 export const variantStyles = {
-  primary: css`
-  
-  `,
+  primary: css``,
   fixed: css`
     position: fixed;
     z-index: 999;
@@ -69,6 +63,6 @@ export const StyledButton = styled.button<StyledButtonProps>`
     box-shadow: none;
   }
 
-  ${({ variant = "primary" }) => variantStyles[variant]}
-  ${({ size = "medium" }) => sizeStyles[size]}
+  ${({ $variant = "primary" }) => variantStyles[$variant]}
+  ${({ $size = "medium" }) => sizeStyles[$size]}
 `;
