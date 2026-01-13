@@ -28,7 +28,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
-        <Route path={PageEndPoints.FIELDVS} element={<FieldVS />} />
+        <Route path={PageEndPoints.FIELD_VS} element={<FieldVS />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.PROFILE} element={<Profile />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />

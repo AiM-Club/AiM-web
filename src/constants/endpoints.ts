@@ -1,6 +1,6 @@
 export enum PageEndPoints {
   HOME = "/",
-  FIELDVS = "/field/:id",
+  FIELD_VS = "/field/:id",
   MYPAGE = "/mypage",
   PROFILE = "/mypage/profile",
   MYPOST = "/mypage/myPost",
