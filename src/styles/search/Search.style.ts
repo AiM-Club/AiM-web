@@ -12,7 +12,7 @@ export const SearchWrapper = styled.div`
 export const ResultWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 6.25rem;
+    gap: 3rem;
     width: 100%;
 `;
 

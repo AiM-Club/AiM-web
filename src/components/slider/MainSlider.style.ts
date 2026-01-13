@@ -6,6 +6,15 @@ export const SliderWrapper = styled.div`
   height: 22.5rem;
   background-color: var(--gray-600);
 
+  @media (max-width: 1024px) {
+    width: 85%;
+    margin-left: 7.5%;
+  }
+
+  @media (max-width: 390px) {
+    width: 90%;
+    margin-left: 5%;
+  }
 `;
 
 export const ArrowWrapper = styled.div<{ position: "left" | "right" }>`

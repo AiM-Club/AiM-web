@@ -6,9 +6,11 @@ import { useActiveMenu } from "@/utils/useActiveMenu";
 import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
+import hamburgerBar from "@/assets/icons/hamburgerBar.svg";
 
 interface HeaderProps {
   variant?: "default" | "login" | "home";
+  onMenuClick?: () => void;
 }
 
 interface SubMenuItem {
@@ -19,61 +21,68 @@ interface SubMenuItem {
 
 const subMenuConfig: Record<string, SubMenuItem[]> = {
   "/challenge": [
-    { id: "challenge-vs", label: "VS모집", path: PageEndPoints.CHALLENGE_VS },
-    { id: "challenge-vs", label: "VS대결", path: "/challenge/vs" },
-    { id: "challenge-multi", label: "솔로", path: "/challenge/multi" },
+    { id: "challenge-recruit", label: "VS모집", path: PageEndPoints.CHALLENGE_RECRUIT },
+    { id: "challenge-vs", label: "VS대결", path: PageEndPoints.CHALLENGE_VS },
+    { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
     { id: "challenge-ranking", label: "랭킹", path: "/challenge/ranking" },
   ],
   "/community": [
-    { id: "community-board", label: "Q & A", path: "/community/board" },
-    { id: "community-notice", label: "후기", path: "/community/notice" },
+    { id: "community-qna", label: "Q & A", path: PageEndPoints.QNA },
+    { id: "community-review", label: "후기", path: PageEndPoints.REVIEW },
   ],
   "/mypage": [
-    { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
-    { id: "mypage-history", label: "내 게시글", path: "/mypage/history" },
-     { id: "mypage-history", label: "좋아요", path: "/mypage/history" },
-    { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
+    { id: "mypage-profile", label: "프로필", path: PageEndPoints.PROFILE },
+    { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
+    { id: "mypage-history", label: "좋아요", path: PageEndPoints.MYLIKED },
+    { id: "mypage-settings", label: "설정", path: PageEndPoints.MYSETTINGS },
   ],
 };
 
-const Header = ({ variant = "default" }: HeaderProps) => {
+const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
 
   const getCurrentSubMenu = (): SubMenuItem[] => {
-    const mainPath = Object.keys(subMenuConfig).find(path => 
+    const mainPath = Object.keys(subMenuConfig).find(path =>
       location.pathname.startsWith(path)
     );
     return mainPath ? subMenuConfig[mainPath] : [];
   };
 
   const currentSubMenu = getCurrentSubMenu();
-  
+
   const handleSubMenuClick = (path: string) => {
     navigate(path);
   };
 
   return (
     <S.HeaderWrapper>
-        <S.Logo src={logo}/>
-        {currentSubMenu.length > 0 && (
-          <S.SubMenuList>
-            <img src={SubMenuLeft} />
-            {currentSubMenu.map((item) => (
-              <S.SubMenuItem
+      <S.Logo src={logo} onClick={() => navigate(PageEndPoints.HOME)} />
+      {currentSubMenu.length > 0 && (
+        <S.SubMenuList>
+          <img src={SubMenuLeft} />
+          {currentSubMenu.map((item) => (
+            <S.SubMenuItem
               key={item.id}
               $isActive={isActive(item.path)}
               onClick={() => handleSubMenuClick(item.path)}
-              >
-                {item.label}
-              </S.SubMenuItem>
-            ))}
-            <img src={SubMenuRight} />
-          </S.SubMenuList>
-        )}
-         {variant === "login" ? <></> : <Button onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}
-    </S.HeaderWrapper>
+            >
+              {item.label}
+            </S.SubMenuItem>
+          ))}
+          <img src={SubMenuRight} />
+        </S.SubMenuList>
+      )}
+      {variant === "login" ? <></> : (
+        <>
+          <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>
+          <S.HamburgerButton className="hamburger-button" onClick={onMenuClick}>
+            <img src={hamburgerBar} alt="메뉴" />
+          </S.HamburgerButton>
+        </>
+      )}
+    </S.HeaderWrapper >
   )
 };
 

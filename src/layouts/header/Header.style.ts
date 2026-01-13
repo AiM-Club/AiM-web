@@ -9,11 +9,25 @@ export const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     
+    .login-button {
+        @media (max-width: 1024px) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 390px) {
+      height: 3.75rem;
+      padding: 0 1.25rem;
+    }
 `;
 
 export const Logo = styled.img`
     height: 1.75rem;
     cursor: pointer;
+
+    @media (max-width: 390px) {
+      height: 1rem;
+    }
 `;
 
 export const SubMenuList = styled.nav`
@@ -26,13 +40,14 @@ export const SubMenuList = styled.nav`
   align-items: center;
 
   @media (max-width: 1024px) {
-    left: calc(50% - 2.5rem);
+    display: none;
   }
 `;
 
 export const SubMenuItem = styled.div<{ $isActive: boolean}>`
   font: var(--title-h-m);
-  color: var(--text-primary-default);
+  color: ${(props) =>
+      props.$isActive ? `var(--text-primary-selected)` : `var(--text-primary-default)`};
   height: 4.625rem;
   padding-inline: 3rem;
   align-items: center;
@@ -45,8 +60,8 @@ export const SubMenuItem = styled.div<{ $isActive: boolean}>`
   transition: width 0.3s ease, aspect-ratio 0.3s ease;
 
   &:hover {
-  color: ${(props) =>
-      props.$isActive ? `var(--text-primary-default)` : `var(--text-primary-hover)`};
+    color: ${(props) =>
+        props.$isActive ? `var(--text-primary-selected)` : `var(--text-primary-hover)`};
   }
 
   @media (max-width: 1300px) {
@@ -56,5 +71,24 @@ export const SubMenuItem = styled.div<{ $isActive: boolean}>`
 
   @media (max-width: 1024px) {
     padding-inline: 1.5rem;
+  }
+`;
+
+export const HamburgerButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  
+  @media (max-width: 1024px) {
+    display: block;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
   }
 `;
