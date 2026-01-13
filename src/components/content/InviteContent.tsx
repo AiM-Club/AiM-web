@@ -1,6 +1,6 @@
 import * as S from "@/components/content/InviteContent.style";
 import ProfileImage from "../image/ProfileImage";
-import Diamond from "@/assets/Diamond.png";
+import Diamond from "@/assets/Diamond.svg";
 import { useEffect, useState } from "react";
 
 const InviteContent = () => {

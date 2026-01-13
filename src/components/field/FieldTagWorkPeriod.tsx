@@ -4,10 +4,10 @@ import * as S from "./FieldTagWorkPeriod.style";
 interface FieldTagWorkPeriodProps {
   fieldData: string[];
   tagData: string[];
-  wordData: string;
-  startData: string;
-  endData: string;
-  week: number;
+  wordData?: string;
+  startData?: string;
+  endData?: string;
+  week?: number;
 }
 
 const formatDate = (dateString: string): string => {
@@ -35,17 +35,21 @@ const FieldTagWorkPeriod = ({ fieldData, tagData, wordData, startData, endData, 
             ))}
           </S.Content>
         </S.EachWrapper>
+        {wordData && (
         <S.EachWrapper>
           <S.Topic>직무</S.Topic>
           <S.Content>{wordData}</S.Content>
         </S.EachWrapper>
+        )}
       </S.TopWrapper>
+      {startData && endData && week && (
       <S.EachWrapper>
         <S.Topic>기간</S.Topic>
         <S.Content>
-          {formatDate(startData)} ~ {formatDate(endData)} ({week}주)
-        </S.Content>
-      </S.EachWrapper>
+            {formatDate(startData)} ~ {formatDate(endData)} ({week}주)
+          </S.Content>
+        </S.EachWrapper>
+      )}
     </S.FieldWrapper>
   )
 }

@@ -15,8 +15,10 @@ import Review from "./pages/community/review/Review";
 import MyPost from "./pages/mypage/myPost/MyPost";
 import MyLiked from "./pages/mypage/myLiked/MyLiked";
 import ChallengeRecruit from "./pages/challenge/challengeRecruit/ChallengeRecruit";
+import Profile from "./pages/mypage/profile/Profile";
 import MySettings from "./pages/mypage/mySetting/MySettings"
 import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSoloDetail"
+import FieldVS from "./pages/fieldVS/FieldVS"
 import ChallengeVSInvite from "./pages/challenge/challengeVS/ChallengeVSInvite"
 
 
@@ -26,7 +28,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
+        <Route path={PageEndPoints.FIELD_VS} element={<FieldVS />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
+        <Route path={PageEndPoints.PROFILE} element={<Profile />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
         <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
         <Route path={PageEndPoints.MYSETTINGS} element={<MySettings />} />
