@@ -15,6 +15,7 @@ interface SelectProps {
   options?: SelectOption[];
   value?: string;
   onValueChange?: (value: string) => void;
+  width?: number;
 }
 
 const defaultOptions: SelectOption[] = [
@@ -24,7 +25,7 @@ const defaultOptions: SelectOption[] = [
   { value: "alphabetical", label: "가나다순" },
 ];
 
-const Select = ({ placeholder, options = defaultOptions, value, onValueChange }: SelectProps) => {
+const Select = ({ placeholder, options = defaultOptions, value, onValueChange, width = 0 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenChange = () => {
@@ -33,23 +34,23 @@ const Select = ({ placeholder, options = defaultOptions, value, onValueChange }:
 
   return (
     <SelectMenu.Root value={value} onValueChange={onValueChange}>
-      <S.Trigger onClick={() => handleOpenChange()}>
+      <S.Trigger onClick={() => handleOpenChange()} $width={width}>
         <SelectMenu.Value placeholder={placeholder} />
         <SelectMenu.Icon asChild>
           <S.IconWrapper>
             {isOpen ? (
-              <S.ArrowBtn src={ArrowUp} alt="위로 이동" />
+              <S.ArrowBtn src={ArrowUp} />
             ) : (
-              <S.ArrowBtn src={ArrowDown} alt="아래로 이동" />
+              <S.ArrowBtn src={ArrowDown} />
             )}
           </S.IconWrapper>
         </SelectMenu.Icon>
       </S.Trigger>
       <SelectMenu.Portal>
-        <S.Content position="popper" align="start" sideOffset={4}>
+        <S.Content position="popper" align="start" sideOffset={4} $width={width}>
           <S.Viewport>
             {options.map((option) => (
-              <S.Item key={option.value} value={option.value} onClick={() => handleOpenChange()}>
+              <S.Item key={option.value} value={option.value} onClick={() => handleOpenChange()} $width={width}>
                 <SelectMenu.ItemText>{option.label}</SelectMenu.ItemText>
               </S.Item>
             ))}
