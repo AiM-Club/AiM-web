@@ -63,6 +63,11 @@ export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }
     }
   `}
 
+  @media (min-width: 1920px) {
+    padding-left: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
+    padding-right: ${({ $variant }) => $variant === "home" ? "0" : "7.625rem"};
+  }
+
   @media (max-width: 1024px) {
     width: ${({ $variant }) => $variant === "login" ? "100%" : "100%"};
     margin: ${({ $variant }) =>
