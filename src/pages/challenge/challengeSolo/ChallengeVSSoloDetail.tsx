@@ -21,7 +21,7 @@ const ChallengeVSSoloDetail = () => {
         <Banner topic="제목 작성은 15글자 이하" image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod fieldData={fieldData} tagData={tagData} wordData={wordData} startData={startData} endData={endData} week={5} />
-          <CardChallenge topicDirection="left" cardNum={3} color="pink" topic="ME : 사용자 닉네임" minWidth={21} openBtn={false} viewCard="right">
+          <CardChallenge topicDirection="left" cardNum={3} color="pink" topic="ME : 사용자 닉네임" openBtn={false} viewCard="right">
             <ChallengeVSMatchContent commentView={false} color="pink" progress={80} success={80} totalWeek={9} currentWeek={5} viewCard="right" profileImg="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif" />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
