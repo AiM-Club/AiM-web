@@ -5,6 +5,7 @@ export enum PageEndPoints {
   MYLIKED = "/mypage/myLiked",
   MYSETTINGS = "/mypage/settings",
   COMMUNITY = "/community",
+  REVIEW_WRITE = "/community/review/write",
   QNA = "/community/qna",
   REVIEW = "/community/review",
   CHALLENGE_MAIN = "/challenge",
