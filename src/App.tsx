@@ -23,6 +23,11 @@ import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSo
 import FieldVS from "./pages/fieldVS/FieldVS"
 import ChallengeVSInvite from "./pages/challenge/challengeVS/ChallengeVSInvite"
 import ChallengeRecruitWrite from "./pages/challenge/challengeRecruit/ChallengeRecruitWrite"
+import CreateChallenge from "./pages/challenge/CreateChallenge"
+import EditChallenge from "./pages/challenge/EditChallenge"
+import WriteReview from "./pages/community/review/WriteReview"
+import WriteQnA from "./pages/community/qna/WriteQnA"
+import EditMyPost from "./pages/mypage/myPost/EditMyPost"
 
 function App() {
 
@@ -35,12 +40,17 @@ function App() {
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.PROFILE} element={<Profile />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
+        <Route path={PageEndPoints.MYPOST_EDIT} element={<EditMyPost />} />
         <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
         <Route path={PageEndPoints.MYSETTINGS} element={<MySettings />} />
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
+        <Route path={PageEndPoints.REVIEW_WRITE} element={<WriteReview />} />
         <Route path={PageEndPoints.QNA} element={<QnA />} />
+        <Route path={PageEndPoints.QNA_WRITE} element={<WriteQnA />} />
         <Route path={PageEndPoints.REVIEW} element={<Review />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
+        <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
+        <Route path={PageEndPoints.CHALLENGE_EDIT} element={<EditChallenge />} />
         <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
         <Route path={PageEndPoints.CHALLENGE_VS_DETAIL} element={<ChallengeVSMatch />} />
         <Route path={PageEndPoints.CHALLENGE_VS_INVITE} element={<ChallengeVSInvite />} />

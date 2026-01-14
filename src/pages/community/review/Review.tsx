@@ -5,8 +5,11 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import { searchVsData } from "@/pages/search/Constants";
 import * as S from "@/styles/community/review/Review.style";
 import Button from "@/components/button/Button";
+import { PageEndPoints } from "@/constants/endpoints";
+import { useNavigate } from "react-router-dom";
 
 const Review = () => {
+  const navigate = useNavigate();
   return (
     <DefaultLayout>
       <S.ReviewWrapper>
@@ -22,7 +25,7 @@ const Review = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ReviewWrapper>
-      <Button $variant="fixed">작성</Button>
+      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.REVIEW_WRITE)}>작성</Button>
     </DefaultLayout>
   )
 }

@@ -7,16 +7,17 @@ import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 
-const ChallengeRecruitWrite = () => {
+const WriteReview = () => {
+  const mode = "VS대결";
   return (
     <DefaultLayout variant="home">
       <S.RecruitWriteWrapper>
         <S.TopicWrapper>
-          <PageTopic text="VS 모집글 작성" size="l" />
+          <PageTopic text="후기 작성" size="l" />
         </S.TopicWrapper>
         <BannerTitleField />
         <S.WriteContentWrapper>
-          <WriteElementsSelect />
+          <WriteElementsSelect mode={true} selectedMode={mode} />
           <S.WriteFieldWrapper>
             <WriteField />
             <FileAddBtn />
@@ -30,4 +31,4 @@ const ChallengeRecruitWrite = () => {
   );
 }
 
-export default ChallengeRecruitWrite;
+export default WriteReview;
