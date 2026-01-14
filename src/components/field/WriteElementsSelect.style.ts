@@ -92,3 +92,15 @@ export const PickerItem = styled.div<{ $isSelected?: boolean }>`
     color: var(--text-primary-default);
   }
 `;
+
+export const Mode = styled.div<{ $isSelected?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8.75rem;
+  padding: 0.625rem 0rem;
+  cursor: pointer;
+  color: ${(props) => (props.$isSelected ? "var(--text-primary-default)" : "var(--text-secondary)")};
+  background-color: var(--surpace-primary);
+  border-radius: 0.25rem;
+`;

@@ -7,7 +7,12 @@ interface SelectOption {
   label: string;
 }
 
-const WriteElementsSelect = () => {
+interface WriteElementsSelectProps {
+  mode?: boolean;
+  challenge?: boolean;
+}
+
+const WriteElementsSelect = ({ mode = false, challenge = true }: WriteElementsSelectProps) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const currentDay = new Date().getDate();
@@ -18,16 +23,17 @@ const WriteElementsSelect = () => {
   const weeks = Array.from({ length: 10 }, (_, i) => i + 1);
 
   // 피커 상태 관리
-  const [yearOpen, setYearOpen] = useState(false);
-  const [monthOpen, setMonthOpen] = useState(false);
-  const [dayOpen, setDayOpen] = useState(false);
+  const [yearOpen, setYearOpen] = useState<boolean>(false);
+  const [monthOpen, setMonthOpen] = useState<boolean>(false);
+  const [dayOpen, setDayOpen] = useState<boolean>(false);
   const [weekOpen, setWeekOpen] = useState(false);
+  const [currentMode, setCurrentMode] = useState<"SOLO" | "VS대결" | null>(null);
 
   // 선택된 값 관리
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [selectedDay, setSelectedDay] = useState(currentDay);
-  const [selectedWeek, setSelectedWeek] = useState(1);
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth);
+  const [selectedDay, setSelectedDay] = useState<number>(currentDay);
+  const [selectedWeek, setSelectedWeek] = useState<number>(1);
 
   // 외부 클릭 감지를 위한 ref
   const yearRef = useRef<HTMLDivElement>(null);
@@ -182,10 +188,21 @@ const WriteElementsSelect = () => {
           </S.PickerWrapper>
         </S.InputWrapper>
       </S.EachContentWrapper>
-      <S.EachContentWrapper>
-        <S.ContentTitle>챌린지</S.ContentTitle>
-        <Select placeholder="선택" options={options} width={18} />
-      </S.EachContentWrapper>
+      {mode && (
+        <S.EachContentWrapper>
+          <S.ContentTitle>모드</S.ContentTitle>
+          <S.InputWrapper>
+            <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => setCurrentMode("SOLO")}>SOLO</S.Mode>
+            <S.Mode $isSelected={currentMode === "VS대결"} onClick={() => setCurrentMode("VS대결")}>VS대결</S.Mode>
+          </S.InputWrapper>
+        </S.EachContentWrapper>
+      )}
+      {challenge && (
+        <S.EachContentWrapper>
+          <S.ContentTitle>챌린지</S.ContentTitle>
+          <Select placeholder="선택" options={options} width={18} />
+        </S.EachContentWrapper>
+      )}
     </S.WriteElementsSelectWrapper>
   );
 }
