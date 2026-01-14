@@ -49,8 +49,8 @@ const Select = ({ placeholder, options = defaultOptions, value, onValueChange, w
       <SelectMenu.Portal>
         <S.Content position="popper" align="start" sideOffset={4} $width={width}>
           <S.Viewport>
-            {options.map((option) => (
-              <S.Item key={option.value} value={option.value} onClick={() => handleOpenChange()} $width={width}>
+            {options.map((option, index) => (
+              <S.Item key={index} value={option.value} onClick={() => handleOpenChange()} $width={width}>
                 <SelectMenu.ItemText>{option.label}</SelectMenu.ItemText>
               </S.Item>
             ))}
