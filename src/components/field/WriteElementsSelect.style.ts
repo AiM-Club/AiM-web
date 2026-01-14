@@ -99,6 +99,7 @@ export const Mode = styled.div<{ $isSelected?: boolean }>`
   justify-content: center;
   width: 8.75rem;
   padding: 0.625rem 0rem;
+  gap: 0.5rem;
   cursor: pointer;
   color: ${(props) => (props.$isSelected ? "var(--text-primary-default)" : "var(--text-secondary)")};
   background-color: var(--surpace-primary);

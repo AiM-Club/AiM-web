@@ -1,6 +1,7 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
 import { useState, useRef, useEffect } from "react";
+import Check from "@/assets/Check.svg";
 
 interface SelectOption {
   value: string;
@@ -10,9 +11,10 @@ interface SelectOption {
 interface WriteElementsSelectProps {
   mode?: boolean;
   challenge?: boolean;
+  selectedMode?: string;
 }
 
-const WriteElementsSelect = ({ mode = false, challenge = true }: WriteElementsSelectProps) => {
+const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: WriteElementsSelectProps) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const currentDay = new Date().getDate();
@@ -27,7 +29,7 @@ const WriteElementsSelect = ({ mode = false, challenge = true }: WriteElementsSe
   const [monthOpen, setMonthOpen] = useState<boolean>(false);
   const [dayOpen, setDayOpen] = useState<boolean>(false);
   const [weekOpen, setWeekOpen] = useState(false);
-  const [currentMode, setCurrentMode] = useState<"SOLO" | "VS대결" | null>(null);
+  const [currentMode, setCurrentMode] = useState<string>(selectedMode || "");
 
   // 선택된 값 관리
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
@@ -75,6 +77,11 @@ const WriteElementsSelect = ({ mode = false, challenge = true }: WriteElementsSe
     { value: "alphabetical", label: "음악" },
     { value: "alphabetical", label: "체육" },
   ];
+
+  const handleModeClick = (mode: string) => {
+    if (selectedMode) return;
+    setCurrentMode(mode);
+  }
 
   return (
     <S.WriteElementsSelectWrapper>
@@ -192,8 +199,14 @@ const WriteElementsSelect = ({ mode = false, challenge = true }: WriteElementsSe
         <S.EachContentWrapper>
           <S.ContentTitle>모드</S.ContentTitle>
           <S.InputWrapper>
-            <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => setCurrentMode("SOLO")}>SOLO</S.Mode>
-            <S.Mode $isSelected={currentMode === "VS대결"} onClick={() => setCurrentMode("VS대결")}>VS대결</S.Mode>
+            <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => handleModeClick("SOLO")}>
+              {selectedMode && selectedMode === "SOLO" ? <img src={Check} /> : ""}
+              SOLO
+            </S.Mode>
+            <S.Mode $isSelected={currentMode === "VS대결"} onClick={() => handleModeClick("VS대결")}>
+              {selectedMode && selectedMode === "VS대결" ? <img src={Check} /> : ""}
+              VS대결
+            </S.Mode>
           </S.InputWrapper>
         </S.EachContentWrapper>
       )}
