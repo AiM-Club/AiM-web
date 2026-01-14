@@ -23,6 +23,7 @@ import CreateChallenge from "./pages/challenge/CreateChallenge"
 import EditChallenge from "./pages/challenge/EditChallenge"
 import WriteReview from "./pages/community/review/WriteReview"
 import WriteQnA from "./pages/community/qna/WriteQnA"
+import EditMyPost from "./pages/mypage/myPost/EditMyPost"
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path={PageEndPoints.HOME} element={<Home />} />
         <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
         <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
+        <Route path={PageEndPoints.MYPOST_EDIT} element={<EditMyPost />} />
         <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
         <Route path={PageEndPoints.MYSETTINGS} element={<MySettings />} />
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
