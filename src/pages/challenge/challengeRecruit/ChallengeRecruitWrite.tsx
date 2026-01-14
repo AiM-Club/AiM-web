@@ -5,7 +5,7 @@ import WriteElementsSelect from "@/components/field/WriteElementsSelect";
 import WriteField from "@/components/field/WriteField";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
-import * as S from "@/styles/challenge/challengeRecruit/ChallengeRecruitWrite.style";
+import * as S from "@/styles/WritePage.style";
 
 const ChallengeRecruitWrite = () => {
   return (

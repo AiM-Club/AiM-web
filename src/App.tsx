@@ -19,6 +19,7 @@ import MySettings from "./pages/mypage/mySetting/MySettings"
 import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSoloDetail"
 import ChallengeVSInvite from "./pages/challenge/challengeVS/ChallengeVSInvite"
 import ChallengeRecruitWrite from "./pages/challenge/challengeRecruit/ChallengeRecruitWrite"
+import CreateChallenge from "./pages/challenge/CreateChallenge"
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path={PageEndPoints.QNA} element={<QnA />} />
         <Route path={PageEndPoints.REVIEW} element={<Review />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
+        <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
         <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
         <Route path={PageEndPoints.CHALLENGE_VS_DETAIL} element={<ChallengeVSMatch />} />
         <Route path={PageEndPoints.CHALLENGE_VS_INVITE} element={<ChallengeVSInvite />} />
