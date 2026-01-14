@@ -1,4 +1,5 @@
 import axios from "axios";
+import { secureRoutes } from "./secureRoutes";
 
 const domain = import.meta.env.VITE_API_DOMAIN;
 
@@ -52,3 +53,27 @@ export const api: Api = {
     return axiosInstance.delete(getDomain(url));
   },
 };
+
+axiosInstance.interceptors.request.use((config) => {
+  const url = new URL(config.url as string);
+  const pathname = url.pathname.replace("/api", "");
+
+  const isProtected = secureRoutes.some((endpoint) => {
+    if (endpoint.method !== config.method) return false;
+
+    // :param 형태의 동적 파라미터를 정규식으로 변환
+    const pattern = endpoint.url.replace(/:[^/]+/g, "[^/]+");
+    const regex = new RegExp(`^${pattern}$`);
+
+    return regex.test(pathname);
+  });
+
+  if (isProtected) {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+  }
+  return config;
+});
