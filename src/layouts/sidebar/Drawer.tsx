@@ -36,7 +36,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                 { id: "challenge-recruit", label: "VS 모집", path: PageEndPoints.CHALLENGE_RECRUIT },
                 { id: "challenge-vs", label: "VS 챌린지", path: PageEndPoints.CHALLENGE_VS },
                 { id: "challenge-solo", label: "솔로", path: PageEndPoints.CHALLENGE_SOLO },
-                { id: "challenge-team", label: "팀", path: "/challenge/team" },
+                { id: "challenge-ranking", label: "랭킹", path: PageEndPoints.CHALLENGE_RANKING },
             ]
         },
         { 
