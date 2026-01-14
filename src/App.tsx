@@ -7,6 +7,8 @@ import Mypage from "./pages/mypage/Mypage"
 import Community from "./pages/community/Community"
 import Challenge from "./pages/challenge/Challenge"
 import Search from "./pages/search/Search"
+import { QueryClientProvider } from "@tanstack/react-query"
+import { queryClient } from "./config/queryClient"
 import ChallengeVSMain from "./pages/challenge/challengeVS/ChallengeVS"
 import ChallengeVSMatch from "./pages/challenge/challengeVS/ChallengeVSDetail"
 import ChallengeVSSolo from "./pages/challenge/challengeSolo/ChallengeVSSolo"
@@ -21,10 +23,10 @@ import ChallengeVSSoloDetail from "./pages/challenge/challengeSolo/ChallengeVSSo
 import FieldVS from "./pages/fieldVS/FieldVS"
 import ChallengeVSInvite from "./pages/challenge/challengeVS/ChallengeVSInvite"
 
-
 function App() {
 
   return (
+    <QueryClientProvider client={queryClient}>  
     <BrowserRouter>
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
@@ -49,6 +51,7 @@ function App() {
         <Route path={PageEndPoints.SEARCH} element={<Search />} />
       </Routes>
     </BrowserRouter>
+    </QueryClientProvider>
   )
 }
 

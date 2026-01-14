@@ -1,5 +1,5 @@
 import CardList from "@/components/card/cardlist/CardList";
-    import CardBoard from "@/components/board/CardBoard";
+import CardBoard from "@/components/board/CardBoard";
 import MainSlider from "@/components/slider/MainSlider";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/home/Home.style.ts";
@@ -9,7 +9,7 @@ import Button from "@/components/button/Button";
 import SearchField from "@/components/field/SearchField";
 
 const Home = () => {
-    
+
     return(
         <DefaultLayout variant="home">
             <MainSlider />

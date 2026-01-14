@@ -20,3 +20,10 @@ export enum PageEndPoints {
   JOIN = "/join",
   SEARCH = "/search",
 }
+
+export enum ApiEndpoints {
+  LOGIN = "/auth/login",
+  JOIN = "/auth/register",
+  EXIST_ID = "/auth/id-exist",
+  PHOTO = "/files/images/:id",
+}

@@ -7,6 +7,8 @@ import SubMenuLeft from "@/assets/SubMenuLeft.png";
 import SubMenuRight from "@/assets/SubMenuRight.png";
 import { PageEndPoints } from "@/constants/endpoints";
 import hamburgerBar from "@/assets/icons/hamburgerBar.svg";
+import { useAuthStore } from "@/stores/authStore";
+import LogInBtn from "@/components/button/LogInBtn";
 
 interface HeaderProps {
   variant?: "default" | "login" | "home";
@@ -42,6 +44,7 @@ const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { isActive } = useActiveMenu();
   const location = useLocation();
+  const { user } = useAuthStore();
 
   const getCurrentSubMenu = (): SubMenuItem[] => {
     const mainPath = Object.keys(subMenuConfig).find(path =>
@@ -76,7 +79,7 @@ const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
       )}
       {variant === "login" ? <></> : (
         <>
-          <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>
+          {user ? <div className="login-button"><LogInBtn user={user} /></div> : <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}  
           <S.HamburgerButton className="hamburger-button" onClick={onMenuClick}>
             <img src={hamburgerBar} alt="메뉴" />
           </S.HamburgerButton>
