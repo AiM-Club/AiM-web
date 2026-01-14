@@ -7,6 +7,7 @@ export enum PageEndPoints {
   COMMUNITY = "/community",
   REVIEW_WRITE = "/community/review/write",
   QNA = "/community/qna",
+  QNA_WRITE = "/community/qna/write",
   REVIEW = "/community/review",
   CHALLENGE_MAIN = "/challenge",
   CHALLENGE_CREATE = "/challenge/create",

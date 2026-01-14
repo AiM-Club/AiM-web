@@ -22,6 +22,7 @@ import ChallengeRecruitWrite from "./pages/challenge/challengeRecruit/ChallengeR
 import CreateChallenge from "./pages/challenge/CreateChallenge"
 import EditChallenge from "./pages/challenge/EditChallenge"
 import WriteReview from "./pages/community/review/WriteReview"
+import WriteQnA from "./pages/community/qna/WriteQnA"
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
         <Route path={PageEndPoints.REVIEW_WRITE} element={<WriteReview />} />
         <Route path={PageEndPoints.QNA} element={<QnA />} />
+        <Route path={PageEndPoints.QNA_WRITE} element={<WriteQnA />} />
         <Route path={PageEndPoints.REVIEW} element={<Review />} />
         <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
         <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
