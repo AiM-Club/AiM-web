@@ -1,6 +1,8 @@
 export enum PageEndPoints {
   HOME = "/",
+  FIELD_VS = "/field/:id",
   MYPAGE = "/mypage",
+  PROFILE = "/mypage/profile",
   MYPOST = "/mypage/myPost",
   MYLIKED = "/mypage/myLiked",
   MYSETTINGS = "/mypage/settings",
@@ -18,4 +20,11 @@ export enum PageEndPoints {
   LOGIN = "/login",
   JOIN = "/join",
   SEARCH = "/search",
+}
+
+export enum ApiEndpoints {
+  LOGIN = "/auth/login",
+  JOIN = "/auth/register",
+  EXIST_ID = "/auth/id-exist",
+  PHOTO = "/files/images/:id",
 }

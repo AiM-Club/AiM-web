@@ -3,6 +3,8 @@ import * as S from "./Drawer.style";
 import { PageEndPoints } from "@/constants/endpoints";
 import Button from "@/components/button/Button";
 import arrowNext from "@/assets/icons/ArrowNext.svg";
+import { useAuthStore } from "@/stores/authStore";
+import ProfileImage from "@/components/image/ProfileImage";
 
 interface DrawerProps {
     isOpen: boolean;
@@ -18,7 +20,8 @@ interface MenuItem {
 
 const Drawer = ({ isOpen, onClose }: DrawerProps) => {
     const navigate = useNavigate();
-
+    const { user, userPhoto } = useAuthStore();
+    
     const menuItems: MenuItem[] = [
         { 
             id: "home", 
@@ -50,7 +53,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
             label: "마이페이지", 
             path: PageEndPoints.MYPAGE,
             subItems: [
-                { id: "mypage-profile", label: "프로필", path: "/mypage/profile" },
+                { id: "mypage-profile", label: "프로필", path: PageEndPoints.PROFILE },
                 { id: "mypage-mypost", label: "내 게시글", path: PageEndPoints.MYPOST },
                 { id: "mypage-liked", label: "좋아요", path: PageEndPoints.MYLIKED },
                 { id: "mypage-settings", label: "설정", path: "/mypage/settings" },
@@ -65,12 +68,21 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
             <S.DrawerOverlay $isOpen={isOpen} onClick={onClose} />
             <S.DrawerContainer $isOpen={isOpen}>
                 <S.DrawerHeader>
-                    <Button onClick={() => {
+                    {user ? (
+                        <S.UserInfo>
+                            <ProfileImage color="pink" image={userPhoto || ""} width={4} />
+                            <S.UserNameWrapper>
+                                <S.UserName>{user.nickname}</S.UserName>
+                                <S.UserLoginId>@{user.loginId}</S.UserLoginId>
+                            </S.UserNameWrapper>
+                        </S.UserInfo>
+                    ) : (<Button onClick={() => {
                         navigate(PageEndPoints.LOGIN);
                         onClose();
                     }} size="large">
                         로그인 / 회원가입
                     </Button>
+                    )}
                 </S.DrawerHeader>
                 <S.DrawerMenuList>
                     {menuItems.map((item) => (

@@ -11,11 +11,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useLogin } from "@/api/auth";
 // import { FieldError } from "@/components/error/FieldError";
+import { useAuthStore } from "@/stores/authStore";
 
 export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { mutate: loginMutate } = useLogin();
+  const { setUser, setUserPhoto } = useAuthStore();
 
   const {
     register,
@@ -59,9 +63,27 @@ export const Login = () => {
 
   const handleLoginClick = (data: LoginSchemaType) => {
     setHasSubmitError(false);
-    console.log(data);
-    alert("로그인");
-    //백엔드 전송 코드
+    console.log(data.id, data.password);
+    loginMutate(
+      {
+        loginId: data.id,
+        password: data.password,
+      },
+      {
+        onSuccess: (response) => {
+          setUser(response.data.user);
+          setUserPhoto(response.data.user.profileImage.filePath);
+          localStorage.setItem("accessToken", response.data.token.accessToken);
+          localStorage.setItem("refreshToken", response.data.token.refreshToken);
+          navigate(PageEndPoints.HOME);
+        },
+        onError: (error: any) => {
+          console.error("로그인 실패:", error);
+          console.log(error?.response?.data?.message);
+          setHasSubmitError(true);
+        },
+      }
+    );
   }
 
   return (

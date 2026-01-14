@@ -9,7 +9,6 @@ import Button from "@/components/button/Button";
 import SearchField from "@/components/field/SearchField";
 
 const Home = () => {
-
   return (
     <DefaultLayout variant="home">
       <MainSlider />
