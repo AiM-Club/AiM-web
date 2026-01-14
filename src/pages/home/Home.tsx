@@ -3,16 +3,12 @@ import CardBoard from "@/components/board/CardBoard";
 import MainSlider from "@/components/slider/MainSlider";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/home/Home.style.ts";
-import { useExistId } from "@/api/auth";
 import { cardVSData, fieldData } from "./Constants";
 import { PageTopic } from "@/components/text/PageTopic";
 import Button from "@/components/button/Button";
 import SearchField from "@/components/field/SearchField";
 
 const Home = () => {
-    const { data: promoListData} =
-    useExistId("test");
-    console.log(promoListData);
 
     return(
         <DefaultLayout variant="home">

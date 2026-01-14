@@ -14,7 +14,7 @@ type Api = {
   delete: <T>(url: string) => Promise<T>;
 };
 
-// 10.15 (로그인 수정) - 기본 인스턴스 수정
+
 const axiosInstance = axios.create({
   baseURL: domain,
   headers: {
