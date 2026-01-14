@@ -42,7 +42,32 @@ export const DrawerHeader = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+`;
 
+export const UserInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 1.25rem;
+    width: 100%;
+    padding: 0 1.5rem;
+`;
+
+export const UserNameWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+`;
+
+export const UserName = styled.div`
+    font: var(--title-h-s);
+    color: var(--text-primary-default);
+`;
+
+export const UserLoginId = styled.div`
+    font: var(--body-m-s);
+    color: var(--text-primary-default);
 `;
 
 export const DrawerMenuList = styled.nav`

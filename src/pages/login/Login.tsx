@@ -19,7 +19,7 @@ export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
-  const { setUser } = useAuthStore();
+  const { setUser, setUserPhoto } = useAuthStore();
 
   const {
     register,
@@ -71,15 +71,15 @@ export const Login = () => {
       },
       {
         onSuccess: (response) => {
-          console.log("로그인 성공:", response);
-          console.log(response.data.user);
           setUser(response.data.user);
+          setUserPhoto(response.data.user.profileImage.filePath);
           localStorage.setItem("accessToken", response.data.token.accessToken);
           localStorage.setItem("refreshToken", response.data.token.refreshToken);
           navigate(PageEndPoints.HOME);
         },
-        onError: (error) => {
+        onError: (error: any) => {
           console.error("로그인 실패:", error);
+          console.log(error?.response?.data?.message);
           setHasSubmitError(true);
         },
       }
