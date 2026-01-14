@@ -25,4 +25,5 @@ export enum ApiEndpoints {
   LOGIN = "/auth/login",
   JOIN = "/auth/register",
   EXIST_ID = "/auth/id-exist",
+  PHOTO = "/files/images/:id",
 }
