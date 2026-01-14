@@ -57,7 +57,7 @@ export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  gap: 4rem;
+  gap: 2.5rem;
 `;
 
 export const RadioWrapper = styled.div`
