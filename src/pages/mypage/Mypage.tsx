@@ -4,11 +4,15 @@ import * as S from "@/styles/mypage/mypage.style";
 import { levelInfoData, myLevelData } from "./Constants";
 import { getNextRank, getRankImg, getRankString } from "@/utils/userRank";
 import { ProgressBar } from "@/components/bar/ProgressBar";
+import { useAuthStore } from "@/stores/authStore";
+import Lock from "@/assets/Lock.svg";
 
 const Mypage = () => {
-    
+    const { user } = useAuthStore();
+
     return(
         <DefaultLayout>
+            {user ? (  
             <S.mypageWrapper>
                 <S.MyLevelWrapper>
                     <PageTopic text="나의 LEVEL" size="l" />
@@ -40,6 +44,12 @@ const Mypage = () => {
                     </S.LevelInfoContent>
                 </S.LevelInfoWrapper>
             </S.mypageWrapper>
+            ):(
+                <S.EmptyState>
+                    <S.LockImage src={Lock} />
+                    로그인 후 이용 가능합니다
+                </S.EmptyState>
+            )}
         </DefaultLayout>
     )
 }
