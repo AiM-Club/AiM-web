@@ -5,8 +5,12 @@ import { searchVsData } from "@/pages/search/Constants";
 import Button from "@/components/button/Button";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
+import { PageEndPoints } from "@/constants/endpoints";
+import { useNavigate } from "react-router-dom";
 
 const ChallengeRecruit = () => {
+  const navigate = useNavigate();
+
   return (
     <DefaultLayout>
       <S.ChallengeRecruitWrapper>
@@ -16,7 +20,7 @@ const ChallengeRecruit = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ChallengeRecruitWrapper>
-      <Button $variant="fixed">작성</Button>
+      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.CHALLENGE_RECRUIT_WRITE)}>작성</Button>
     </DefaultLayout>
   )
 }
