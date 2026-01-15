@@ -29,6 +29,7 @@ import EditChallenge from "./pages/challenge/EditChallenge"
 import WriteReview from "./pages/community/review/WriteReview"
 import WriteQnA from "./pages/community/qna/WriteQnA"
 import EditMyPost from "./pages/mypage/myPost/EditMyPost"
+import RankingList from "./pages/challenge/challengeRanking/RankingList"
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
         <Route path={PageEndPoints.LOGIN} element={<Login />} />
         <Route path={PageEndPoints.JOIN} element={<Join />} />
         <Route path={PageEndPoints.SEARCH} element={<Search />} />
+        <Route path={PageEndPoints.CHALLENGE_RANKING_LIST} element={<RankingList />} />
       </Routes>
     </BrowserRouter>
     </QueryClientProvider>

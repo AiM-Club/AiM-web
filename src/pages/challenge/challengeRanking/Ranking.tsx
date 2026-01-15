@@ -3,6 +3,7 @@ import RankingContent from "@/components/content/RankingContent";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout"
 import * as S from "@/styles/challenge/challengeRanking/Ranking.style";
+import Pagination from "@/components/pagination/Pagination";
 
 const Ranking = () => {
     return (
@@ -27,6 +28,11 @@ const Ranking = () => {
                         </S.NextRankingWrapper>
                     </S.RankingList>
                 </S.RankingContentWrapper>
+                <Pagination 
+                    currentPage={1} 
+                    totalPage={2} 
+                    callback={() => {}} 
+                />
             </S.RankingWrapper>
         </DefaultLayout>
     )
