@@ -11,7 +11,7 @@ import * as S from "@/styles/DetailPage.style";
 import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 
-const ChallengeRecruitDetail = () => {
+const ReviewDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [commentFiles, setCommentFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -103,8 +103,7 @@ const ChallengeRecruitDetail = () => {
       <Banner writer="작성자 이름" image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" topic="제목 작성은 15글자 이하" />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
-          <ChallengeInfoField />
-          <Button $size="req">VS 요청</Button>
+          <ChallengeInfoField mode="SOLO" />
         </S.TopWrapper>
         <S.ContentWrapper>
           <Content content={content} />
@@ -140,8 +139,8 @@ const ChallengeRecruitDetail = () => {
           <Files files={commentFiles} setFiles={setCommentFiles} />
         </S.CommentFilesWrapper>
       </S.RecruitDetailWrapper>
-    </DefaultLayout>
+    </DefaultLayout >
   );
 }
 
-export default ChallengeRecruitDetail;
+export default ReviewDetail;

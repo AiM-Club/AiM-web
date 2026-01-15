@@ -9,8 +9,10 @@ import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
 import { useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 
 const QnADetail = () => {
+  const { id } = useParams<{ id: string }>();
   const [commentFiles, setCommentFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const files: File[] = [];
@@ -102,7 +104,6 @@ const QnADetail = () => {
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField mode="SOLO" />
-          <Button $size="req">VS 요청</Button>
         </S.TopWrapper>
         <S.ContentWrapper>
           <Content content={content} />

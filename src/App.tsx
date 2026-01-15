@@ -30,6 +30,7 @@ import WriteQnA from "./pages/community/qna/WriteQnA"
 import EditMyPost from "./pages/mypage/myPost/EditMyPost"
 import ChallengeRecruitDetail from "./pages/challenge/challengeRecruit/ChallengeRecruitDetail"
 import QnADetail from "./pages/community/qna/QnADetail"
+import ReviewDetail from "./pages/community/review/ReviewDetail"
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
           <Route path={PageEndPoints.QNA_WRITE} element={<WriteQnA />} />
           <Route path={PageEndPoints.QNA_DETAIL} element={<QnADetail />} />
           <Route path={PageEndPoints.REVIEW} element={<Review />} />
+          <Route path={PageEndPoints.REVIEW_DETAIL} element={<ReviewDetail />} />
           <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
           <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
           <Route path={PageEndPoints.CHALLENGE_EDIT} element={<EditChallenge />} />

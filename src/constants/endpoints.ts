@@ -13,6 +13,7 @@ export enum PageEndPoints {
   QNA_DETAIL = "/community/qna/detail/:id",
   QNA_WRITE = "/community/qna/write",
   REVIEW = "/community/review",
+  REVIEW_DETAIL = "/community/review/detail/:id",
   CHALLENGE_MAIN = "/challenge",
   CHALLENGE_CREATE = "/challenge/create",
   CHALLENGE_EDIT = "/challenge/edit/:id",
