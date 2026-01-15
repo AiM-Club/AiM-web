@@ -3,7 +3,11 @@ import FieldBtn from "../button/FieldBtn";
 import * as S from "./ChallengeInfoField.style";
 import LinkIcon from "@/assets/Link.svg";
 
-const ChallengeInfoField = () => {
+interface ChallengeInfoFieldProps {
+  mode?: string;
+}
+
+const ChallengeInfoField = ({ mode }: ChallengeInfoFieldProps) => {
   const navigate = useNavigate();
   const categories = ["분야", "분야1", "분야2"];
   const { id } = useParams<{ id: string }>();
@@ -44,6 +48,12 @@ const ChallengeInfoField = () => {
           <S.Data>n주</S.Data>
         </S.DataWrapper>
       </S.EachContentWrapper>
+      {mode && <S.EachContentWrapper>
+        <S.ContentTitle>모드</S.ContentTitle>
+        <S.DataWrapper>
+          <S.Data>{mode}</S.Data>
+        </S.DataWrapper>
+      </S.EachContentWrapper>}
       <S.EachContentWrapper>
         <S.DataWrapper>
           <img src={LinkIcon} />
