@@ -5,25 +5,28 @@ import { searchVsData } from "@/pages/search/Constants";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
 import Button from "@/components/button/Button";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const ChallengeVSSolo = () => {
-    return (
-        <DefaultLayout>
-            <S.ChallengeVSMainWrapper>
-                <PageTopic text="SOLO 챌린지" size="l" />
-                <S.ContentWrapper>
-                    <SearchField 
-                        categories={[
-                            { value: "ongoing", label: "진행 중" },
-                            { value: "completed", label: "진행 완료" }
-                        ]}
-                    />
-                    <CardBoard data={searchVsData}/>
-                </S.ContentWrapper>
-            </S.ChallengeVSMainWrapper>
-            <Button variant="fixed">작성</Button>
-        </DefaultLayout>
-    )
+  const navigate = useNavigate();
+  return (
+    <DefaultLayout>
+      <S.ChallengeVSMainWrapper>
+        <PageTopic text="SOLO 챌린지" size="l" />
+        <S.ContentWrapper>
+          <SearchField
+            categories={[
+              { value: "ongoing", label: "진행 중" },
+              { value: "completed", label: "진행 완료" }
+            ]}
+          />
+          <CardBoard data={searchVsData} />
+        </S.ContentWrapper>
+      </S.ChallengeVSMainWrapper>
+      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.CHALLENGE_CREATE)}>작성</Button>
+    </DefaultLayout>
+  )
 }
 
 export default ChallengeVSSolo;

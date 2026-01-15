@@ -5,8 +5,11 @@ import { searchVsData } from "@/pages/search/Constants";
 import Button from "@/components/button/Button";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const ChallengeVS = () => {
+  const navigate = useNavigate();
   return (
     <DefaultLayout>
       <S.ChallengeVSWrapper>
@@ -22,7 +25,7 @@ const ChallengeVS = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ChallengeVSWrapper>
-      <Button variant="fixed">작성</Button>
+      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.CHALLENGE_CREATE)}>작성</Button>
     </DefaultLayout>
   )
 }
