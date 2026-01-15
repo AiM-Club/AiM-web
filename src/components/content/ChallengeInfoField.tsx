@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import FieldBtn from "../button/FieldBtn";
 import * as S from "./ChallengeInfoField.style";
 import LinkIcon from "@/assets/Link.svg";
-import { PageEndPoints } from "@/constants/endpoints";
 
 const ChallengeInfoField = () => {
   const navigate = useNavigate();
