@@ -3,8 +3,19 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import { PageTopic } from "@/components/text/PageTopic";
 import RankInfoContent from "@/components/content/RankInfoContent";
 import { rankingHeader, rankingListData } from "../Constants";
+import Pagination from "@/components/pagination/Pagination";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const RankingList = () => {
+    const navigate = useNavigate();
+
+    const handlePageChange = (page: number) => {
+        if (page === 1) {
+            navigate(PageEndPoints.CHALLENGE_RANKING);
+        }
+    };
+
     return (
         <DefaultLayout>
             <S.RankingListWrapper>
@@ -17,6 +28,11 @@ const RankingList = () => {
                         ))}
                     </S.RankContentContainer>
                 </S.RankContentWrapper>
+                <Pagination 
+                    currentPage={2} 
+                    totalPage={2} 
+                    callback={handlePageChange} 
+                />
             </S.RankingListWrapper>
         </DefaultLayout>
     )
