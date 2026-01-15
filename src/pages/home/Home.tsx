@@ -7,8 +7,13 @@ import { cardVSData, fieldData } from "./Constants";
 import { PageTopic } from "@/components/text/PageTopic";
 import Button from "@/components/button/Button";
 import SearchField from "@/components/field/SearchField";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
+import { buildPath } from "@/utils/buildPath";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <DefaultLayout variant="home">
       <MainSlider />
@@ -23,7 +28,7 @@ const Home = () => {
           <PageTopic text="VS 분야" size="l" />
           <S.FieldList>
             {fieldData.map((item) => (
-              <S.FieldItem key={item.id}>
+              <S.FieldItem key={item.id} onClick={() => navigate(buildPath(PageEndPoints.FIELD_VS, { id: item.id }))}>
                 <img src={item.img} />
                 <span>{item.name}</span>
               </S.FieldItem>

@@ -4,14 +4,17 @@ import titleUnion from "@/assets/TitleUnion.svg";
 import { searchVsData } from "../search/Constants";
 import CardBoard from "@/components/board/CardBoard";
 import SearchField from "@/components/field/SearchField";
+import { useParams } from "react-router-dom";
+import { useField } from "@/utils/useField";
 
 const FieldVS = () => {
+    const { id } = useParams();
     return (
         <DefaultLayout>
             <S.FieldVSWrapper>
                 <S.FieldTopic>
                     <img src={titleUnion} />
-                    IT 분야_ VS 대결
+                    {useField(Number(id))?.name} 분야_ VS 대결
                 </S.FieldTopic>
                 <S.FieldVSContent>
                     <SearchField />
