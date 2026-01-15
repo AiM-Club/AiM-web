@@ -20,7 +20,7 @@ const ChallengeRecruit = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ChallengeRecruitWrapper>
-      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.CHALLENGE_RECRUIT_WRITE)}>작성</Button>
+      <Button $variant="fixed" $color="green" onClick={() => navigate(PageEndPoints.CHALLENGE_RECRUIT_WRITE)}>작성</Button>
     </DefaultLayout>
   )
 }

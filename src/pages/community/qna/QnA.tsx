@@ -25,7 +25,7 @@ const QnA = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.QnAWrapper>
-      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.QNA_WRITE)}>작성</Button>
+      <Button $variant="fixed" $color="green" onClick={() => navigate(PageEndPoints.QNA_WRITE)}>작성</Button>
     </DefaultLayout>
   )
 }

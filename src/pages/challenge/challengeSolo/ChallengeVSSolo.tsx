@@ -24,7 +24,7 @@ const ChallengeVSSolo = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ChallengeVSMainWrapper>
-      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.CHALLENGE_CREATE)}>작성</Button>
+      <Button $variant="fixed" $color="green" onClick={() => navigate(PageEndPoints.CHALLENGE_CREATE)}>작성</Button>
     </DefaultLayout>
   )
 }
