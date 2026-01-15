@@ -5,11 +5,11 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/home/Home.style.ts";
 import { cardVSData, fieldData } from "./Constants";
 import { PageTopic } from "@/components/text/PageTopic";
-import Button from "@/components/button/Button";
 import SearchField from "@/components/field/SearchField";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
+import MoreBtn from "@/components/button/MoreBtn";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -38,14 +38,14 @@ const Home = () => {
         <S.BattleWrapper>
           <S.BattleTitle>
             <PageTopic text="VS 대결" size="l" />
-            <Button $variant="secondary">더보기</Button>
+            <MoreBtn onClick={() => navigate(PageEndPoints.CHALLENGE_VS)}>더보기</MoreBtn>
           </S.BattleTitle>
           <CardBoard data={cardVSData} isPagination={false} />
         </S.BattleWrapper>
         <S.BattleWrapper>
           <S.BattleTitle>
             <PageTopic text="VS 모집글" size="l" />
-            <Button $variant="secondary">더보기</Button>
+            <MoreBtn onClick={() => navigate(PageEndPoints.CHALLENGE_RECRUIT)}>더보기</MoreBtn>
           </S.BattleTitle>
           <CardBoard data={cardVSData} isPagination={false} />
         </S.BattleWrapper>
