@@ -28,6 +28,7 @@ export const BannerContentWrapper = styled.div`
   position: absolute;
   bottom: 4rem;
   left: 7.625rem;
+  width: calc(100% - 15.25rem);
 `;
 
 export const BannerContent = styled.p`
@@ -40,6 +41,7 @@ export const WriterWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font: var(--subtitle-m-l);
+  width: 100%;
 `;
 
 export const HeartWrapper = styled.div`
