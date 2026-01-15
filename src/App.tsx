@@ -28,41 +28,43 @@ import EditChallenge from "./pages/challenge/EditChallenge"
 import WriteReview from "./pages/community/review/WriteReview"
 import WriteQnA from "./pages/community/qna/WriteQnA"
 import EditMyPost from "./pages/mypage/myPost/EditMyPost"
+import ChallengeRecruitDetail from "./pages/challenge/challengeRecruit/ChallengeRecruitDetail"
 
 function App() {
 
   return (
-    <QueryClientProvider client={queryClient}>  
-    <BrowserRouter>
-      <Routes>
-        <Route path={PageEndPoints.HOME} element={<Home />} />
-        <Route path={PageEndPoints.FIELD_VS} element={<FieldVS />} />
-        <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
-        <Route path={PageEndPoints.PROFILE} element={<Profile />} />
-        <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
-        <Route path={PageEndPoints.MYPOST_EDIT} element={<EditMyPost />} />
-        <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
-        <Route path={PageEndPoints.MYSETTINGS} element={<MySettings />} />
-        <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
-        <Route path={PageEndPoints.REVIEW_WRITE} element={<WriteReview />} />
-        <Route path={PageEndPoints.QNA} element={<QnA />} />
-        <Route path={PageEndPoints.QNA_WRITE} element={<WriteQnA />} />
-        <Route path={PageEndPoints.REVIEW} element={<Review />} />
-        <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
-        <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
-        <Route path={PageEndPoints.CHALLENGE_EDIT} element={<EditChallenge />} />
-        <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
-        <Route path={PageEndPoints.CHALLENGE_VS_DETAIL} element={<ChallengeVSMatch />} />
-        <Route path={PageEndPoints.CHALLENGE_VS_INVITE} element={<ChallengeVSInvite />} />
-        <Route path={PageEndPoints.CHALLENGE_SOLO} element={<ChallengeVSSolo />} />
-        <Route path={PageEndPoints.CHALLENGE_SOLO_DETAIL} element={<ChallengeVSSoloDetail />} />
-        <Route path={PageEndPoints.CHALLENGE_RECRUIT} element={<ChallengeRecruit />} />
-        <Route path={PageEndPoints.CHALLENGE_RECRUIT_WRITE} element={<ChallengeRecruitWrite />} />
-        <Route path={PageEndPoints.LOGIN} element={<Login />} />
-        <Route path={PageEndPoints.JOIN} element={<Join />} />
-        <Route path={PageEndPoints.SEARCH} element={<Search />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path={PageEndPoints.HOME} element={<Home />} />
+          <Route path={PageEndPoints.FIELD_VS} element={<FieldVS />} />
+          <Route path={PageEndPoints.MYPAGE} element={<Mypage />} />
+          <Route path={PageEndPoints.PROFILE} element={<Profile />} />
+          <Route path={PageEndPoints.MYPOST} element={<MyPost />} />
+          <Route path={PageEndPoints.MYPOST_EDIT} element={<EditMyPost />} />
+          <Route path={PageEndPoints.MYLIKED} element={<MyLiked />} />
+          <Route path={PageEndPoints.MYSETTINGS} element={<MySettings />} />
+          <Route path={PageEndPoints.COMMUNITY} element={<Community />} />
+          <Route path={PageEndPoints.REVIEW_WRITE} element={<WriteReview />} />
+          <Route path={PageEndPoints.QNA} element={<QnA />} />
+          <Route path={PageEndPoints.QNA_WRITE} element={<WriteQnA />} />
+          <Route path={PageEndPoints.REVIEW} element={<Review />} />
+          <Route path={PageEndPoints.CHALLENGE_MAIN} element={<Challenge />} />
+          <Route path={PageEndPoints.CHALLENGE_CREATE} element={<CreateChallenge />} />
+          <Route path={PageEndPoints.CHALLENGE_EDIT} element={<EditChallenge />} />
+          <Route path={PageEndPoints.CHALLENGE_VS} element={<ChallengeVSMain />} />
+          <Route path={PageEndPoints.CHALLENGE_VS_DETAIL} element={<ChallengeVSMatch />} />
+          <Route path={PageEndPoints.CHALLENGE_VS_INVITE} element={<ChallengeVSInvite />} />
+          <Route path={PageEndPoints.CHALLENGE_SOLO} element={<ChallengeVSSolo />} />
+          <Route path={PageEndPoints.CHALLENGE_SOLO_DETAIL} element={<ChallengeVSSoloDetail />} />
+          <Route path={PageEndPoints.CHALLENGE_RECRUIT} element={<ChallengeRecruit />} />
+          <Route path={PageEndPoints.CHALLENGE_RECRUIT_DETAIL} element={<ChallengeRecruitDetail />} />
+          <Route path={PageEndPoints.CHALLENGE_RECRUIT_WRITE} element={<ChallengeRecruitWrite />} />
+          <Route path={PageEndPoints.LOGIN} element={<Login />} />
+          <Route path={PageEndPoints.JOIN} element={<Join />} />
+          <Route path={PageEndPoints.SEARCH} element={<Search />} />
+        </Routes>
+      </BrowserRouter>
     </QueryClientProvider>
   )
 }
