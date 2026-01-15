@@ -30,12 +30,14 @@ import WriteReview from "./pages/community/review/WriteReview"
 import WriteQnA from "./pages/community/qna/WriteQnA"
 import EditMyPost from "./pages/mypage/myPost/EditMyPost"
 import RankingList from "./pages/challenge/challengeRanking/RankingList"
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
 
   return (
     <QueryClientProvider client={queryClient}>  
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path={PageEndPoints.HOME} element={<Home />} />
         <Route path={PageEndPoints.FIELD_VS} element={<FieldVS />} />
