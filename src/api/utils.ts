@@ -1,5 +1,7 @@
 import axios from "axios";
 import { secureRoutes } from "./secureRoutes";
+import { ApiEndpoints } from "@/constants/endpoints";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const domain = import.meta.env.VITE_API_DOMAIN;
 
@@ -76,4 +78,37 @@ axiosInstance.interceptors.request.use((config) => {
     }
   }
   return config;
+});
+
+//토큰 갱신
+axiosInstance.interceptors.response.use((response) => {
+  return response;
+}, async (error) => {
+  if (error.status === 401 && error.config.url !== ApiEndpoints.REFRESH_TOKEN && error.config.url !== ApiEndpoints.LOGIN) {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (refreshToken) {
+      {
+        try {
+          const refreshRes = await axiosInstance.post(
+            getDomain(ApiEndpoints.REFRESH_TOKEN),
+            { refreshToken: refreshToken },
+          );
+          const newAccessToken = refreshRes.data.accessToken;
+          localStorage.setItem("accessToken", newAccessToken);
+          localStorage.setItem("refreshToken", refreshRes.data.refreshToken);
+
+          error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return axiosInstance.request(error.config);
+        } catch (error) {
+          console.log(error);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = PageEndPoints.LOGIN;
+          return Promise.reject(error);
+        }
+      }
+
+    }
+    return Promise.reject(error);
+  }
 });

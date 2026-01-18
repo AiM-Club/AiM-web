@@ -51,10 +51,17 @@ export const CommentFilesWrapper = styled.div`
   width: 100%;
 `;
 
+export const InputWrapperContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  border: 1px solid var(--pink-500);
+  border-radius: 0.25rem;
 `;
 
 export const FileAddBtn = styled.div`
@@ -103,6 +110,29 @@ export const SubmitBtn = styled.div`
   font: var(--body-r-xl);
   background-color: var(--surpace-primary);
   color: var(--text-primary-default);
+`;
+
+export const InputOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: color-mix(in oklch, var(--surpace-secondary), transparent 20%);
+  border-radius: 0.25rem;
+  border: 1.5px solid var(--pink-500);
+  font: var(--body-r-xl);
+  color: var(--text-primary-default);
+  z-index: 10;
+`;
+
+export const LockImg = styled.img`
+  width: 1rem;
+  height: 1rem;
 `;
 
 export const FileWrapper = styled.div`
