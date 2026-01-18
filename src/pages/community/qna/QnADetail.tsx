@@ -10,9 +10,12 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
 import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useAuthStore } from "@/stores/authStore";
+import Lock from "@/assets/Lock.svg";
 
 const QnADetail = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuthStore();
   const [commentFiles, setCommentFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const files: File[] = [];
@@ -127,16 +130,24 @@ const QnADetail = () => {
           </S.CommentWrapper>
         </S.CommentWholeWrapper>
         <S.CommentFilesWrapper>
-          <S.InputWrapper>
-            <S.FileInput ref={fileInputRef} type="file" onChange={handleFileAdd} multiple />
-            <S.FileAddBtn onClick={handleFileAddClick}>
-              <S.FileImg src={FileIcon} />
-              <p>파일</p>
-            </S.FileAddBtn>
-            <S.InputField placeholder="댓글을 입력하세요" />
-            <S.SubmitBtn>완료</S.SubmitBtn>
-          </S.InputWrapper>
-          <Files files={commentFiles} setFiles={setCommentFiles} />
+          <S.InputWrapperContainer>
+            <S.InputWrapper>
+              <S.FileInput ref={fileInputRef} type="file" onChange={handleFileAdd} multiple />
+              <S.FileAddBtn onClick={handleFileAddClick}>
+                <S.FileImg src={FileIcon} />
+                <p>파일</p>
+              </S.FileAddBtn>
+              <S.InputField placeholder={user ? "댓글을 입력하세요" : ""} />
+              <S.SubmitBtn>완료</S.SubmitBtn>
+            </S.InputWrapper>
+            {!user && (
+              <S.InputOverlay>
+                <S.LockImg src={Lock} />
+                <span>로그인 후 이용 가능합니다</span>
+              </S.InputOverlay>
+            )}
+          </S.InputWrapperContainer>
+          {user && <Files files={commentFiles} setFiles={setCommentFiles} />}
         </S.CommentFilesWrapper>
       </S.RecruitDetailWrapper>
     </DefaultLayout >
