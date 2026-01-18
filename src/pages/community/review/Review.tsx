@@ -25,7 +25,7 @@ const Review = () => {
           <CardBoard data={searchVsData} />
         </S.ContentWrapper>
       </S.ReviewWrapper>
-      <Button $variant="fixed" onClick={() => navigate(PageEndPoints.REVIEW_WRITE)}>작성</Button>
+      <Button $variant="fixed" $color="green" onClick={() => navigate(PageEndPoints.REVIEW_WRITE)}>작성</Button>
     </DefaultLayout>
   )
 }

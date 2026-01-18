@@ -30,3 +30,8 @@ export const PaginationButton = styled.button<{ $isClicked: boolean }>`
     height: 2.875rem;
     color: var(--text-primary-default);
 `;
+
+export const EmptyButton = styled.div`
+    height: 2.875rem;
+    width: 3rem;
+`;

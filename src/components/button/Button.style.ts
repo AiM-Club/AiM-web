@@ -1,5 +1,6 @@
 import MainBtn from "@/assets/LoginBtn.png";
-
+import GreenBtn from "@/assets/GreenBtn.png";
+import GrayBtn from "@/assets/GrayBtn.png";
 // Button.style.ts
 import styled, { css } from "styled-components";
 
@@ -7,8 +8,12 @@ export type ButtonVariant = "primary" | "fixed" | "secondary";
 
 export type ButtonSize = "medium" | "large";
 
+export type ButtonColor = "pink" | "green" | "gray";
+
 export interface StyledButtonProps {
   $variant?: ButtonVariant;
+  $size?: ButtonSize;
+  $color?: ButtonColor;
   $size?: "medium" | "large" | "req";
   $isClicked?: boolean;
   $bgImg?: string;
@@ -50,6 +55,28 @@ export const sizeStyles = {
   `,
 };
 
+export const colorStyles = {
+  pink: css`
+    background-image: url(${MainBtn});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  `,
+  green: css`
+    background-image: url(${GreenBtn});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--text-tertiary);
+  `,
+  gray: css`
+    background-image: url(${GrayBtn});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  `,
+};
+
 export const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
   outline: none;
@@ -57,10 +84,6 @@ export const StyledButton = styled.button<StyledButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-image: url(${MainBtn});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   color: var(--color-white);
 
   &:focus {
@@ -70,4 +93,5 @@ export const StyledButton = styled.button<StyledButtonProps>`
 
   ${({ $variant = "primary" }) => variantStyles[$variant]}
   ${({ $size = "medium" }) => sizeStyles[$size]}
+  ${({ $color = "pink" }) => colorStyles[$color]}
 `;

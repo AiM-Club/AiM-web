@@ -10,6 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 const Button = ({
   $variant = "primary",
   $size = "medium",
+  $color = "pink",
   $isClicked = false,
   children,
   ...props
@@ -18,6 +19,7 @@ const Button = ({
     <StyledButton
       $variant={$variant}
       $size={$size}
+      $color={$color}
       $isClicked={$isClicked}
       {...props}
     >

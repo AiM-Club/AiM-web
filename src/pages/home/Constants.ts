@@ -32,14 +32,14 @@ export const cardVSData: CardVSProps[] = [
 ];
 
 export const fieldData = [
-    {id:1, name:"분야1", img: AllField},
-    {id:2, name:"분야2", img: IT},
-    {id:3, name:"분야3", img: Economy},
-    {id:4, name:"분야4", img: Manage},
-    {id:5, name:"분야5", img: Politics},
-    {id:6, name:"분야6", img: Language},
-    {id:7, name:"분야7", img: Nature},
-    {id:8, name:"분야8", img: Design},
-    {id:9, name:"분야9", img: Music},
-    {id:10, name:"분야10", img: PE}
+    {id:1, name:"전체", img: AllField},
+    {id:2, name:"IT", img: IT},
+    {id:3, name:"경영", img: Economy},
+    {id:4, name:"경제", img: Manage},
+    {id:5, name:"정치", img: Politics},
+    {id:6, name:"어문", img: Language},
+    {id:7, name:"자연", img: Nature},
+    {id:8, name:"디자인", img: Design},
+    {id:9, name:"음악", img: Music},
+    {id:10, name:"체육", img: PE}
 ];

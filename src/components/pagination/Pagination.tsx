@@ -10,15 +10,23 @@ interface PaginationProps {
 const Pagination = ({ currentPage, totalPage, callback }: PaginationProps) => {
     return (
         <S.PaginationWrapper>
-            <S.PaginationButton $isClicked={currentPage === 1} onClick={() => callback(currentPage - 1)}>
-                <MdOutlineNavigateBefore size={48} />
-            </S.PaginationButton>
+            {currentPage === 1 ? (
+                <S.EmptyButton />
+            ) : (
+                <S.PaginationButton $isClicked={currentPage === 1} onClick={() => callback(currentPage - 1)}>
+                    <MdOutlineNavigateBefore size={48} />
+                </S.PaginationButton>
+            )}
             <S.PageInfo>
                 {currentPage}/{totalPage}
             </S.PageInfo>
-            <S.PaginationButton $isClicked={currentPage === totalPage} onClick={() => callback(currentPage - 1)}>
-                <MdOutlineNavigateNext size={48} />
-            </S.PaginationButton>
+            {currentPage === totalPage ? (
+                <S.EmptyButton />
+            ) : (
+                <S.PaginationButton $isClicked={currentPage === totalPage} onClick={() => callback(currentPage + 1)}>
+                    <MdOutlineNavigateNext size={48} />
+                </S.PaginationButton>
+            )}
         </S.PaginationWrapper>
     )
 }
