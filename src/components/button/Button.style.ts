@@ -14,6 +14,7 @@ export interface StyledButtonProps {
   $variant?: ButtonVariant;
   $size?: ButtonSize;
   $color?: ButtonColor;
+  $size?: "medium" | "large" | "req";
   $isClicked?: boolean;
   $bgImg?: string;
 }
@@ -46,6 +47,11 @@ export const sizeStyles = {
     width: 14.5rem;
     height: 3.375rem;
     font: var(--body-m-l);
+  `,
+  req: css`
+    width: 10.5rem;
+    height: 3.563rem;
+    font: var(--body-m-xl);
   `,
 };
 

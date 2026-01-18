@@ -21,10 +21,38 @@ export const BannerOverlay = styled.div`
   background: linear-gradient(to bottom, transparent, var(--background-primary));
 `;
 
-export const BannerContent = styled.p`
-  color: var(--text-primary-default);
-  font: var(--headline-h-l);
+export const BannerContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   position: absolute;
   bottom: 4rem;
   left: 7.625rem;
+  width: calc(100% - 15.25rem);
+`;
+
+export const BannerContent = styled.p`
+  color: var(--text-primary-default);
+  font: var(--headline-h-l);
+`;
+
+export const WriterWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font: var(--subtitle-m-l);
+  width: 100%;
+`;
+
+export const HeartWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+
+  img {
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `;

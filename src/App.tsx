@@ -31,6 +31,9 @@ import WriteQnA from "./pages/community/qna/WriteQnA"
 import EditMyPost from "./pages/mypage/myPost/EditMyPost"
 import RankingList from "./pages/challenge/challengeRanking/RankingList"
 import ScrollToTop from "./utils/ScrollToTop";
+import ChallengeRecruitDetail from "./pages/challenge/challengeRecruit/ChallengeRecruitDetail"
+import QnADetail from "./pages/community/qna/QnADetail"
+import ReviewDetail from "./pages/community/review/ReviewDetail"
 
 function App() {
 
