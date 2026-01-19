@@ -14,6 +14,9 @@ export interface User {
     nickname: string;
     birthday: string;
     gender: string;
+    tier: {
+        name: string;
+    }
     socialLogin: string | null;
     isNewUser: boolean;
     profileImage: profileImage;
@@ -34,10 +37,4 @@ export interface Token {
     refreshToken: string;
     accessTokenExpiresAt: string;
     refreshTokenExpiresAt: string;
-}
-
-export interface ProfileResponse extends User {
-    tier: {
-        name: string;
-    };
 }
