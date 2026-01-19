@@ -35,3 +35,9 @@ export interface Token {
     accessTokenExpiresAt: string;
     refreshTokenExpiresAt: string;
 }
+
+export interface ProfileResponse extends User {
+    tier: {
+        name: string;
+    };
+}

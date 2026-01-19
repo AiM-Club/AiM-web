@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
 const LogInBtn = ({ user }: { user: User }) => {
-  const { userPhoto,setUserPhoto } = useAuthStore();
+  const { userPhoto, setUserPhoto } = useAuthStore();
   const { data: photo } = useGetPhoto(user.profileImage.uuid);
 
   useEffect(() => {

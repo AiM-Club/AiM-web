@@ -37,6 +37,7 @@ export enum ApiEndpoints {
   REFRESH_TOKEN = "/auth/token/refresh",
   JOIN = "/auth/register",
   EXIST_ID = "/auth/id-exist",
+  MY_PROFILE = "/users/profile",
   PHOTO = "/files/images/:id",
   CHALLENGE = "/challenges",
 }

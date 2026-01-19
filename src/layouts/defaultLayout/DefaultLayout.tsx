@@ -4,37 +4,48 @@ import Header from "../header/Header";
 import Sidebar from "../sidebar/Sidebar";
 import Drawer from "../sidebar/Drawer";
 import * as S from "./DefaultLayout.style.ts";
+import { useGetMe } from "@/api/auth.ts";
+import { useAuthStore } from "@/stores/authStore.ts";
+import Loading from "@/components/loading/Loading.tsx";
 
 interface DefaultLayoutProps {
-  children: ReactNode;
-  variant? : "default" | "login" | "home";
+    children: ReactNode;
+    variant?: "default" | "login" | "home";
 }
 
-const DefaultLayout = ({children, variant="default"}:DefaultLayoutProps) => {
-    const showsidebar = variant==="default" || variant==="home";
+const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) => {
+    const { setUser } = useAuthStore();
+    const { data: profile, isLoading } = useGetMe();
+    const showsidebar = variant === "default" || variant === "home";
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    
+    useEffect(() => {
+        if (!profile) return;
+        console.log(profile);
+        setUser(profile.data);
+    }, [setUser, profile]);
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 1024 && isDrawerOpen) {
                 setIsDrawerOpen(false);
             }
         };
-        
+
         window.addEventListener('resize', handleResize);
         handleResize(); // 초기 체크
-        
+
         return () => window.removeEventListener('resize', handleResize);
     }, [isDrawerOpen]);
-    
-    return(
+
+    if (isLoading) return <Loading />;
+
+    return (
         <S.LayoutWrapper>
             <S.ContentWrapper>
-                    { showsidebar && <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>}
-                    <S.MainWrapper>
-                        <Header variant={variant} onMenuClick={() => setIsDrawerOpen(true)} />
-                        <S.MainContent $variant={variant}>{children}</S.MainContent>
-                    </S.MainWrapper>
+                {showsidebar && <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>}
+                <S.MainWrapper>
+                    <Header variant={variant} onMenuClick={() => setIsDrawerOpen(true)} />
+                    <S.MainContent $variant={variant}>{children}</S.MainContent>
+                </S.MainWrapper>
             </S.ContentWrapper>
             <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         </S.LayoutWrapper>
