@@ -40,4 +40,6 @@ export enum ApiEndpoints {
   MY_PROFILE = "/users/profile",
   PHOTO = "/files/images/:id",
   CHALLENGE = "/challenges",
+  CHALLENGE_VS = "/challenges/vs",
+  CHALLENGE_SOLO = "/challenges/solo",
 }

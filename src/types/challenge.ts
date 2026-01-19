@@ -1,3 +1,5 @@
+import type { PageResponse } from "./common";
+import type { User } from "./auth";
 // 챌린지 생성/수정 요청 타입
 export interface ChallengeRequest {
     name: string;
@@ -7,10 +9,28 @@ export interface ChallengeRequest {
     fields: string[];
     jobs: string[];
     userRequest: string;
-    mode: "SOLO" | "TEAM";
-    visibility: "PUBLIC" | "PRIVATE";
+    mode: string;
+    visibility: string;
 }
 
-export interface ChallengeResponse {
-    id: number;
+export interface ChallengeVSListResponse {
+    content: ChallengeVSResponse[];
+    page: PageResponse;
+}
+
+
+export interface ChallengeVSResponse {
+    challengeId: number;
+    user: User;
+    startDate: string;
+    duration: string;
+    name: string;
+    field: string[];
+    tag: string[];
+    job: string[];
+    liked: boolean;
+    likeCount: number;
+    createdAt: string;
+    lastModifiedAt: string;
+    status: string;
 }
