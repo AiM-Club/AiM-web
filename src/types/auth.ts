@@ -3,6 +3,11 @@ export interface LoginRequest {
     password: string;
 }
 
+export interface SocialLoginRequest {
+    code: string;
+    redirectUri: string;
+}
+
 export interface LoginResponse {
     user: User;
     token: Token;
