@@ -9,22 +9,32 @@ import { PageEndPoints } from "@/constants/endpoints";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
 import { useGetChallengeSolo } from "@/api/challenge";
-import Loading from "@/components/loading/Loading";
 import usePagination from "@/hooks/usePagination";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ChallengeVSSolo = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
-  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: "ongoing", sort: "createdAt", page: currentPage - 1, size: 16, keyword: "" });
+  const [selectedCategory, setSelectedCategory] = useState<string>("--");
+  const [keyword, setKeyword] = useState<string>("");
+  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: selectedCategory, sort: "--", page: currentPage - 1, size: 16, keyword });
 
   useEffect(() => {
     setTotalPage(challengeSoloList?.data.page.totalPages || 1);
-  }, [challengeSoloList?.data.page.totalPages]);
+  }, [challengeSoloList?.data.page.totalPages, setTotalPage]);
 
-  if (isLoading) return <Loading />;
-  console.log(challengeSoloList);
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category || "--");
+    handlePageChange(1);
+  };
+
+  const handleKeywordChange = (newKeyword: string) => {
+    setKeyword(newKeyword);
+    handlePageChange(1);
+  };
+
+
   return (
     <DefaultLayout>
       <S.ChallengeVSMainWrapper>
@@ -33,11 +43,13 @@ const ChallengeVSSolo = () => {
           <S.ContentWrapper>
             <SearchField
               categories={[
-                { value: "ongoing", label: "진행 중" },
-                { value: "completed", label: "진행 완료" }
+                { value: "IN_PROGRESS", label: "진행 중" },
+                { value: "COMPLETE", label: "진행 완료" }
               ]}
+              onCategoryChange={handleCategoryChange}
+              onKeywordChange={handleKeywordChange}
             />
-            <CardBoard data={challengeSoloList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} />
+            <CardBoard data={challengeSoloList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
           </S.ContentWrapper>
         ) : (
           <S.EmptyState>

@@ -8,7 +8,6 @@ interface CardVSItems {
 }
 const CardVS = ({ data }: CardVSItems) => {
 
-    console.log(data);
     return (
         <S.CardWrapper>
             <S.CardContent>

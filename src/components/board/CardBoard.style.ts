@@ -53,4 +53,14 @@ export const EmptyState = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     aspect-ratio: 1196 / 312;
+    position: relative;
+`;
+
+export const LoadingWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
 `;
