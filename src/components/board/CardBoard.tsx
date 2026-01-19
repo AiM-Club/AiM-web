@@ -1,10 +1,10 @@
-import type { ChallengeVSResponse } from "@/types/challenge";
+import type { ChallengeVSListResponse } from "@/types/challenge";
 import CardVS from "../card/cardvs/CardVS";
 import Pagination from "../pagination/Pagination";
 import * as S from "./CardBoard.style";
 
 interface CardBoardProps {
-    data: ChallengeVSResponse[];
+    data: ChallengeVSListResponse;
     isPagination?: boolean;
 }
 
@@ -12,18 +12,18 @@ const CardBoard = ({ data, isPagination = true }: CardBoardProps) => {
 
     return (
         <S.CardBoardWrapper>
-            {data.length > 0 ? (
+            {data?.content?.length > 0 ? (
                 <>
                     <S.ResultListWrapper>
-                        {data.map((item) => (
+                        {data?.content?.map((item) => (
                             <CardVS key={item.challengeId} data={item} />
                         ))}
                     </S.ResultListWrapper>
                     {isPagination && (
                         <S.PaginationWrapper>
                             <Pagination
-                                currentPage={1}
-                                totalPage={1}
+                                currentPage={data.page.number}
+                                totalPage={data.page.totalPages}
                                 callback={() => { }}
                             />
                         </S.PaginationWrapper>

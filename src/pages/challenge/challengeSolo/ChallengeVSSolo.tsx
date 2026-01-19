@@ -31,7 +31,7 @@ const ChallengeVSSolo = () => {
                 { value: "completed", label: "진행 완료" }
               ]}
             />
-            <CardBoard data={challengeSoloList?.data?.content || []} />
+            <CardBoard data={challengeSoloList?.data || { content: [], page: { size: 0, number: 0, totalElements: 0, totalPages: 0 } }} />
           </S.ContentWrapper>
         ) : (
           <S.EmptyState>
