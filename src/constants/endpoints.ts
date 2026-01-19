@@ -30,6 +30,7 @@ export enum PageEndPoints {
   LOGIN = "/login",
   JOIN = "/join",
   SEARCH = "/search",
+  OAUTH_CALLBACK = "/login/oauth2/code/:provider",
 }
 
 export enum ApiEndpoints {
@@ -38,6 +39,8 @@ export enum ApiEndpoints {
   JOIN = "/auth/register",
   EXIST_ID = "/auth/id-exist",
   MY_PROFILE = "/users/profile",
+  GOOGLE_LOGIN = "/auth/login/google",
+  KAKAO_LOGIN = "/auth/login/kakao",
   PHOTO = "/files/images/:id",
   CHALLENGE = "/challenges",
   CHALLENGE_VS = "/challenges/vs",

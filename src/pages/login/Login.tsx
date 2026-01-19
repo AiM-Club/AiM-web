@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
-import { useLogin } from "@/api/auth";
+import { useLogin, useGoogleLogin, useKakaoLogin } from "@/api/auth";
 // import { FieldError } from "@/components/error/FieldError";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -19,6 +19,8 @@ export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
+  const { mutate: googleLoginMutate } = useGoogleLogin();
+  const { mutate: kakaoLoginMutate } = useKakaoLogin();
   const { setUser, setUserPhoto } = useAuthStore();
 
   const {
@@ -49,13 +51,66 @@ export const Login = () => {
     if (code) {
       console.log("Authorization code:", code);
 
-      // URL에서 code 파라미터 제거 (선택사항)
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, "", newUrl);
+      const socialLoginType = localStorage.getItem("social_login_type");
+      localStorage.removeItem("social_login_type");
 
-      // 백엔드 전송 코드
+      if (socialLoginType === "google") {
+        const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
+
+        googleLoginMutate(
+          {
+            code,
+            redirectUri,
+          },
+          {
+            onSuccess: (response) => {
+              const data = response.data;
+              setUser(data.user);
+              setUserPhoto(data.user.profileImage.filePath);
+              localStorage.setItem("accessToken", data.token.accessToken);
+              localStorage.setItem("refreshToken", data.token.refreshToken);
+              navigate(PageEndPoints.HOME);
+
+              // URL에서 code 파라미터 제거
+              const newUrl = window.location.pathname;
+              window.history.replaceState({}, "", newUrl);
+            },
+            onError: (error: any) => {
+              console.error("구글 로그인 실패:", error);
+              setHasSubmitError(true);
+            },
+          }
+        );
+      } else if (socialLoginType === "kakao") {
+        const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+        kakaoLoginMutate(
+          {
+            code,
+            redirectUri,
+          },
+          {
+            onSuccess: (response) => {
+              const data = response.data;
+              setUser(data.user);
+              setUserPhoto(data.user.profileImage.filePath);
+              localStorage.setItem("accessToken", data.token.accessToken);
+              localStorage.setItem("refreshToken", data.token.refreshToken);
+              navigate(PageEndPoints.HOME);
+
+              // URL에서 code 파라미터 제거
+              const newUrl = window.location.pathname;
+              window.history.replaceState({}, "", newUrl);
+            },
+            onError: (error: any) => {
+              console.error("카카오 로그인 실패:", error);
+              setHasSubmitError(true);
+            },
+          }
+        );
+      }
     }
-  }, []);
+  }, [googleLoginMutate, kakaoLoginMutate, navigate, setUser, setUserPhoto]);
 
   const handleSubmitError = () => {
     setHasSubmitError(true);
