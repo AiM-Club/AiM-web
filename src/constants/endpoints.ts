@@ -38,4 +38,5 @@ export enum ApiEndpoints {
   JOIN = "/auth/register",
   EXIST_ID = "/auth/id-exist",
   PHOTO = "/files/images/:id",
+  CHALLENGE = "/challenges",
 }
