@@ -9,11 +9,16 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
+import { useGetChallengeSolo } from "@/api/challenge";
+import Loading from "@/components/loading/Loading";
 
 const ChallengeVSSolo = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: "ongoing", sort: "createdAt", page: 0, size: 16, keyword: "" });
 
+  if (isLoading) return <Loading />;
+  console.log(challengeSoloList);
   return (
     <DefaultLayout>
       <S.ChallengeVSMainWrapper>
@@ -26,7 +31,7 @@ const ChallengeVSSolo = () => {
                 { value: "completed", label: "진행 완료" }
               ]}
             />
-            <CardBoard data={searchVsData} />
+            <CardBoard data={challengeSoloList?.data?.content || []} />
           </S.ContentWrapper>
         ) : (
           <S.EmptyState>

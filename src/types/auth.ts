@@ -14,7 +14,8 @@ export interface User {
     nickname: string;
     birthday: string;
     gender: string;
-    tier: {
+    badge?: string;
+    tier?: {
         name: string;
     }
     socialLogin: string | null;

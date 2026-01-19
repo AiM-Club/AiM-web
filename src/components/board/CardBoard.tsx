@@ -1,15 +1,14 @@
+import type { ChallengeVSResponse } from "@/types/challenge";
 import CardVS from "../card/cardvs/CardVS";
 import Pagination from "../pagination/Pagination";
 import * as S from "./CardBoard.style";
-import type { CardVSProps } from "@/types/VSBattle";
 
 interface CardBoardProps {
-    data: CardVSProps[];
-    writePath?: string;
+    data: ChallengeVSResponse[];
     isPagination?: boolean;
 }
 
-const CardBoard = ({data, isPagination = true}: CardBoardProps) => {
+const CardBoard = ({ data, isPagination = true }: CardBoardProps) => {
 
     return (
         <S.CardBoardWrapper>
@@ -17,20 +16,15 @@ const CardBoard = ({data, isPagination = true}: CardBoardProps) => {
                 <>
                     <S.ResultListWrapper>
                         {data.map((item) => (
-                            <CardVS key={item.id} data={item} />
+                            <CardVS key={item.challengeId} data={item} />
                         ))}
                     </S.ResultListWrapper>
-                    {/* {writePath && 
-                        <S.ButtonWrapper>
-                            <Button onClick={() => navigate(writePath)}>작성</Button>
-                        </S.ButtonWrapper>
-                    } */}
                     {isPagination && (
                         <S.PaginationWrapper>
-                        <Pagination 
-                            currentPage={1}
-                            totalPage={1}
-                                callback={() => {}}
+                            <Pagination
+                                currentPage={1}
+                                totalPage={1}
+                                callback={() => { }}
                             />
                         </S.PaginationWrapper>
                     )}
@@ -40,7 +34,7 @@ const CardBoard = ({data, isPagination = true}: CardBoardProps) => {
                     검색 결과가 없습니다
                 </S.EmptyState>
             )}
-            
+
         </S.CardBoardWrapper>
     )
 }

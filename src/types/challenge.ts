@@ -25,9 +25,9 @@ export interface ChallengeVSResponse {
     startDate: string;
     duration: string;
     name: string;
-    field: string[];
-    tag: string[];
-    job: string[];
+    fields: string[];
+    tags: string[];
+    job: string;
     liked: boolean;
     likeCount: number;
     createdAt: string;
