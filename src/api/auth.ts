@@ -1,6 +1,6 @@
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { ApiResponse } from "./types";
+import type { ApiResponse, QueryOptions } from "./types";
 import type { LoginRequest, LoginResponse, SocialLoginRequest, JoinRequest, User, ExistResponse } from "@/types/auth";
 
 //로그인
@@ -20,8 +20,8 @@ export const useKakaoLogin = () => {
 }
 
 //내 프로필 조회
-export const useGetMe = () => {
-    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE);
+export const useGetMe = (options?: QueryOptions<ApiResponse<User>>) => {
+    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE, undefined, options);
 }
 // 회원가입
 export const useJoin = () => {
