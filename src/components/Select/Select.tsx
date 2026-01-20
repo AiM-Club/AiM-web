@@ -18,14 +18,8 @@ interface SelectProps {
   width?: number;
 }
 
-const defaultOptions: SelectOption[] = [
-  { value: "newest", label: "최신순" },
-  { value: "oldest", label: "오래된순" },
-  { value: "likes", label: "좋아요순" },
-  { value: "alphabetical", label: "가나다순" },
-];
 
-const Select = ({ placeholder, options = defaultOptions, value, onValueChange, width = 0 }: SelectProps) => {
+const Select = ({ placeholder, options, value, onValueChange, width = 0 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenChange = () => {
@@ -49,7 +43,7 @@ const Select = ({ placeholder, options = defaultOptions, value, onValueChange, w
       <SelectMenu.Portal>
         <S.Content position="popper" align="start" sideOffset={4} $width={width}>
           <S.Viewport>
-            {options.map((option, index) => (
+            {options?.map((option, index) => (
               <S.Item key={index} value={option.value} onClick={() => handleOpenChange()} $width={width}>
                 <SelectMenu.ItemText>{option.label}</SelectMenu.ItemText>
               </S.Item>

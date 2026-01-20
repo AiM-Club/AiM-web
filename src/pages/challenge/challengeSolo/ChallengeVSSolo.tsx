@@ -18,7 +18,8 @@ const ChallengeVSSolo = () => {
   const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
   const [selectedCategory, setSelectedCategory] = useState<string>("--");
   const [keyword, setKeyword] = useState<string>("");
-  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: selectedCategory, sort: "--", page: currentPage - 1, size: 16, keyword });
+  const [sort, setSort] = useState<string>("--");
+  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: selectedCategory, sort: sort, page: currentPage - 1, size: 16, keyword });
 
   useEffect(() => {
     setTotalPage(challengeSoloList?.data.page.totalPages || 1);
@@ -34,6 +35,10 @@ const ChallengeVSSolo = () => {
     handlePageChange(1);
   };
 
+  const handleSortChange = (sort: string) => {
+    setSort(sort);
+    handlePageChange(1);
+  };
 
   return (
     <DefaultLayout>
@@ -46,8 +51,14 @@ const ChallengeVSSolo = () => {
                 { value: "IN_PROGRESS", label: "진행 중" },
                 { value: "COMPLETE", label: "진행 완료" }
               ]}
+              sorts={[
+                { value: "LATEST", label: "최신순" },
+                { value: "OLDEST", label: "오래된순" },
+                { value: "TITLE", label: "가나다순" },
+              ]}
               onCategoryChange={handleCategoryChange}
               onKeywordChange={handleKeywordChange}
+              onSortChange={handleSortChange}
             />
             <CardBoard data={challengeSoloList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
           </S.ContentWrapper>
