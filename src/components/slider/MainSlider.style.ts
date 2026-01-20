@@ -17,10 +17,10 @@ export const SliderWrapper = styled.div`
   }
 `;
 
-export const ArrowWrapper = styled.div<{ position: "left" | "right" }>`
+export const ArrowWrapper = styled.div<{ $position: "left" | "right" }>`
   position: absolute;
   top: 11.25rem;
-  ${(props) => (props.position === "left" ? "left: 2rem;" : "right: 2rem;")}
+  ${(props) => (props.$position === "left" ? "left: 2rem;" : "right: 2rem;")}
   trans
   z-index: 20;
   cursor: pointer;

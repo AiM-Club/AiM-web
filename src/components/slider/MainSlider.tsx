@@ -9,7 +9,7 @@ import PrevArrowImg from "@/assets/PrevArrow.png";
 
 const NextArrow = ({ onClick }: any) => {
   return (
-    <S.ArrowWrapper position="right" onClick={onClick}>
+    <S.ArrowWrapper $position="right" onClick={onClick}>
       <img src={NextArrowImg} />
     </S.ArrowWrapper>
   );
@@ -17,7 +17,7 @@ const NextArrow = ({ onClick }: any) => {
 
 const PrevArrow = ({ onClick }: any) => {
   return (
-    <S.ArrowWrapper position="left" onClick={onClick}>
+    <S.ArrowWrapper $position="left" onClick={onClick}>
       <img src={PrevArrowImg} />
     </S.ArrowWrapper>
   );
