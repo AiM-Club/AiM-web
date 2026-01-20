@@ -1,12 +1,11 @@
 import { ApiEndpoints } from "@/constants/endpoints";
 import { useFetch, usePost } from "./hooks";
-import { buildPath } from "@/utils/buildPath";
-import type { ChallengeRequest, ChallengeVSListResponse } from "@/types/challenge";
+import type { ChallengeVSListResponse } from "@/types/challenge";
 import type { ApiResponse } from "./types";
 
 
-export const usePostChallengeVS = () => {
-    return usePost<ChallengeRequest, number>(ApiEndpoints.CHALLENGE);
+export const usePostChallenge = () => {
+    return usePost<FormData, number>(ApiEndpoints.CHALLENGE);
 }
 
 //챌린지 조회

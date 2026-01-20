@@ -1,11 +1,31 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import Check from "@/assets/Check.svg";
+import { z } from "zod";
 
 interface SelectOption {
   value: string;
   label: string;
+}
+
+const writeElementsSchema = z.object({
+  field: z.string().min(1, "분야를 선택해 주세요"),
+  tags: z
+    .array(z.string().min(1, "태그를 입력해 주세요"))
+    .min(1, "태그를 1개 이상 입력해 주세요"),
+  job: z.string().min(1, "직무를 입력해 주세요"),
+  startDate: z.string().min(1, "시작일을 선택해 주세요"),
+  weeks: z.number().min(1, "기간을 선택해 주세요"),
+  mode: z.string().min(1, "모드를 선택해 주세요"),
+  challengeSelect: z.string().optional(),
+});
+
+type WriteElementsForm = z.infer<typeof writeElementsSchema>;
+
+export interface WriteElementsSelectRef {
+  validate: () => Promise<{ isValid: boolean; data?: WriteElementsForm; error?: string }>;
+  getData: () => Partial<WriteElementsForm>;
 }
 
 interface WriteElementsSelectProps {
@@ -14,7 +34,8 @@ interface WriteElementsSelectProps {
   selectedMode?: string;
 }
 
-const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: WriteElementsSelectProps) => {
+const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSelectProps>(
+  ({ mode = false, challenge = true, selectedMode }, ref) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const currentDay = new Date().getDate();
@@ -36,6 +57,10 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
   const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth);
   const [selectedDay, setSelectedDay] = useState<number>(currentDay);
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
+  const [selectedField, setSelectedField] = useState<string>("");
+  const [tagValues, setTagValues] = useState<string[]>(["", "", ""]);
+  const [job, setJob] = useState<string>("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // 외부 클릭 감지를 위한 ref
   const yearRef = useRef<HTMLDivElement>(null);
@@ -67,39 +92,141 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
   }, []);
 
   const options: SelectOption[] = [
-    { value: "newest", label: "IT" },
-    { value: "oldest", label: "경영" },
-    { value: "likes", label: "경제" },
-    { value: "alphabetical", label: "정치" },
-    { value: "alphabetical", label: "어문" },
-    { value: "alphabetical", label: "자연" },
-    { value: "alphabetical", label: "디자인" },
-    { value: "alphabetical", label: "음악" },
-    { value: "alphabetical", label: "체육" },
+    { value: "IT", label: "IT" },
+    { value: "경영", label: "경영" },
+    { value: "경제", label: "경제" },
+    { value: "정치", label: "정치" },
+    { value: "어문", label: "어문" },
+    { value: "자연", label: "자연" },
+    { value: "디자인", label: "디자인" },
+    { value: "음악", label: "음악" },
+    { value: "체육", label: "체육" },
   ];
+
+  useImperativeHandle(ref, () => ({
+    validate: async () => {
+      const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+      const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+      const data: Partial<WriteElementsForm> = {
+        field: selectedField,
+        tags: filteredTags,
+        job,
+        startDate,
+        weeks: selectedWeek,
+        mode: currentMode,
+      };
+      const result = writeElementsSchema.safeParse(data);
+      if (!result.success) {
+        const newErrors: Record<string, string> = {};
+        result.error.issues.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as string] = err.message;
+          }
+        });
+        setErrors(newErrors);
+        const firstError = result.error.issues[0]?.message || "유효성 검사 실패";
+        return { isValid: false, error: firstError };
+      }
+      setErrors({});
+      return { isValid: true, data: result.data };
+    },
+    getData: () => {
+      const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+      const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+      return {
+        field: selectedField,
+        tags: filteredTags,
+        job,
+        startDate,
+        weeks: selectedWeek,
+        mode: currentMode || undefined,
+      };
+    },
+  }));
 
   const handleModeClick = (mode: string) => {
     if (selectedMode) return;
     setCurrentMode(mode);
+    setErrors((prev) => ({ ...prev, mode: "" }));
+  }
+
+  const handleFieldChange = (value: string) => {
+    setSelectedField(value);
+    setErrors((prev) => ({ ...prev, field: "" }));
+  }
+
+  const handleTagChange = (index: number, value: string) => {
+    const next = [...tagValues];
+    next[index] = value;
+    setTagValues(next);
+    setErrors((prev) => ({ ...prev, tags: "" }));
+  }
+
+  const handleJobChange = (value: string) => {
+    setJob(value);
+    setErrors((prev) => ({ ...prev, job: "" }));
+  }
+
+  const handleDateChange = (y: number, m: number, d: number) => {
+    setSelectedYear(y);
+    setSelectedMonth(m);
+    setSelectedDay(d);
+    setErrors((prev) => ({ ...prev, startDate: "" }));
+  }
+
+  const handleWeeksChange = (value: number) => {
+    setSelectedWeek(value);
+    setErrors((prev) => ({ ...prev, weeks: "" }));
   }
 
   return (
     <S.WriteElementsSelectWrapper>
       <S.EachContentWrapper>
         <S.ContentTitle>분야</S.ContentTitle>
-        <Select placeholder="선택" options={options} width={18} />
+        <Select 
+          placeholder="선택" 
+          options={options} 
+          width={18}
+          value={selectedField}
+          onValueChange={handleFieldChange}
+        />
+        {errors.field && (
+          <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+            {errors.field}
+          </p>
+        )}
       </S.EachContentWrapper>
       <S.EachContentWrapper>
         <S.ContentTitle>태그</S.ContentTitle>
         <S.InputWrapper>
           {Array.from({ length: 3 }).map((_, i) => (
-            <S.InputField key={i} placeholder="#작성" $width={5.6} />
+            <S.InputField
+              key={i}
+              placeholder="#작성"
+              $width={5.6}
+              value={tagValues[i] || ""}
+              onChange={(e) => handleTagChange(i, e.target.value)}
+            />
           ))}
         </S.InputWrapper>
+        {errors.tags && (
+          <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+            {errors.tags}
+          </p>
+        )}
       </S.EachContentWrapper>
       <S.EachContentWrapper>
         <S.ContentTitle>직무</S.ContentTitle>
-        <S.InputField placeholder="직무를 작성하세요" />
+        <S.InputField
+          placeholder="직무를 작성하세요"
+          value={job}
+          onChange={(e) => handleJobChange(e.target.value)}
+        />
+        {errors.job && (
+          <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+            {errors.job}
+          </p>
+        )}
       </S.EachContentWrapper>
       <S.EachContentWrapper>
         <S.ContentTitle>시작일</S.ContentTitle>
@@ -114,7 +241,7 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
                   <S.PickerItem
                     key={year}
                     onClick={() => {
-                      setSelectedYear(year);
+                      handleDateChange(year, selectedMonth, selectedDay);
                       setYearOpen(false);
                     }}
                     $isSelected={selectedYear === year}
@@ -135,7 +262,7 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
                   <S.PickerItem
                     key={month}
                     onClick={() => {
-                      setSelectedMonth(month);
+                      handleDateChange(selectedYear, month, selectedDay);
                       setMonthOpen(false);
                     }}
                     $isSelected={selectedMonth === month}
@@ -156,7 +283,7 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
                   <S.PickerItem
                     key={day}
                     onClick={() => {
-                      setSelectedDay(day);
+                      handleDateChange(selectedYear, selectedMonth, day);
                       setDayOpen(false);
                     }}
                     $isSelected={selectedDay === day}
@@ -182,7 +309,7 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
                   <S.PickerItem
                     key={week}
                     onClick={() => {
-                      setSelectedWeek(week);
+                      handleWeeksChange(week);
                       setWeekOpen(false);
                     }}
                     $isSelected={selectedWeek === week}
@@ -199,14 +326,14 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
         <S.EachContentWrapper>
           <S.ContentTitle>모드</S.ContentTitle>
           <S.InputWrapper>
-            <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => handleModeClick("SOLO")}>
-              {selectedMode && selectedMode === "SOLO" ? <img src={Check} /> : ""}
-              SOLO
-            </S.Mode>
-            <S.Mode $isSelected={currentMode === "VS대결"} onClick={() => handleModeClick("VS대결")}>
-              {selectedMode && selectedMode === "VS대결" ? <img src={Check} /> : ""}
-              VS대결
-            </S.Mode>
+          <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => handleModeClick("SOLO")}>
+            {selectedMode && selectedMode === "SOLO" ? <img src={Check} /> : ""}
+            SOLO
+          </S.Mode>
+          <S.Mode $isSelected={currentMode === "VS"} onClick={() => handleModeClick("VS")}>
+            {selectedMode && selectedMode === "VS" ? <img src={Check} /> : ""}
+            VS대결
+          </S.Mode>
           </S.InputWrapper>
         </S.EachContentWrapper>
       )}
@@ -218,6 +345,8 @@ const WriteElementsSelect = ({ mode = false, challenge = true, selectedMode }: W
       )}
     </S.WriteElementsSelectWrapper>
   );
-}
+});
+
+WriteElementsSelect.displayName = "WriteElementsSelect";
 
 export default WriteElementsSelect;
