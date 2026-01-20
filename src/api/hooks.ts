@@ -33,6 +33,23 @@ import {
       ...options,
     });
   };
+
+  /**
+   * T = 요청할 데이터의 타입 (query params)
+   * S = 서버에서 받아올 데이터의 타입
+   * @param url 요청할 url
+   * @param options  mutation options (ex. onSuccess, onError, onSettled 등)
+   * 버튼 클릭 시에만 실행되는 GET 요청용 훅
+   */
+  export const useFetchMutation = <T = object, S = unknown>(
+    url: string,
+    options?: MutationOptions<S, unknown, T>
+  ) => {
+    return useMutation<S, unknown, T>({
+      mutationFn: (params) => api.get<S>(url, (params ?? {}) as object),
+      ...options,
+    });
+  };
   
   /**
    * T = 요청할 데이터의 타입

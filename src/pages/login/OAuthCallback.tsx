@@ -22,17 +22,28 @@ export const OAuthCallback = () => {
       return;
     }
 
-    if (!provider) {
-      console.error("OAuth provider가 없습니다.");
+    // provider가 없으면 URL 경로에서 추출 시도
+    let providerName = provider;
+    if (!providerName) {
+      // /oauth/kakao/callback 또는 /oauth/google/callback 형태에서 추출
+      const pathParts = location.pathname.split("/");
+      if (pathParts.length >= 3 && pathParts[1] === "oauth") {
+        providerName = pathParts[2];
+      }
+    }
+
+    if (!providerName) {
+      console.error("OAuth provider를 찾을 수 없습니다. 경로:", location.pathname);
       navigate(PageEndPoints.LOGIN);
       return;
     }
 
     console.log("Authorization code:", code);
-    console.log("Provider:", provider);
+    console.log("Provider:", providerName);
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
 
-    if (provider === "google") {
-      console.log("dfdjkfjdkfjdkfdj")
+    if (providerName === "google") {
       const redirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 
       if (!redirectUri) {
@@ -51,28 +62,28 @@ export const OAuthCallback = () => {
         {
           onSuccess: (response) => {
             console.log("구글 로그인 성공:", response);
-            // const data = response.data;
-            // console.log("구글 로그인 성공:", data);
-            // setUser(data.user);
-            // setUserPhoto(data.user.profileImage.filePath);
-            // localStorage.setItem("accessToken", data.token.accessToken);
-            // localStorage.setItem("refreshToken", data.token.refreshToken);
+            const data = response.data;
+
+            if (!data || !data.user || !data.token) {
+              console.error("응답 데이터 구조가 올바르지 않습니다:", data);
+              navigate(PageEndPoints.LOGIN);
+              return;
+            }
+
+            console.log("구글 로그인 성공 - 파싱된 데이터:", data);
+            setUser(data.user);
+            setUserPhoto(data.user.profileImage);
+            localStorage.setItem("accessToken", data.token.accessToken);
+            localStorage.setItem("refreshToken", data.token.refreshToken);
             navigate(PageEndPoints.HOME);
           },
           onError: (error: any) => {
-            console.log("dddddddd")
             console.error("구글 로그인 실패:", error);
-            console.error("에러 상세:", {
-              status: error?.response?.status,
-              statusText: error?.response?.statusText,
-              data: error?.response?.data,
-              message: error?.message,
-            });
-            navigate(PageEndPoints.LOGIN);
+            // navigate(PageEndPoints.LOGIN);
           },
         }
       );
-    } else if (provider === "kakao") {
+    } else if (providerName === "kakao") {
       const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
       if (!redirectUri) {
@@ -81,6 +92,8 @@ export const OAuthCallback = () => {
         return;
       }
 
+      console.log("카카오 로그인 요청 데이터:", { code, redirectUri });
+
       kakaoLoginMutate(
         {
           code,
@@ -88,9 +101,19 @@ export const OAuthCallback = () => {
         },
         {
           onSuccess: (response) => {
+            // console.log("카카오 로그인 성공:", response);
             const data = response.data;
+            console.log(data);
+
+            if (!data || !data.user || !data.token) {
+              console.error("응답 데이터 구조가 올바르지 않습니다:", data);
+              navigate(PageEndPoints.LOGIN);
+              return;
+            }
+
+            console.log("카카오 로그인 성공 - 파싱된 데이터:", data);
             setUser(data.user);
-            setUserPhoto(data.user.profileImage.filePath);
+            setUserPhoto(data.user.profileImage);
             localStorage.setItem("accessToken", data.token.accessToken);
             localStorage.setItem("refreshToken", data.token.refreshToken);
             navigate(PageEndPoints.HOME);
@@ -102,7 +125,7 @@ export const OAuthCallback = () => {
         }
       );
     } else {
-      console.error("알 수 없는 OAuth provider:", provider);
+      console.error("알 수 없는 OAuth provider:", providerName);
       navigate(PageEndPoints.LOGIN);
     }
   }, [location, navigate, provider, googleLoginMutate, kakaoLoginMutate, setUser, setUserPhoto]);
