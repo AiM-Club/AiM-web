@@ -41,5 +41,9 @@ export enum ApiEndpoints {
   EXIST_NICKNAME = "/auth/nickname-exist",
   GOOGLE_LOGIN = "/auth/login/google",
   KAKAO_LOGIN = "/auth/login/kakao",
+  MY_PROFILE = "/users/profile",
   PHOTO = "/files/images/:id",
+  CHALLENGE = "/challenges",
+  CHALLENGE_VS = "/challenges/vs",
+  CHALLENGE_SOLO = "/challenges/solo",
 }

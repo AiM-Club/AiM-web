@@ -13,12 +13,18 @@ interface SearchFieldProps {
   categories?: CategoryOption[];
   defaultCategory?: string;
   onCategoryChange?: (category: string) => void;
+  onKeywordChange?: (keyword: string) => void;
+  onSortChange?: (sort: string) => void;
+  sorts?: CategoryOption[];
 }
 
 const SearchField = ({
   categories,
   defaultCategory,
-  onCategoryChange
+  onCategoryChange,
+  onKeywordChange,
+  onSortChange,
+  sorts
 }: SearchFieldProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(
     defaultCategory || ""
@@ -45,8 +51,8 @@ const SearchField = ({
         </S.CategoryButtonWrapper>
       )}
       <S.SearchFieldWrapper>
-        <SearchInput />
-        <Select placeholder="정렬" />
+        <SearchInput onKeywordChange={onKeywordChange} />
+        <Select placeholder="정렬" options={sorts} onValueChange={onSortChange} />
       </S.SearchFieldWrapper>
     </S.SearchFieldContainer>
   )

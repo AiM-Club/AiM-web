@@ -20,16 +20,15 @@ export interface User {
     nickname: string;
     birthday: string;
     gender: string;
-    tier: Tier;
+    badge?: string;
+    tier?: {
+        name: string;
+    }
     socialLogin: string | null;
     isNewUser: boolean;
     profileImage: profileImage;
     createdAt: string;
     lastModifiedAt: string;
-}
-
-export interface Tier{
-  name: "BRONZE | SILVER | GOLD | DIAMOND";
 }
 
 export interface profileImage {

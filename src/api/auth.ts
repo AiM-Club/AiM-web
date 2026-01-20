@@ -1,6 +1,7 @@
-import { useFetchMutation, usePost } from "./hooks";
+import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { LoginRequest, LoginResponse, SocialLoginRequest, JoinRequest, User } from "@/types/auth";
+import type { ApiResponse } from "./types";
 
 //로그인
 export const useLogin = () => {
@@ -31,3 +32,7 @@ export const useExistNickname = () => {
 export const useExistId = () => {
     return useFetchMutation<{ id: string }, boolean>(ApiEndpoints.EXIST_ID);
 };
+//내 프로필 조회
+export const useGetMe = () => {
+    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE);
+}

@@ -1,43 +1,130 @@
 import Button from "@/components/button/Button";
-import BannerTitleField from "@/components/field/BannerTitleField";
-import WriteElementsSelect from "@/components/field/WriteElementsSelect";
+import BannerTitleField, { type BannerTitleFieldRef } from "@/components/field/BannerTitleField";
+import WriteElementsSelect, { type WriteElementsSelectRef } from "@/components/field/WriteElementsSelect";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 import Clicked from "@/assets/RadioClick.svg";
 import NonClicked from "@/assets/RadioNonClick.svg";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { usePostChallenge } from "@/api/challenge";
+
+const createChallengeSchema = z.object({
+  aiRequest: z.string().min(1, "요청사항을 입력해 주세요"),
+  visibility: z.string().min(1, "공개 여부를 선택해 주세요"),
+});
+
+type CreateChallengeForm = z.infer<typeof createChallengeSchema>;
 
 const CreateChallenge = () => {
   const [isPublic, setIsPublic] = useState<boolean>(true);
+  const { mutate: createChallengeMutate } = usePostChallenge();
+  const bannerTitleRef = useRef<BannerTitleFieldRef>(null);
+  const writeElementsRef = useRef<WriteElementsSelectRef>(null);
+  const {
+    register,
+    setValue,
+    formState: { isValid },
+  } = useForm<CreateChallengeForm>({
+    resolver: zodResolver(createChallengeSchema),
+    mode: "onChange",
+    defaultValues: {
+      aiRequest: "",
+      visibility: "--",
+    },
+  });
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // 각 컴포넌트의 유효성 검사 실행
+    const [bannerResult, elementsResult] = await Promise.all([
+      bannerTitleRef.current?.validate() || Promise.resolve({ isValid: false }),
+      writeElementsRef.current?.validate() || Promise.resolve({ isValid: false }),
+    ]);
+
+    // 모든 검증 통과 확인
+    if (bannerResult.isValid && elementsResult.isValid && isValid) {
+      // 모든 데이터 수집
+      const bannerData = bannerTitleRef.current?.getData();
+      const elementsData = writeElementsRef.current?.getData();
+      const formData = {
+        aiRequest: (e.target as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="aiRequest"]')?.value || "",
+        isPublic,
+      };
+
+      const fromData = new FormData();
+      fromData.append("name", bannerData?.title || "");
+      fromData.append("startedAt", elementsData?.startDate || "");
+      fromData.append("duration", elementsData?.weeks?.toString() || "");
+      fromData.append("tags", elementsData?.tags?.join(",") || "");
+      fromData.append("fields", elementsData?.field || "");
+      fromData.append("job", elementsData?.job || "");
+      fromData.append("userRequest", formData.aiRequest);
+      fromData.append("mode", elementsData?.mode || "");
+      fromData.append("visibility", formData.isPublic ? "PUBLIC" : "PRIVATE");
+
+      // FormData 내용 콘솔 출력
+      for (const [key, value] of fromData.entries()) {
+        console.log(`FormData -> ${key}:`, value);
+      }
+      // TODO: API 연동
+      createChallengeMutate(fromData, {
+        onSuccess: (data) => {
+          console.log("create challenge success:", data);
+        },
+        onError: (error) => {
+          console.log("create challenge error:", error);
+        },
+      });
+    }
+  };
 
   return (
     <DefaultLayout variant="home">
       <S.RecruitWriteWrapper>
-        <S.TopicWrapper>
-          <PageTopic text="챌린지 개설" size="l" />
-        </S.TopicWrapper>
-        <BannerTitleField />
-        <S.WriteContentWrapper>
-          <WriteElementsSelect mode={true} challenge={false} />
-          <S.WriteFieldWrapper>
-            <S.Text>AI 요청 사항</S.Text>
-            <S.TextArea placeholder="요청사항을 작성하세요" />
-          </S.WriteFieldWrapper>
-          <S.ButtonWrapper>
-            <S.RadioWrapper>
-              <S.Radio onClick={() => setIsPublic(true)}>
-                <img src={isPublic ? Clicked : NonClicked} alt="clicked" />
-                <p>공개</p>
-              </S.Radio>
-              <S.Radio onClick={() => setIsPublic(false)}>
-                <img src={isPublic ? NonClicked : Clicked} alt="non-clicked" />
-                <p>비공개</p>
-              </S.Radio>
-            </S.RadioWrapper>
-            <Button>완료</Button>
-          </S.ButtonWrapper>
-        </S.WriteContentWrapper>
+        <form onSubmit={handleFormSubmit}>
+          <S.TopicWrapper>
+            <PageTopic text="챌린지 개설" size="l" />
+          </S.TopicWrapper>
+          <BannerTitleField ref={bannerTitleRef} />
+          <S.WriteContentWrapper>
+            <WriteElementsSelect ref={writeElementsRef} mode={true} challenge={false} />
+            <S.WriteFieldWrapper>
+              <S.Text>AI 요청 사항</S.Text>
+              <S.TextArea
+                placeholder="요청사항을 작성하세요"
+                {...register("aiRequest")}
+              />
+            </S.WriteFieldWrapper>
+            <S.ButtonWrapper>
+              <S.RadioWrapper>
+                <S.Radio
+                  onClick={() => {
+                    setIsPublic(true);
+                    setValue("visibility", "PUBLIC");
+                  }}
+                >
+                  <img src={isPublic ? Clicked : NonClicked} alt="clicked" />
+                  <p>공개</p>
+                </S.Radio>
+                <S.Radio
+                  onClick={() => {
+                    setIsPublic(false);
+                    setValue("visibility", "PRIVATE");
+                  }}
+                >
+                  <img src={isPublic ? NonClicked : Clicked} alt="non-clicked" />
+                  <p>비공개</p>
+                </S.Radio>
+              </S.RadioWrapper>
+              <Button type="submit" disabled={!isValid}>완료</Button>
+            </S.ButtonWrapper>
+          </S.WriteContentWrapper>
+        </form>
       </S.RecruitWriteWrapper>
     </DefaultLayout>
   );

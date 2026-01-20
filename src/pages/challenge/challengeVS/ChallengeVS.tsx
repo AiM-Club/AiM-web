@@ -9,12 +9,24 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import usePagination from "@/hooks/usePagination";
+import { useGetChallengeVS } from "@/api/challenge";
+import useSearch from "@/hooks/useSearch";
 
 const ChallengeVS = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
+  const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
+    onSearchChange: () => handlePageChange(1),
+  });
+  const { data: challengeVSList, isLoading } = useGetChallengeVS({ filterType: category, sort: sort, page: currentPage - 1, size: 16, keyword });
+
+  useEffect(() => {
+    setTotalPage(challengeVSList?.data.page.totalPages || 1);
+  }, [challengeVSList?.data.page.totalPages, setTotalPage]);
+
 
   return (
     <DefaultLayout>
@@ -23,19 +35,29 @@ const ChallengeVS = () => {
         <S.ContentWrapper>
           <SearchField
             categories={[
-              { value: "all", label: "ALL" },
-              { value: "my", label: "MY" },
-              { value: "invitation", label: "VS 초대" }
+              { value: "ALL", label: "ALL" },
+              { value: "MY", label: "MY" },
+              { value: "INVITATION", label: "VS 초대" }
             ]}
-            onCategoryChange={setSelectedCategory}
+            sorts={[
+              { value: "LATEST", label: "최신순" },
+              { value: "OLDEST", label: "오래된순" },
+              { value: "TITLE", label: "가나다순" },
+              { value: "ONGOING", label: "진행중" },
+              { value: "FINISHED", label: "진행완료" },
+
+            ]}
+            onCategoryChange={handleCategoryChange}
+            onKeywordChange={handleKeywordChange}
+            onSortChange={handleSortChange}
           />
-          {!user && (selectedCategory == "my" || selectedCategory == "invitation") ? (
+          {!user && (category == "MY" || category == "INVITATION") ? (
             <S.EmptyState>
               <S.LockImage src={Lock} />
               로그인 후 이용 가능합니다
             </S.EmptyState>
           ) : (
-            <CardBoard data={searchVsData} />
+            <CardBoard data={challengeVSList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
           )}
         </S.ContentWrapper>
       </S.ChallengeVSWrapper>

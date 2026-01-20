@@ -1,22 +1,41 @@
 import * as S from "./SearchInput.style";
 import { FiSearch } from "react-icons/fi";
-import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useEffect } from "react";
 
-const SearchInput = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+interface SearchInputProps {
+    onKeywordChange?: (keyword: string) => void;
+}
+
+const SearchInput = ({ onKeywordChange }: SearchInputProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const handleChange = () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            const keyword = inputRef.current?.value.trim() || "";
+            onKeywordChange?.(keyword);
+        }, 1000);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const newParams = new URLSearchParams(searchParams);
-        if (keyword.trim()) {
-            newParams.set("keyword", keyword.trim());
-            newParams.set("page", "1");
-        } else {
-            newParams.delete("keyword");
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
         }
-        setSearchParams(newParams);
+        const keyword = inputRef.current?.value.trim() || "";
+        onKeywordChange?.(keyword);
     };
 
     return (
@@ -25,10 +44,10 @@ const SearchInput = () => {
                 <FiSearch size={24} />
             </S.SearchIcon>
             <S.InputField
+                ref={inputRef}
                 type="text"
                 placeholder="검색어를 입력해 주세요"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
+                onChange={handleChange}
             />
         </S.SearchInputWrapper>
     );
