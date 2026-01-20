@@ -5,7 +5,7 @@ interface AuthStore {
   user: User | null;
   userPhoto: string | null;
   setUser: (user: User) => void;
-  setUserPhoto: (userPhoto: string) => void;
+  setUserPhoto: (userPhoto: string|null) => void;
   logout: () => void;
 }
 

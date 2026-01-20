@@ -3,9 +3,15 @@ export interface LoginRequest {
     password: string;
 }
 
+export interface SocialLoginRequest {
+    code: string;
+    redirectUri: string;
+}
+
 export interface LoginResponse {
     user: User;
     token: Token;
+    isNewUser?: boolean;
 }
 
 export interface User {
@@ -38,4 +44,17 @@ export interface Token {
     refreshToken: string;
     accessTokenExpiresAt: string;
     refreshTokenExpiresAt: string;
+}
+
+export interface JoinRequest{
+  loginId: string;
+  nickname: string;
+  password: string;
+  birthday: string;
+  profileImage?: File|null;
+  gender: "MALE" | "FEMALE" | "OTHER";
+}
+
+export interface ExistResponse {
+  isExist: boolean;
 }

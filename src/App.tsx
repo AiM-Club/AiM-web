@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { PageEndPoints } from "./constants/endpoints"
 import { Login } from "./pages/login/Login"
+import { OAuthCallback } from "./pages/login/OAuthCallback"
 import Home from "./pages/home/Home"
 import { Join } from "./pages/join/Join"
 import Mypage from "./pages/mypage/Mypage"
@@ -67,6 +68,7 @@ function App() {
           <Route path={PageEndPoints.CHALLENGE_RANKING} element={<Ranking />} />
           <Route path={PageEndPoints.CHALLENGE_RECRUIT_WRITE} element={<ChallengeRecruitWrite />} />
           <Route path={PageEndPoints.LOGIN} element={<Login />} />
+          <Route path={PageEndPoints.OAUTH_CALLBACK} element={<OAuthCallback />} />
           <Route path={PageEndPoints.JOIN} element={<Join />} />
           <Route path={PageEndPoints.SEARCH} element={<Search />} />
           <Route path={PageEndPoints.CHALLENGE_RANKING_LIST} element={<RankingList />} />

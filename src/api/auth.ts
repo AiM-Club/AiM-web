@@ -1,6 +1,6 @@
-import { useFetch, usePost } from "./hooks";
+import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { LoginRequest, LoginResponse, User } from "@/types/auth";
+import type { LoginRequest, LoginResponse, SocialLoginRequest, JoinRequest, User, ExistResponse } from "@/types/auth";
 import type { ApiResponse } from "./types";
 
 //로그인
@@ -8,16 +8,30 @@ export const useLogin = () => {
     return usePost<LoginRequest, LoginResponse>(ApiEndpoints.LOGIN);
 }
 
-//아이디 중복검사
-export const useExistId = (id: string) => {
-    return useFetch<boolean>(
-        ApiEndpoints.EXIST_ID,
-        {
-            id,
-        }
-    );
-};
+// 구글 소셜 로그인
+export const useGoogleLogin = () => {
+    return usePost<SocialLoginRequest, LoginResponse>(ApiEndpoints.GOOGLE_LOGIN);
+}
 
+// 카카오 소셜 로그인
+export const useKakaoLogin = () => {
+    return usePost<SocialLoginRequest, LoginResponse>(ApiEndpoints.KAKAO_LOGIN);
+}
+
+// 회원가입
+export const useJoin = () => {
+  return usePost<FormData, User>(ApiEndpoints.JOIN);
+}
+
+//닉네임 중복 검사
+export const useExistNickname = () => {
+  return useFetchMutation<{ nickname: string }, ApiResponse<ExistResponse>>(ApiEndpoints.EXIST_NICKNAME);
+}
+
+//아이디 중복 검사
+export const useExistId = () => {
+    return useFetchMutation<{ id: string }, ApiResponse<ExistResponse>>(ApiEndpoints.EXIST_ID);
+};
 //내 프로필 조회
 export const useGetMe = () => {
     return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE);

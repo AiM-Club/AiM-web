@@ -12,6 +12,7 @@ import pinkCardBottomHover from "@/assets/CardPinkHoverBottom.png"
 import greenCardBottomHoverLong from "@/assets/CardGreenHoverLong.png"
 import pinkCardBottomHoverLong from "@/assets/CardPinkHoverLong.png"
 import pinkCardStraightTop from "@/assets/CardPinkStraightTop.png"
+import PinkCardShortLeft from "@/assets/PinkCardLeft.png";
 import pinkCardStraightBottom from "@/assets/CardPinkStraightBottom.png"
 import pinkCardStraightHoverTop from "@/assets/CardPinkStraightHoverTop.png"
 import pinkCardStraightHoverBottom from "@/assets/CardPinkStraightHoverBottom.png"
@@ -56,7 +57,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
     if (color === "green") {
       return isHovered ? greenCardTopHover : greenCardTop;
     } else if (color === "pink" && topicDirection === "left") {
-      return isHovered ? pinkCardStraightHoverTop : pinkCardStraightTop;
+      return isHovered ? pinkCardStraightHoverTop : backgroundHeight > 600 ? pinkCardStraightTop : PinkCardShortLeft;
     } else {
       return isHovered ? pinkCardTopHover : pinkCardTop;
     }

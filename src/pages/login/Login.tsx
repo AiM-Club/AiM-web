@@ -4,7 +4,7 @@ import { PageTopic } from "@/components/text/PageTopic";
 import { InputField } from "@/components/field/InputField";
 import { SubmitBtn } from "@/components/button/SubmitBtn";
 import { SocialLoginBtn } from "@/components/button/SocialLoginBtn";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { handleGoogleLogin, handleKakaoLogin } from "@/utils/oauth";
 import { loginSchema, type LoginSchemaType } from "@/types/schemas/LoginSchemaType";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useLogin } from "@/api/auth";
-// import { FieldError } from "@/components/error/FieldError";
 import { useAuthStore } from "@/stores/authStore";
 
 export const Login = () => {
@@ -40,22 +39,6 @@ export const Login = () => {
     id.trim().length > 0 &&
     password.trim().length > 0
   );
-
-  // 리다이렉트 후 돌아왔을 때 code 처리
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-
-    if (code) {
-      console.log("Authorization code:", code);
-
-      // URL에서 code 파라미터 제거 (선택사항)
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, "", newUrl);
-
-      // 백엔드 전송 코드
-    }
-  }, []);
 
   const handleSubmitError = () => {
     setHasSubmitError(true);
