@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import BannerBackground from "@/assets/AddBackground.png";
 
 export const BannerWrapper = styled.div`
   width: 100%;
@@ -23,7 +24,8 @@ export const BannerOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, transparent, var(--background-primary));
+  background: url(${BannerBackground}) no-repeat center center;
+  background-size: cover;
   cursor: pointer;
 `;
 

@@ -40,6 +40,8 @@ export const api: Api = {
   },
 
   post: (url, data) => {
+    console.log(url, data);
+    console.log(getDomain(url));
     return axiosInstance.post(getDomain(url), data);
   },
 
