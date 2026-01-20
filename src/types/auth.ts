@@ -11,6 +11,7 @@ export interface SocialLoginRequest {
 export interface LoginResponse {
     user: User;
     token: Token;
+    isNewUser?: boolean;
 }
 
 export interface User {
@@ -19,11 +20,16 @@ export interface User {
     nickname: string;
     birthday: string;
     gender: string;
+    tier: Tier;
     socialLogin: string | null;
     isNewUser: boolean;
     profileImage: profileImage;
     createdAt: string;
     lastModifiedAt: string;
+}
+
+export interface Tier{
+  name: "BRONZE | SILVER | GOLD | DIAMOND";
 }
 
 export interface profileImage {
@@ -39,4 +45,17 @@ export interface Token {
     refreshToken: string;
     accessTokenExpiresAt: string;
     refreshTokenExpiresAt: string;
+}
+
+export interface JoinRequest{
+  loginId: string;
+  nickname: string;
+  password: string;
+  birthday: string;
+  profileImage?: File|null;
+  gender: "MALE" | "FEMALE" | "OTHER";
+}
+
+export interface ExistResponse {
+  isExist: boolean;
 }
