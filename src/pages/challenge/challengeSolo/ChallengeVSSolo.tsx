@@ -10,35 +10,21 @@ import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
 import { useGetChallengeSolo } from "@/api/challenge";
 import usePagination from "@/hooks/usePagination";
-import { useEffect, useState } from "react";
+import useSearch from "@/hooks/useSearch";
+import { useEffect } from "react";
 
 const ChallengeVSSolo = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
-  const [selectedCategory, setSelectedCategory] = useState<string>("--");
-  const [keyword, setKeyword] = useState<string>("");
-  const [sort, setSort] = useState<string>("--");
-  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: selectedCategory, sort: sort, page: currentPage - 1, size: 16, keyword });
+  const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
+    onSearchChange: () => handlePageChange(1),
+  });
+  const { data: challengeSoloList, isLoading } = useGetChallengeSolo({ filterType: category, sort: sort, page: currentPage - 1, size: 16, keyword });
 
   useEffect(() => {
     setTotalPage(challengeSoloList?.data.page.totalPages || 1);
   }, [challengeSoloList?.data.page.totalPages, setTotalPage]);
-
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category || "--");
-    handlePageChange(1);
-  };
-
-  const handleKeywordChange = (newKeyword: string) => {
-    setKeyword(newKeyword);
-    handlePageChange(1);
-  };
-
-  const handleSortChange = (sort: string) => {
-    setSort(sort);
-    handlePageChange(1);
-  };
 
   return (
     <DefaultLayout>

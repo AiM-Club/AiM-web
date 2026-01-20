@@ -11,10 +11,34 @@ export const usePostChallengeVS = () => {
 
 //챌린지 조회
 export const useGetChallengeVS = ({ filterType, sort, page = 0, size = 16, keyword }: { filterType?: string, sort?: string, page?: number, size?: number, keyword?: string }) => {
-    return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_VS, { filterType, sort, page, size, keyword });
+    const params: Record<string, string | number> = { page, size };
+    
+    if (filterType && filterType !== "--") {
+        params.filterType = filterType;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    
+    return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_VS, params);
 }
 
 //솔로챌린지 조회
 export const useGetChallengeSolo = ({ filterType, sort, page = 0, size = 16, keyword }: { filterType?: string, sort?: string, page?: number, size?: number, keyword?: string }) => {
-    return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_SOLO, { filterType, sort, page, size, keyword });
+    const params: Record<string, string | number> = { page, size };
+    
+    if (filterType && filterType !== "--") {
+        params.filterType = filterType;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    
+    return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_SOLO, params);
 }
