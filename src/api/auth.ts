@@ -1,17 +1,24 @@
 import { useFetch, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { LoginRequest, LoginResponse } from "@/types/auth";
+import type { LoginRequest, LoginResponse, User } from "@/types/auth";
+import type { ApiResponse } from "./types";
 
 //로그인
 export const useLogin = () => {
     return usePost<LoginRequest, LoginResponse>(ApiEndpoints.LOGIN);
 }
 
-export const useExistId = (nickName: string) => {
+//아이디 중복검사
+export const useExistId = (id: string) => {
     return useFetch<boolean>(
         ApiEndpoints.EXIST_ID,
         {
-            nickName,
+            id,
         }
-      );
+    );
 };
+
+//내 프로필 조회
+export const useGetMe = () => {
+    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE);
+}

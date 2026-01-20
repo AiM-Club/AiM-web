@@ -14,6 +14,10 @@ export interface User {
     nickname: string;
     birthday: string;
     gender: string;
+    badge?: string;
+    tier?: {
+        name: string;
+    }
     socialLogin: string | null;
     isNewUser: boolean;
     profileImage: profileImage;

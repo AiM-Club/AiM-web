@@ -1,19 +1,34 @@
 import Profile from "@/assets/ProfileImg.png";
-import type { CardVSProps } from "@/types/VSBattle";
+import type { ChallengeVSResponse } from "@/types/challenge";
 
-export const cardVSData: CardVSProps[] = [
-    {id:1, userImg:Profile, userName:"작성자", startTime: "2025.11.07", term: "n주", 
-        rank:"bronze", img: Profile, title: "제목 작성은 15글자 이하", 
-        field: ["분야","분야","분야"], tag: ["태그","태그","태그"], job: "직무", like:22
+export const cardVSData: ChallengeVSResponse[] = [
+    {
+        "challengeId": 8,
+        "thumbnail": null,
+        "user": {
+            "userId": 2,
+            "nickname": "adminuser",
+            "badge": "BRONZE",
+            "profileImage": {
+                "uuid": "70c9cca9-be0a-4ea5-a62a-3e0fc88cf2fc",
+                "fileName": "spring.png",
+                "size": 103651,
+                "filePath": "profile/70c9cca9-be0a-4ea5-a62a-3e0fc88cf2fc",
+                "handlingType": "IMAGE"
+            }
+        },
+        "startDate": "2026-01-20",
+        "duration": "4주",
+        "name": "아침 6시 기상 챌린지2",
+        "fields": [],
+        "tags": [],
+        "job": "개발자",
+        "liked": false,
+        "likeCount": 0,
+        "createdAt": "2026-01-19T23:22:50.33448",
+        "lastModifiedAt": "2026-01-19T23:22:50.33448",
+        "status": "IN_PROGRESS"
     },
-    {id:2, userImg:Profile, userName:"작성자", startTime: "2025.11.07", term: "n주", 
-        rank:"bronze", img: Profile, title: "제목 작성은 15글자 이하", 
-        field: ["분야","분야","분야"], tag: ["태그","태그","태그"], job: "직무", like:22
-    },
-    {id:3, userImg:Profile, userName:"작성자", startTime: "2025.11.07", term: "n주", 
-        rank:"bronze", img: Profile, title: "제목 작성은 15글자 이하", 
-        field: ["분야","분야","분야"], tag: ["태그","태그","태그"], job: "직무", like:22
-    }
 ];
 
 export const rankingListData = [
