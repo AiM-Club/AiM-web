@@ -16,7 +16,7 @@ interface CardBoardProps {
     isPagination?: boolean;
     isLoading?: boolean;
     //나중에 type 필수로 변경해야함
-    type?: "vs" | "qna" | "review";
+    type?: "vs" | "solo" | "qna" | "review";
 }
 
 const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPagination = true, isLoading = false, type }: CardBoardProps) => {
@@ -41,7 +41,7 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
     }, []);
 
     const navigateToDetail = useCallback((challengeId: number) => {
-        navigate(buildPath(type === "vs" ? PageEndPoints.CHALLENGE_VS_DETAIL : type === "qna" ? PageEndPoints.QNA_DETAIL : PageEndPoints.REVIEW_DETAIL, { id: challengeId }));
+        navigate(buildPath(type === "vs" ? PageEndPoints.CHALLENGE_VS_DETAIL : type === "solo" ? PageEndPoints.CHALLENGE_SOLO_DETAIL : type === "qna" ? PageEndPoints.QNA_DETAIL : PageEndPoints.REVIEW_DETAIL, { id: challengeId }));
     }, [navigate, type]);
 
     return (
