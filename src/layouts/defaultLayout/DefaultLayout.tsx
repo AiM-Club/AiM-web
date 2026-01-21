@@ -15,7 +15,7 @@ interface DefaultLayoutProps {
 
 const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) => {
     const { setUser } = useAuthStore();
-    const { data: profile, isLoading } = useGetMe();
+    const { data: profile, isLoading } = useGetMe({ enabled: variant !== "login" });
     const showsidebar = variant === "default" || variant === "home";
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     useEffect(() => {

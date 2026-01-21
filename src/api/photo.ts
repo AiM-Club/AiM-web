@@ -3,6 +3,6 @@ import { useFetch } from "./hooks";
 import { buildPath } from "@/utils/buildPath";
 
 
-export const useGetPhoto = (id: string) => {
-    return useFetch<string>(buildPath(ApiEndpoints.PHOTO, { id }));
+export const useGetPhoto = (file_uuid: string) => {
+    return useFetch<string>(buildPath(ApiEndpoints.PHOTO, {file_uuid}));
 }

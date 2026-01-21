@@ -31,6 +31,10 @@ export interface User {
     lastModifiedAt: string;
 }
 
+export interface Tier{
+  name: "BRONZE | SILVER | GOLD | DIAMOND";
+}
+
 export interface profileImage {
     uuid: string;
     fileName: string;
