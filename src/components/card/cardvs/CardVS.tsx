@@ -2,20 +2,42 @@ import * as S from "./CardVS.style.ts";
 import { FaHeart } from "react-icons/fa";
 import { getRankImg } from "@/utils/userRank.ts";
 import type { ChallengeVSResponse } from "@/types/challenge";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl.ts";
+import { useGetPhoto } from "@/api/photo.ts";
+import { useEffect, useRef } from "react";
+import NoPhoto from "@/assets/NoPhoto.svg";
 
 interface CardVSItems {
     data: ChallengeVSResponse;
+    onLoadingChange?: (isLoading: boolean) => void;
 }
-const CardVS = ({ data }: CardVSItems) => {
+const CardVS = ({ data, onLoadingChange }: CardVSItems) => {
+    const { data: photo, mutate: getPhoto, isPending } = useGetPhoto();
+    const onLoadingChangeRef = useRef(onLoadingChange);
 
+    useEffect(() => {
+        onLoadingChangeRef.current = onLoadingChange;
+    }, [onLoadingChange]);
+
+    useEffect(() => {
+        if (data.user.profileImage.uuid) {
+            getPhoto({ file_uuid: data.user.profileImage.uuid });
+        }
+    }, [data.user.profileImage.uuid, getPhoto]);
+
+    useEffect(() => {
+        onLoadingChangeRef.current?.(isPending);
+    }, [isPending]);
+
+    const userPhotoUrl = useUserPhotoUrl(photo ?? null);
     return (
         <S.CardWrapper>
             <S.CardContent>
                 <S.UserInfo>
-                    <S.UserImg src={data.user.profileImage.filePath} />
+                    <S.UserImg src={userPhotoUrl || NoPhoto} />
                     <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg(data.user?.badge?.toLowerCase() || "bronze")} /></S.UserName>
                 </S.UserInfo>
-                <S.VSImg src={data.user.profileImage.filePath} />
+                <S.VSImg src={NoPhoto} />
                 <S.VSInfoWrapper>
                     <S.VSInfo>
                         <S.InfoDate>

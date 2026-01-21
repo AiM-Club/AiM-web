@@ -43,11 +43,7 @@ export const handleGoogleLogin = async (): Promise<void> => {
     return;
   }
 
-  // 구글 로그인임을 표시
-  localStorage.setItem("social_login_type", "google");
-
   const verifier = generateCodeVerifier();
-  localStorage.setItem("code_verifier", verifier);
 
   const challenge = await generateCodeChallenge(verifier);
 
@@ -74,9 +70,6 @@ export const handleKakaoLogin = (): void => {
     console.error("Kakao OAuth 환경 변수가 설정되지 않았습니다.");
     return;
   }
-
-  // 카카오 로그인임을 표시
-  localStorage.setItem("social_login_type", "kakao");
 
   const url =
     `https://kauth.kakao.com/oauth/authorize?` +

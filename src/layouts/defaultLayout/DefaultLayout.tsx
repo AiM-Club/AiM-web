@@ -7,6 +7,7 @@ import * as S from "./DefaultLayout.style.ts";
 import { useGetMe } from "@/api/auth.ts";
 import { useAuthStore } from "@/stores/authStore.ts";
 import Loading from "@/components/loading/Loading.tsx";
+import { useGetPhoto } from "@/api/photo.ts";
 
 interface DefaultLayoutProps {
     children: ReactNode;
@@ -14,15 +15,26 @@ interface DefaultLayoutProps {
 }
 
 const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) => {
-    const { setUser } = useAuthStore();
+    const { setUser, setUserPhoto } = useAuthStore();
     const { data: profile, isLoading } = useGetMe({ enabled: variant !== "login" });
+    const { data: photo, mutate: getPhoto, isPending } = useGetPhoto();
     const showsidebar = variant === "default" || variant === "home";
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     useEffect(() => {
-        if (!profile) return;
-        console.log(profile);
+        if (!profile?.data) return;
         setUser(profile.data);
-    }, [setUser, profile]);
+        const uuid = profile.data.profileImage?.uuid;
+        if (uuid) {
+            getPhoto({ file_uuid: uuid });
+        } else {
+            setUserPhoto(null);
+        }
+    }, [profile, setUser, setUserPhoto, getPhoto]);
+
+    useEffect(() => {
+        if (photo === undefined) return;
+        setUserPhoto(photo ?? null);
+    }, [photo, setUserPhoto]);
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 1024 && isDrawerOpen) {
@@ -36,7 +48,7 @@ const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) =>
         return () => window.removeEventListener('resize', handleResize);
     }, [isDrawerOpen]);
 
-    if (isLoading) return <Loading />;
+    if (isLoading || isPending) return <Loading />;
 
     return (
         <S.LayoutWrapper>

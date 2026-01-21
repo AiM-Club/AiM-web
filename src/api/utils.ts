@@ -86,7 +86,8 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((response) => {
   return response;
 }, async (error) => {
-  if (error.status === 401 && error.config.url !== ApiEndpoints.REFRESH_TOKEN && error.config.url !== ApiEndpoints.LOGIN) {
+  console.log(error);
+  if (error.status === 401 && error.config.url !== ApiEndpoints.REFRESH_TOKEN && !error.config.url.includes("/auth")) {
     const refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken) {
       {

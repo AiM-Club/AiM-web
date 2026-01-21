@@ -70,6 +70,7 @@ export const UserImg = styled.img`
 export const VSImg = styled.img`
   height: 10rem;
   width: 100%;
+  object-fit: cover;
 `;
 
 export const VSInfoWrapper = styled.div`
