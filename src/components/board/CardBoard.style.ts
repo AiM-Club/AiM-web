@@ -5,6 +5,7 @@ export const CardBoardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    position: relative;
 `;
 
 export const ResultListWrapper = styled.div`
