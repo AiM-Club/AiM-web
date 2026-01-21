@@ -9,7 +9,9 @@ const LogInBtn = ({ user }: { user: User }) => {
 
   return (
     <S.FieldBtnWrapper>
-      <S.NicknameSection>{user.nickname}</S.NicknameSection>
+      <S.NicknameSection>
+        <S.NicknameText>{user.nickname}</S.NicknameText>
+      </S.NicknameSection>
       <S.ProfileImageSection>
         {photoSrc && <S.ProfileImage src={photoSrc} alt={user.nickname} />}
       </S.ProfileImageSection>

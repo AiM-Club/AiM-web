@@ -10,14 +10,23 @@ export const FieldBtnWrapper = styled.div`
 `;
 
 export const NicknameSection = styled.div`
-  flex: 1;
+  width: calc(11.125rem - 3.5rem);  
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-end;
   background: linear-gradient(to right, var(--background-primary), var(--surpace-primary));
+  padding: 0 1rem;
+  min-width: 0;
+  flex-shrink: 1;
+`;
+
+export const NicknameText = styled.span`
   color: var(--text-primary-default);
   font: var(--body-m-xl);
-  padding: 0 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 `;
 
 export const ProfileImageSection = styled.div`
