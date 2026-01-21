@@ -20,12 +20,12 @@ export const useKakaoLogin = () => {
 
 // 회원가입
 export const useJoin = () => {
-  return usePost<FormData, User>(ApiEndpoints.JOIN);
+    return usePost<FormData, User>(ApiEndpoints.JOIN);
 }
 
 //닉네임 중복 검사
 export const useExistNickname = () => {
-  return useFetchMutation<{ nickname: string }, ApiResponse<ExistResponse>>(ApiEndpoints.EXIST_NICKNAME);
+    return useFetchMutation<{ nickname: string }, ApiResponse<ExistResponse>>(ApiEndpoints.EXIST_NICKNAME);
 }
 
 //아이디 중복 검사

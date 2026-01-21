@@ -55,7 +55,6 @@ export const Login = () => {
       {
         onSuccess: (response) => {
           setUser(response.data.user);
-          setUserPhoto(response.data.user.profileImage.filePath);
           localStorage.setItem("accessToken", response.data.token.accessToken);
           localStorage.setItem("refreshToken", response.data.token.refreshToken);
           navigate(PageEndPoints.HOME);

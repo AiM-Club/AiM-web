@@ -72,7 +72,6 @@ export const OAuthCallback = () => {
 
             console.log("구글 로그인 성공 - 파싱된 데이터:", data);
             setUser(data.user);
-            setUserPhoto(data.user.profileImage);
             localStorage.setItem("accessToken", data.token.accessToken);
             localStorage.setItem("refreshToken", data.token.refreshToken);
             navigate(PageEndPoints.HOME);
@@ -113,7 +112,6 @@ export const OAuthCallback = () => {
 
             console.log("카카오 로그인 성공 - 파싱된 데이터:", data);
             setUser(data.user);
-            setUserPhoto(data.user.profileImage);
             localStorage.setItem("accessToken", data.token.accessToken);
             localStorage.setItem("refreshToken", data.token.refreshToken);
             navigate(PageEndPoints.HOME);
