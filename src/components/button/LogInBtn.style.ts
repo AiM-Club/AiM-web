@@ -27,14 +27,14 @@ export const ProfileImageSection = styled.div`
   align-items: center;
   justify-content: center;
   background-color: var(--gray-200);
-  padding: 0.5rem;
+  // padding: 0.5rem;
 `;
 
 export const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0.25rem;
+  // border-radius: 0.25rem;
 `;
 
 export const AccentLine = styled.div`

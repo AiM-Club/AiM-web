@@ -5,6 +5,7 @@ import Button from "@/components/button/Button";
 import arrowNext from "@/assets/icons/ArrowNext.svg";
 import { useAuthStore } from "@/stores/authStore";
 import ProfileImage from "@/components/image/ProfileImage";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 
 interface DrawerProps {
     isOpen: boolean;
@@ -21,16 +22,17 @@ interface MenuItem {
 const Drawer = ({ isOpen, onClose }: DrawerProps) => {
     const navigate = useNavigate();
     const { user, userPhoto } = useAuthStore();
-    
+    const photoUrl = useUserPhotoUrl(userPhoto);
+
     const menuItems: MenuItem[] = [
-        { 
-            id: "home", 
-            label: "홈", 
-            path: PageEndPoints.HOME 
+        {
+            id: "home",
+            label: "홈",
+            path: PageEndPoints.HOME
         },
-        { 
-            id: "challenge", 
-            label: "챌린지", 
+        {
+            id: "challenge",
+            label: "챌린지",
             path: PageEndPoints.CHALLENGE_MAIN,
             subItems: [
                 { id: "challenge-recruit", label: "VS 모집", path: PageEndPoints.CHALLENGE_RECRUIT },
@@ -39,18 +41,18 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                 { id: "challenge-ranking", label: "랭킹", path: PageEndPoints.CHALLENGE_RANKING },
             ]
         },
-        { 
-            id: "community", 
-            label: "커뮤니티", 
+        {
+            id: "community",
+            label: "커뮤니티",
             path: PageEndPoints.COMMUNITY,
             subItems: [
                 { id: "community-qna", label: "Q&A", path: PageEndPoints.QNA },
                 { id: "community-review", label: "후기", path: PageEndPoints.REVIEW },
             ]
         },
-        { 
-            id: "mypage", 
-            label: "마이페이지", 
+        {
+            id: "mypage",
+            label: "마이페이지",
             path: PageEndPoints.MYPAGE,
             subItems: [
                 { id: "mypage-profile", label: "프로필", path: PageEndPoints.PROFILE },
@@ -70,7 +72,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                 <S.DrawerHeader>
                     {user ? (
                         <S.UserInfo>
-                            <ProfileImage color="pink" image={userPhoto || ""} width={4} />
+                            <ProfileImage color="pink" image={photoUrl || ""} width={4} />
                             <S.UserNameWrapper>
                                 <S.UserName>{user.nickname}</S.UserName>
                                 <S.UserLoginId>@{user.loginId}</S.UserLoginId>
@@ -79,7 +81,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                     ) : (<Button onClick={() => {
                         navigate(PageEndPoints.LOGIN);
                         onClose();
-                    }} size="large">
+                    }} $size="large">
                         로그인 / 회원가입
                     </Button>
                     )}
@@ -87,7 +89,7 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                 <S.DrawerMenuList>
                     {menuItems.map((item) => (
                         <div key={item.id}>
-                            <S.DrawerMenuItem 
+                            <S.DrawerMenuItem
                                 $hasSubmenu={!!item.subItems}
                                 onClick={() => navigate(item.path)}
                             >

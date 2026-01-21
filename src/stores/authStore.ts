@@ -3,9 +3,9 @@ import { create } from "zustand";
 
 interface AuthStore {
   user: User | null;
-  userPhoto: string | null;
+  userPhoto: Blob | null;
   setUser: (user: User) => void;
-  setUserPhoto: (userPhoto: string|null) => void;
+  setUserPhoto: (userPhoto: Blob | null) => void;
   logout: () => void;
 }
 

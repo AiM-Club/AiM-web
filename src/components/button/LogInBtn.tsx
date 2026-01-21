@@ -1,23 +1,17 @@
 import * as  S from "./LogInBtn.style";
 import type { User } from "@/types/auth";
-import { useGetPhoto } from "@/api/photo";
 import { useAuthStore } from "@/stores/authStore";
-import { useEffect } from "react";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 
 const LogInBtn = ({ user }: { user: User }) => {
-  const { userPhoto, setUserPhoto } = useAuthStore();
-  const { data: photo } = useGetPhoto(user.profileImage.uuid);
+  const { userPhoto } = useAuthStore();
+  const photoSrc = useUserPhotoUrl(userPhoto);
 
-  useEffect(() => {
-    if (!userPhoto && photo) {
-      setUserPhoto(photo);
-    }
-  }, [photo, setUserPhoto]);
   return (
     <S.FieldBtnWrapper>
       <S.NicknameSection>{user.nickname}</S.NicknameSection>
       <S.ProfileImageSection>
-        {photo && <S.ProfileImage src={photo} alt={user.nickname} />}
+        {photoSrc && <S.ProfileImage src={photoSrc} alt={user.nickname} />}
       </S.ProfileImageSection>
       <S.AccentLine />
     </S.FieldBtnWrapper>
