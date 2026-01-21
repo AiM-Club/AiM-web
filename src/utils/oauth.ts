@@ -1,37 +1,4 @@
 /**
- * OAuth PKCE (Proof Key for Code Exchange) 관련 유틸리티 함수
- */
-
-/**
- * PKCE용 code verifier 생성
- * @returns Base64 URL-safe encoded random string
- */
-export const generateCodeVerifier = (): string => {
-  const array = new Uint8Array(64);
-  crypto.getRandomValues(array);
-  return btoa(String.fromCharCode(...array))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
-};
-
-/**
- * PKCE용 code challenge 생성
- * @param verifier - code verifier 문자열
- * @returns Base64 URL-safe encoded SHA-256 hash
- */
-export const generateCodeChallenge = async (verifier: string): Promise<string> => {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(verifier);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
-  return base64;
-};
-
-/**
  * Google OAuth 로그인 처리
  */
 export const handleGoogleLogin = async (): Promise<void> => {
@@ -43,18 +10,12 @@ export const handleGoogleLogin = async (): Promise<void> => {
     return;
   }
 
-  const verifier = generateCodeVerifier();
-
-  const challenge = await generateCodeChallenge(verifier);
-
   const url =
     `https://accounts.google.com/o/oauth2/v2/auth?` +
     `client_id=${GOOGLE_CLIENT_ID}` +
     `&redirect_uri=${encodeURIComponent(GOOGLE_REDIRECT_URI)}` +
     `&response_type=code` +
-    `&scope=openid email profile` +
-    `&code_challenge=${challenge}` +
-    `&code_challenge_method=S256`;
+    `&scope=openid email profile`;
 
   window.location.href = url;
 };

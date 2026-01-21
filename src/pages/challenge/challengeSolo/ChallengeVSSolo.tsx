@@ -46,7 +46,7 @@ const ChallengeVSSolo = () => {
               onKeywordChange={handleKeywordChange}
               onSortChange={handleSortChange}
             />
-            <CardBoard data={challengeSoloList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+            <CardBoard data={challengeSoloList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} type="solo" />
           </S.ContentWrapper>
         ) : (
           <S.EmptyState>

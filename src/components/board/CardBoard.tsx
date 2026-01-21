@@ -4,6 +4,9 @@ import Pagination from "../pagination/Pagination";
 import * as S from "./CardBoard.style";
 import SubLoading from "../loading/SubLoading";
 import { useState, useEffect, useCallback } from "react";
+import { PageEndPoints } from "@/constants/endpoints";
+import { buildPath } from "@/utils/buildPath";
+import { useNavigate } from "react-router-dom";
 
 interface CardBoardProps {
     data: ChallengeVSResponse[];
@@ -12,11 +15,14 @@ interface CardBoardProps {
     handlePageChange?: (page: number) => void;
     isPagination?: boolean;
     isLoading?: boolean;
+    //나중에 type 필수로 변경해야함
+    type?: "vs" | "solo" | "qna" | "review";
 }
 
-const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPagination = true, isLoading = false }: CardBoardProps) => {
+const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPagination = true, isLoading = false, type }: CardBoardProps) => {
     const [loadingCards, setLoadingCards] = useState<Set<number>>(new Set());
     const [isAnyCardLoading, setIsAnyCardLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsAnyCardLoading(loadingCards.size > 0);
@@ -34,6 +40,10 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
         });
     }, []);
 
+    const navigateToDetail = useCallback((challengeId: number) => {
+        navigate(buildPath(type === "vs" ? PageEndPoints.CHALLENGE_VS_DETAIL : type === "solo" ? PageEndPoints.CHALLENGE_SOLO_DETAIL : type === "qna" ? PageEndPoints.QNA_DETAIL : PageEndPoints.REVIEW_DETAIL, { id: challengeId }));
+    }, [navigate, type]);
+
     return (
         <S.CardBoardWrapper>
             {(isLoading || isAnyCardLoading) && <SubLoading />}
@@ -45,6 +55,7 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
                                 key={item.challengeId}
                                 data={item}
                                 onLoadingChange={(isLoading) => handleCardLoadingChange(item.challengeId, isLoading)}
+                                onClick={() => navigateToDetail(item.challengeId)}
                             />
                         ))}
                     </S.ResultListWrapper>

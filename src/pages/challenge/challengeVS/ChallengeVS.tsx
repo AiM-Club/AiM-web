@@ -1,7 +1,6 @@
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeVS/ChallengeVS.style";
 import CardBoard from "@/components/board/CardBoard";
-import { searchVsData } from "@/pages/search/Constants";
 import Button from "@/components/button/Button";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import usePagination from "@/hooks/usePagination";
 import { useGetChallengeVS } from "@/api/challenge";
 import useSearch from "@/hooks/useSearch";
