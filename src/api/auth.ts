@@ -8,7 +8,6 @@ export const useLogin = () => {
     return usePost<LoginRequest, LoginResponse>(ApiEndpoints.LOGIN);
 }
 
-
 // 구글 소셜 로그인
 export const useGoogleLogin = () => {
     return usePost<SocialLoginRequest, LoginResponse>(ApiEndpoints.GOOGLE_LOGIN);
@@ -19,10 +18,6 @@ export const useKakaoLogin = () => {
     return usePost<SocialLoginRequest, LoginResponse>(ApiEndpoints.KAKAO_LOGIN);
 }
 
-//내 프로필 조회
-export const useGetMe = (options?: QueryOptions<ApiResponse<User>>) => {
-    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE, undefined, options);
-}
 // 회원가입
 export const useJoin = () => {
   return usePost<FormData, User>(ApiEndpoints.JOIN);
@@ -37,3 +32,8 @@ export const useExistNickname = () => {
 export const useExistId = () => {
     return useFetchMutation<{ id: string }, ApiResponse<ExistResponse>>(ApiEndpoints.EXIST_ID);
 };
+
+//내 프로필 조회
+export const useGetMe = (options?: QueryOptions<ApiResponse<User>>) => {
+    return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE, undefined, options);
+}
