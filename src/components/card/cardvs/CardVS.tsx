@@ -10,8 +10,9 @@ import NoPhoto from "@/assets/NoPhoto.svg";
 interface CardVSItems {
     data: ChallengeVSResponse;
     onLoadingChange?: (isLoading: boolean) => void;
+    onClick?: () => void;
 }
-const CardVS = ({ data, onLoadingChange }: CardVSItems) => {
+const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
     const { data: photo, mutate: getPhoto, isPending } = useGetPhoto();
     const onLoadingChangeRef = useRef(onLoadingChange);
 
@@ -31,7 +32,7 @@ const CardVS = ({ data, onLoadingChange }: CardVSItems) => {
 
     const userPhotoUrl = useUserPhotoUrl(photo ?? null);
     return (
-        <S.CardWrapper>
+        <S.CardWrapper onClick={onClick}>
             <S.CardContent>
                 <S.UserInfo>
                     <S.UserImg src={userPhotoUrl || NoPhoto} />
