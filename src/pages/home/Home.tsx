@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
 import MoreBtn from "@/components/button/MoreBtn";
+import { useGetChallengeVS } from "@/api/challenge";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { data: challengeVSList, isLoading } = useGetChallengeVS({ page: 0, size: 10 });
 
   return (
     <DefaultLayout variant="home">
@@ -40,7 +42,7 @@ const Home = () => {
             <PageTopic text="VS 대결" size="l" />
             <MoreBtn onClick={() => navigate(PageEndPoints.CHALLENGE_VS)}>더보기</MoreBtn>
           </S.BattleTitle>
-          <CardBoard data={cardVSData} isPagination={false} />
+          <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoading} />
         </S.BattleWrapper>
         <S.BattleWrapper>
           <S.BattleTitle>
