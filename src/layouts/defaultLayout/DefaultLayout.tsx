@@ -15,7 +15,7 @@ interface DefaultLayoutProps {
 }
 
 const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) => {
-    const { user, setUser, setUserPhoto } = useAuthStore();
+    const { user, userPhoto, setUser, setUserPhoto } = useAuthStore();
     const { data: profile, isLoading } = useGetMe({ enabled: variant !== "login" && !user });
     const { data: photo, mutate: getPhoto, isPending } = useGetPhoto();
     const showsidebar = variant === "default" || variant === "home";
@@ -48,7 +48,9 @@ const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) =>
         return () => window.removeEventListener('resize', handleResize);
     }, [isDrawerOpen]);
 
-    if (isLoading || isPending) return <Loading />;
+
+    const shouldShowLoading = (isLoading && !user) || (isPending && !userPhoto && user);
+    if (shouldShowLoading) return <Loading />;
 
     return (
         <S.LayoutWrapper>
