@@ -5,6 +5,7 @@ import type { ChallengeVSResponse } from "@/types/challenge";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl.ts";
 import { useGetPhoto } from "@/api/photo.ts";
 import { useEffect, useRef } from "react";
+import NoPhoto from "@/assets/NoPhoto.svg";
 
 interface CardVSItems {
     data: ChallengeVSResponse;
@@ -33,10 +34,10 @@ const CardVS = ({ data, onLoadingChange }: CardVSItems) => {
         <S.CardWrapper>
             <S.CardContent>
                 <S.UserInfo>
-                    <S.UserImg src={userPhotoUrl || ""} alt={data.user.nickname} />
+                    <S.UserImg src={userPhotoUrl || NoPhoto} />
                     <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg(data.user?.badge?.toLowerCase() || "bronze")} /></S.UserName>
                 </S.UserInfo>
-                <S.VSImg src={data.user.profileImage.filePath} />
+                <S.VSImg src={NoPhoto} />
                 <S.VSInfoWrapper>
                     <S.VSInfo>
                         <S.InfoDate>
