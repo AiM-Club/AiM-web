@@ -17,7 +17,7 @@ const FieldVS = () => {
         onSearchChange: () => { },
     });
     const { data: challengeVSList, isLoading } = useGetChallengeVS({
-        filterType: field && field.name !== "전체" ? field.name : undefined,
+        field: fieldName,
         sort: sort,
         keyword: keyword,
         page: 0,
