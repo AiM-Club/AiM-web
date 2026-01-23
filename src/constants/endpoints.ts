@@ -46,4 +46,5 @@ export enum ApiEndpoints {
   CHALLENGE = "/challenges",
   CHALLENGE_VS = "/challenges/vs",
   CHALLENGE_SOLO = "/challenges/solo",
+  CHALLENGE_VS_DETAIL = "/challenges/vs/:challengeId/overview",
 }
