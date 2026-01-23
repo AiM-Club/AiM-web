@@ -1,8 +1,10 @@
-import { useFetch } from "./hooks";
+import { useFetch, useFetchMutation } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
 import type { ChallengeDetailWeeksResponse, ChallengeVSDetailResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
+import axios from "axios";
+import { getDomain } from "./utils";
 
 //vs대결 overview
 export const useGetChallengeDetail = (challengeId: string) => {
@@ -13,3 +15,14 @@ export const useGetChallengeDetail = (challengeId: string) => {
 export const useGetChallengeDetailWeeks = (challengeId: string) => {
     return useFetch<ApiResponse<ChallengeDetailWeeksResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS, { challengeId }));
 }
+
+//주차별 댓글 조회
+// export const useGetPhoto = () => {
+//     return useFetchMutation<{ challengeId: string, weeksId: string }, ApiResponse<CommentResponse>>(ApiEndpoints.PHOTO, {
+//         mutationFn: async ({ challengeId, weeksId }) => {
+//             const res = await axios.get(
+//                 getDomain(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, { challengeId, weeksId })),
+//             );
+//             return res.data;
+//         },
+//     });
