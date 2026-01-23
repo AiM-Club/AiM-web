@@ -26,7 +26,7 @@ export interface User {
     }
     socialLogin: string | null;
     isNewUser: boolean;
-    profileImage: profileImage;
+    profileImage: ProfileImage;
     createdAt: string;
     lastModifiedAt: string;
 }
@@ -35,7 +35,7 @@ export interface Tier{
   name: "BRONZE | SILVER | GOLD | DIAMOND";
 }
 
-export interface profileImage {
+export interface ProfileImage {
     uuid: string;
     fileName: string;
     size: number;
