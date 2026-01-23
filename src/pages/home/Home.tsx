@@ -41,7 +41,7 @@ const Home = () => {
             <PageTopic text="VS 대결" size="l" />
             <MoreBtn onClick={() => navigate(PageEndPoints.CHALLENGE_VS)}>더보기</MoreBtn>
           </S.BattleTitle>
-          <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoading} />
+          <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoading} type="vs" />
         </S.BattleWrapper>
         <S.BattleWrapper>
           <S.BattleTitle>
