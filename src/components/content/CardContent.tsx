@@ -9,7 +9,8 @@ import type { CommentProps } from "@/types/comment";
 import Comment from "@/components/comment/Comment";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
-import NoPhoto from "@/assets/NoPhoto.svg";
+  import NoPhoto from "@/assets/NoPhoto.svg";
+  import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -108,12 +109,13 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: ChallengeVSMatchProps) => {
-  const { myInfo, opponentInfo, myPhoto, opponentPhoto, dominance, challengeInfo } = useChallengeDetailStore();
+  const { myInfo, opponentInfo, myPhoto, opponentPhoto, dominance, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
   const data = kind === "opponent" ? opponentInfo : myInfo;
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
   const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
+  const currentWeek = challengeDetailWeeks?.currentWeek;
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
@@ -223,17 +225,23 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
               {selectedWeek === weekNumber ?
                 <S.WeekContentWrapper $direction={weekNumber % firstRowCount} $rowcount={firstRowCount} $width={wholeWidth}>
                   <S.WeekTopicWrapper $direction={weekNumber % firstRowCount}>
-                    <S.WeekTopicTitle>제목 (AI 생성)</S.WeekTopicTitle>
-                    <S.WeekTopicDate>2026년 01월 01일 ~ 2026년 01월 07일</S.WeekTopicDate>
-                    <S.WeekTopicContent>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque id pulvinar velit. Etiam mollis euismod interdum. In hac habitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum</S.WeekTopicContent>
+                    <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
+                    <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
+                    <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
                     <S.FileUpload>
                       <img src={FileIcon} />
                       인증샷 파일 업로드
                     </S.FileUpload>
-                    <S.TimerWrapper>
-                      <S.Timer>00 : 00</S.Timer>
-                      <S.TimerBtn>Start</S.TimerBtn>
-                    </S.TimerWrapper>
+                    {selectedWeek === currentWeek ? (
+                      <S.TimerWrapper>
+                      <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                        <S.TimerBtn>Start</S.TimerBtn>
+                      </S.TimerWrapper>
+                    ) : (
+                      <S.TimerWrapper>
+                      <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                      </S.TimerWrapper>
+                    )}
                   </S.WeekTopicWrapper>
                   {commentView && <S.WeekCommentWrapper>
                     {weekCommentData.map((data, index: number) => (

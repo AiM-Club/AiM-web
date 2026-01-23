@@ -1,11 +1,8 @@
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import FieldBtn from "../button/FieldBtn";
 import * as S from "./FieldTagWorkPeriod.style";
+import { formatDateKR } from "@/utils/useTime";
 
-const formatDate = (dateString: string): string => {
-  const [year, month, day] = dateString.split('-');
-  return `${year}년 ${parseInt(month)}월 ${parseInt(day)}일`;
-};
 
 const FieldTagWorkPeriod = () => {
   const { challengeInfo } = useChallengeDetailStore();
@@ -40,7 +37,7 @@ const FieldTagWorkPeriod = () => {
       <S.EachWrapper>
         <S.Topic>기간</S.Topic>
         <S.Content>
-            {formatDate(challengeInfo?.startDate || "")} ~ {formatDate(challengeInfo?.endDate || "")} ({challengeInfo?.totalWeeks}주)
+            {formatDateKR(challengeInfo?.startDate || "")} ~ {formatDateKR(challengeInfo?.endDate || "")} ({challengeInfo?.totalWeeks}주)
           </S.Content>
         </S.EachWrapper>
       )}

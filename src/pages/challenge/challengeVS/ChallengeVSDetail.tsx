@@ -8,7 +8,7 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeVS/ChallengeVSDetail.style";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetChallengeDetail } from "@/api/challengeDetail";
+import { useGetChallengeDetail, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
 import Loading from "@/components/loading/Loading";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useGetPhoto } from "@/api/photo";
@@ -17,15 +17,16 @@ const ChallengeVSMatch = () => {
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeDetail(id || "");
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto } = useChallengeDetailStore();
-
+  const { setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks } = useChallengeDetailStore();
+  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
   useEffect(() => {
-    if (challengeDetail) {
+    if (challengeDetail && challengeDetailWeeks) {
       setChallengeInfo(challengeDetail.data.challengeInfo);
       setDominance(challengeDetail.data.dominance);
       setMyInfo(challengeDetail.data.participants.me);
       setOpponentInfo(challengeDetail.data.participants.opponent);
-
+      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      
       if(challengeDetail?.data.challengeInfo.thumbnail) {
         getPhoto(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail },
@@ -57,10 +58,8 @@ const ChallengeVSMatch = () => {
         );
       }
     }
-  }, [challengeDetail, getPhoto, setThumbnail, setMyPhoto, setOpponentPhoto]);
+  }, [challengeDetail, challengeDetailWeeks, getPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeDetailWeeks]);
 
-  const oppenentProgress = 90;
-  const myProgress = 10;
   const opponentProfileImg = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif";
   const myProfileImg = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif";
 
@@ -81,7 +80,7 @@ const ChallengeVSMatch = () => {
     resizeObserver.observe(contentElement);
   }, [contentElement])
 
-  if(isLoading) return <Loading />;
+  if(isLoading || isLoadingWeeks) return <Loading />;
 
   return (
     <DefaultLayout variant="home">

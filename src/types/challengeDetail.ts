@@ -46,3 +46,20 @@ export interface ParticipantsInfo {
     successRate: number;
     isSuccess: boolean;
 }
+
+export interface ChallengeDetailWeeksResponse {
+    challengeId: number;
+    totalWeeks: number;
+    currentWeek: number;
+    progressList: ProgressList[];
+}
+
+export interface ProgressList {
+    weekNumber: number;
+    weekStartDate: string;
+    weekEndDate: string;
+    title: string;
+    content: string;
+    stopwatchTimeSeconds: number;
+    isComplete: boolean;
+}
