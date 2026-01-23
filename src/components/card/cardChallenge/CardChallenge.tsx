@@ -19,6 +19,7 @@ import pinkCardStraightHoverBottom from "@/assets/CardPinkStraightHoverBottom.pn
 import RightArrow from "@/assets/BlackRightArrow.svg";
 import LeftArrow from "@/assets/BlackLeftArrow.svg";
 import { useState, useEffect } from "react";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 
 //color: 카드의 색상, topic: 카드의 제목, openBtn: 카드의 펼치기 버튼 여부
 //children: 카드의 내용(CardContent 컴포넌트에 작성 후 아래와 같이 넣어주세요)
@@ -30,7 +31,8 @@ import { useState, useEffect } from "react";
 
 interface CardChallengeProps {
   color: "green" | "pink";
-  topic: string;
+  kind?: "opponent" | "my";
+  topic?: string;
   topicDirection?: "left" | "right" | null;
   openBtn: boolean;
   children: React.ReactNode;
@@ -48,11 +50,17 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
-
+  const { myInfo, opponentInfo } = useChallengeDetailStore();
+  
+  if(topic){
+    topic = topic;
+  } else {
+    topic = kind === "opponent" ? opponentInfo?.nickname : `ME : ${myInfo?.nickname}`;
+  }
   const getCardImageTop = () => {
     if (color === "green") {
       return isHovered ? greenCardTopHover : greenCardTop;

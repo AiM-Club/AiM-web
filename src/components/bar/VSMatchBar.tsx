@@ -1,20 +1,19 @@
 import * as S from "./VSMatchBar.style";
 import ProgressIcon from "@/assets/VSPointer.svg";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 
-interface VSMatchBarProps {
-  opponentProgress?: number;
-  myProgress?: number;
-}
 
-const VSMatchBar = ({ opponentProgress = 50, myProgress = 50 }: VSMatchBarProps) => {
-  const oppenentPercent = opponentProgress / (opponentProgress + myProgress) * 100;
-  const myPercent = myProgress / (opponentProgress + myProgress) * 100;
+
+const VSMatchBar = () => {
+  const { dominance } = useChallengeDetailStore();
+  const oppenentPercent = (dominance?.opponentPercent || 0) / ((dominance?.opponentPercent || 0) + (dominance?.myPercent || 0)) * 100;
+  const myPercent = (dominance?.myPercent || 0) / ((dominance?.opponentPercent || 0) + (dominance?.myPercent || 0)) * 100;
   return (
     <S.VSMatchBarWrapper>
       <S.TextWrapper $percent={oppenentPercent}>
-        <S.ProgressTextGreen>{opponentProgress}%</S.ProgressTextGreen>
+        <S.ProgressTextGreen>{dominance?.opponentPercent || 0}%</S.ProgressTextGreen>
         <S.ProgressIcon src={ProgressIcon} />
-        <S.ProgressTextPink>{myProgress}%</S.ProgressTextPink>
+        <S.ProgressTextPink>{dominance?.myPercent || 0}%</S.ProgressTextPink>
       </S.TextWrapper>
       <S.ProgressBarWrapper>
         <S.ProgressBarGreen $percent={oppenentPercent} />

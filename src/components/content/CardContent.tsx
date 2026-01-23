@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import ProfileImage from "../image/ProfileImage";
 import type { CommentProps } from "@/types/comment";
 import Comment from "@/components/comment/Comment";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import NoPhoto from "@/assets/NoPhoto.svg";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -18,11 +21,7 @@ interface ChallengeMainProps {
 
 interface ChallengeVSMatchProps {
   color: "green" | "pink";
-  progress: number;
-  success: number;
-  profileImg: string;
-  totalWeek: number;
-  currentWeek: number;
+  kind: "opponent" | "my";
   weekData?: WeekProps[];
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
@@ -108,12 +107,20 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard, commentView = true }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: ChallengeVSMatchProps) => {
+  const { myInfo, opponentInfo, myPhoto, opponentPhoto, dominance, challengeInfo } = useChallengeDetailStore();
+  const data = kind === "opponent" ? opponentInfo : myInfo;
+  const photo = kind === "opponent" ? opponentPhoto : myPhoto;
+  const photoSrc = useUserPhotoUrl(photo);
+  const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
+  const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
+
+  if(!challengeInfo) return null;
 
   useEffect(() => {
     if (!contentElement) return;
@@ -165,7 +172,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
     return () => {
       resizeObserver.disconnect();
     };
-  }, [weekWrapperRef, totalWeek, currentWeek]);
+  }, [weekWrapperRef, challengeInfo.totalWeeks]);
 
   const handleWeekClick = (week: number) => {
     if (selectedWeek === week) {
@@ -179,7 +186,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
     <S.ChallengeVSMatchContentWrapper ref={setContentElement}>
       {viewCard === "left" || viewCard === "right" ?
         <S.ProfileWrapper>
-          <ProfileImage image={profileImg} width={wholeWidth * 0.018} />
+          <ProfileImage image={photoSrc || NoPhoto} width={wholeWidth * 0.018} />
           <S.RowProgressWrapper>
             <ProgressBar text="진도율" progress={progress} height={32} color={color} />
             <ProgressBar text="성공률" progress={success} height={32} color={color} />
@@ -191,24 +198,24 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
             </S.ProgressWrapper>
-            <ProfileImage image={profileImg} width={9} />
+            <ProfileImage image={photoSrc || NoPhoto} width={9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
-            <ProfileImage image={profileImg} width={9} />
+            <ProfileImage image={photoSrc || NoPhoto} width={9} />
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
             </S.ProgressWrapper>
           </S.ProfileWrapper>}
       <S.WeekWrapper ref={setWeekWrapperRef}>
-        {Array.from({ length: firstRowCount > 0 ? Math.ceil(totalWeek / firstRowCount) * firstRowCount : totalWeek }).map((_, index) => {
+        {Array.from({ length: firstRowCount > 0 ? Math.ceil(challengeInfo.totalWeeks / firstRowCount) * firstRowCount : challengeInfo?.totalWeeks ?? 0 }).map((_, index) => {
           const weekNumber = index + 1;
-          if (weekNumber > totalWeek) {
+          if (weekNumber > challengeInfo.totalWeeks) {
             // 공간 유지를 위해서 첫 줄의 아이템 개수만큼 반복하되 display: none으로 없는 주차 숨김
             return <S.WeekItemWrapper key={index} style={{ visibility: 'hidden' }} />;
           }
 
-          return weekNumber < currentWeek ? (
+          return weekNumber <= challengeInfo.totalWeeks ? (
             <S.WeekItemWrapper key={index}>
               <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차

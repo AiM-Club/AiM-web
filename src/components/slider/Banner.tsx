@@ -2,14 +2,15 @@ import * as S from "./Banner.style";
 import Heart from "@/assets/Heart.svg";
 import HeartFill from "@/assets/ClickedHeart.svg";
 import { useState } from "react";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 
 interface BannerProps {
   image: string;
-  topic: string;
   writer?: string;
 }
 
-const Banner = ({ image, topic, writer }: BannerProps) => {
+const Banner = ({ image, writer }: BannerProps) => {
+  const { challengeInfo } = useChallengeDetailStore();
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(false);
   const logined = true;
 
@@ -18,7 +19,7 @@ const Banner = ({ image, topic, writer }: BannerProps) => {
       <S.BannerImage src={image} />
       <S.BannerOverlay />
       <S.BannerContentWrapper>
-        <S.BannerContent>{topic}</S.BannerContent>
+        <S.BannerContent>{challengeInfo?.name}</S.BannerContent>
         {writer &&
           <S.WriterWrapper>
             <p>{writer}</p>

@@ -2,8 +2,8 @@ import type { ProfileImage } from "./auth";
 
 export interface ChallengeVSDetailResponse{
     challengeInfo: ChallengeInfo;
-    participants: ParticipantInfo;
-    opponent: ParticipantInfo | null;
+    dominance: Dominance;
+    participants: Participants;
 }
 
 export interface ChallengeInfo {
@@ -27,7 +27,18 @@ export interface DetailTags {
     name: string;
 }
 
-export interface ParticipantInfo {
+export interface Dominance {
+    myPercent: number;
+    mySuccessRate: number;
+    opponentPercent: number;
+    opponentSuccessRate: number;
+}
+export interface Participants {
+    me: ParticipantsInfo;
+    opponent: ParticipantsInfo | null;
+}
+
+export interface ParticipantsInfo {
     id: number;
     profileImage: ProfileImage;
     nickname: string;

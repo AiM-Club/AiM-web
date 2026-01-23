@@ -8,15 +8,57 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeVS/ChallengeVSDetail.style";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useGetChallengeDetail } from "@/api/challengeDetail";
+import Loading from "@/components/loading/Loading";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
+import { useGetPhoto } from "@/api/photo";
 
 const ChallengeVSMatch = () => {
   const { id } = useParams<{ id: string }>();
+  const { data: challengeDetail, isLoading } = useGetChallengeDetail(id || "");
+  const { mutate: getPhoto } = useGetPhoto();
+  const { setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto } = useChallengeDetailStore();
 
-  const fieldData = ["분야1", "분야2", "분야3"];
-  const tagData = ["태그1", "태그2", "태그3"];
-  const wordData = "작성된 직무";
-  const startData = "2025.11.07";
-  const endData = "2025.11.30";
+  useEffect(() => {
+    if (challengeDetail) {
+      setChallengeInfo(challengeDetail.data.challengeInfo);
+      setDominance(challengeDetail.data.dominance);
+      setMyInfo(challengeDetail.data.participants.me);
+      setOpponentInfo(challengeDetail.data.participants.opponent);
+
+      if(challengeDetail?.data.challengeInfo.thumbnail) {
+        getPhoto(
+          { file_uuid: challengeDetail.data.challengeInfo.thumbnail },
+          {
+            onSuccess: (photo) => {
+              setThumbnail(photo);
+            },
+          }
+        );
+      }
+      if (challengeDetail?.data.participants.me.profileImage.uuid) {
+        getPhoto(
+          { file_uuid: challengeDetail.data.participants.me.profileImage.uuid },
+          {
+            onSuccess: (photo) => {
+              setMyPhoto(photo);
+            },
+          }
+        );
+      }
+      if (challengeDetail?.data.participants.opponent?.profileImage.uuid) {
+        getPhoto(
+          { file_uuid: challengeDetail.data.participants.opponent.profileImage.uuid },
+          {
+            onSuccess: (photo) => {
+              setOpponentPhoto(photo);
+            },
+          }
+        );
+      }
+    }
+  }, [challengeDetail, getPhoto, setThumbnail, setMyPhoto, setOpponentPhoto]);
+
   const oppenentProgress = 90;
   const myProgress = 10;
   const opponentProfileImg = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif";
@@ -39,26 +81,27 @@ const ChallengeVSMatch = () => {
     resizeObserver.observe(contentElement);
   }, [contentElement])
 
+  if(isLoading) return <Loading />;
+
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" topic="제목 작성은 15글자 이하" />
+        <Banner image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" />
         <S.VSMatchContentWrapper ref={setContentElement}>
-          <FieldTagWorkPeriod fieldData={fieldData} tagData={tagData} wordData={wordData} startData={startData} endData={endData} week={5} />
+          <FieldTagWorkPeriod  />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
-          //나중에 상대가 있을 경우만 보이게 설정 예정
           <S.VSMatchProgressWrapper>
             <S.ProfileWrapper $direction={viewCard}><ProfileImage color={viewCard === "left" ? "pink" : "green"} image={viewCard === "left" ? myProfileImg : opponentProfileImg} width={4} /></S.ProfileWrapper>
-            <VSMatchBar opponentProgress={oppenentProgress} myProgress={myProgress} />
+            <VSMatchBar />
           </S.VSMatchProgressWrapper>
           <S.VSMatchCardWrapper>
             {viewCard === "left" || viewCard === "both" ?
-              <CardChallenge cardNum={3} color="green" topic="사용자 닉네임" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={setViewCard}>
+              <CardChallenge cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={setViewCard}>
                 <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} />
               </CardChallenge> : <></>}
             {viewCard === "right" || viewCard === "both" ?
-              <CardChallenge cardNum={3} color="pink" topic="ME : 사용자 닉네임" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={setViewCard}>
-                <ChallengeVSMatchContent color="pink" progress={80} success={80} totalWeek={9} currentWeek={5} viewCard={viewCard} profileImg="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif" />
+              <CardChallenge cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={setViewCard}>
+                <ChallengeVSMatchContent color="pink" kind="my" viewCard={viewCard} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>
