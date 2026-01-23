@@ -27,7 +27,7 @@ export const BannerContentWrapper = styled.div`
   gap: 1.5rem;
   position: absolute;
   bottom: 4rem;
-  left: 7.625rem;
+  left: 10%;
   width: calc(100% - 15.25rem);
 `;
 

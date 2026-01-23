@@ -4,7 +4,7 @@ export const RecruitDetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding: 0 7.625rem;
+  padding: 0 10%;
   margin-top: 3rem;
 `;
 

@@ -73,7 +73,7 @@ const BannerTitleField = forwardRef<BannerTitleFieldRef>((_, ref) => {
         onChange={handleImageChange}
       />
       {imagePreview && <S.BannerImage src={imagePreview} alt="배너 이미지" />}
-      <S.BannerOverlay />
+      <S.BannerOverlay hasImage={!!imagePreview} />
       <S.BannerContent
         value={title}
         onChange={handleTitleChange}

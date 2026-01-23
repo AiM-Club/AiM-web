@@ -18,13 +18,16 @@ export const BannerImage = styled.img`
   object-fit: cover;
 `;
 
-export const BannerOverlay = styled.div`
+export const BannerOverlay = styled.div<{ hasImage?: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(${BannerBackground}) no-repeat center center;
+  background: ${({ hasImage }) => 
+    hasImage 
+      ? 'transparent' 
+      : `url(${BannerBackground}) no-repeat center center`};
   background-size: cover;
   cursor: pointer;
 `;
@@ -34,7 +37,7 @@ export const BannerContent = styled.input`
   font: var(--headline-h-l);
   position: absolute;
   bottom: 4rem;
-  left: 7.625rem;
+  left: 10%;
   background: transparent;
   border: none;
   outline: none;
