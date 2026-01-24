@@ -39,7 +39,7 @@ const CreateChallenge = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // 각 컴포넌트의 유효성 검사 실행
     const [bannerResult, elementsResult] = await Promise.all([
       bannerTitleRef.current?.validate() || Promise.resolve({ isValid: false }),
@@ -90,7 +90,9 @@ const CreateChallenge = () => {
           <S.TopicWrapper>
             <PageTopic text="챌린지 개설" size="l" />
           </S.TopicWrapper>
-          <BannerTitleField ref={bannerTitleRef} />
+          <S.BannerWrapper>
+            <BannerTitleField ref={bannerTitleRef} />
+          </S.BannerWrapper>
           <S.WriteContentWrapper>
             <WriteElementsSelect ref={writeElementsRef} mode={true} challenge={false} />
             <S.WriteFieldWrapper>
@@ -121,7 +123,9 @@ const CreateChallenge = () => {
                   <p>비공개</p>
                 </S.Radio>
               </S.RadioWrapper>
-              <Button type="submit" disabled={!isValid}>완료</Button>
+              <S.SubmitBtnWrapper>
+                <Button type="submit" disabled={!isValid}>완료</Button>
+              </S.SubmitBtnWrapper>
             </S.ButtonWrapper>
           </S.WriteContentWrapper>
         </form>

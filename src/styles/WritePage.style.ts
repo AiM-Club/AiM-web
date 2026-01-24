@@ -10,6 +10,14 @@ export const RecruitWriteWrapper = styled.div`
   }
 `;
 
+export const BannerWrapper = styled.div`
+  width: 100%;
+  margin: 4rem 0 3rem 0;
+  @media(max-width: 500px){
+    margin: 1.5rem 0;
+  }
+`;
+
 export const TopicWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,7 +81,8 @@ export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  gap: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 export const RadioWrapper = styled.div`
@@ -92,4 +101,8 @@ export const Radio = styled.div`
     width: 1.5rem;
     height: 1.5rem;
   }
+`;
+
+export const SubmitBtnWrapper = styled.div`
+  margin-left: 1rem;
 `;
