@@ -8,6 +8,7 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 
 const ChallengeRecruitWrite = () => {
+
   return (
     <DefaultLayout variant="home">
       <S.RecruitWriteWrapper>

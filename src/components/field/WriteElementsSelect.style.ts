@@ -8,6 +8,10 @@ export const WriteElementsSelectWrapper = styled.div`
   gap: 2rem;
   font: var(--subtitle-m-l);
   color: var(--text-secondary);
+  @media(max-width: 500px){
+   gap: 0.5rem;
+   font: var(--body-r-m);
+  }
 `;
 
 export const ContentTitle = styled.div`
@@ -20,6 +24,9 @@ export const EachContentWrapper = styled.div`
   align-items: center;
   flex-direction: row;
   width: 22rem;
+  @media(max-width: 500px){
+    width: 100%;
+  }
 `;
 
 export const InputWrapper = styled.div`
@@ -27,10 +34,14 @@ export const InputWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 18rem;
+  @media(max-width: 500px){
+    width: calc(100% - 4rem);
+    flex: 1;
+  }
 `;
 
-export const InputField = styled.input<{ $width?: number }>`
-  width: ${(props) => (props.$width && props.$width > 0 ? `${props.$width}rem` : "18rem")};
+export const InputField = styled.input<{ $width?: number | string }>`
+  width: ${(props) => (props.$width && typeof props.$width === "number" ? `${props.$width}rem` : props.$width || "18rem")};
   flex-shrink: 0;
   padding: 0.625rem 1.2rem;
   border-radius: 0.25rem;
@@ -43,11 +54,19 @@ export const InputField = styled.input<{ $width?: number }>`
   &::placeholder {
     color: var(--text-secondary);
   }
+  @media(max-width: 500px){
+    font: var(--body-r-m);
+    width: ${(props) => (props.$width && typeof props.$width === "number" ? `${props.$width}rem` : props.$width || "calc(100% - 4rem)")};
+    flex: ${(props) => (props.$width ? "none" : "1")};
+  }
 `;
 
 export const PickerWrapper = styled.div`
   display: flex;
   position: relative;
+  @media(max-width: 500px){
+    width: 32%;
+  }
 `;
 
 export const PickerTop = styled.div`
@@ -58,6 +77,11 @@ export const PickerTop = styled.div`
   padding: 0.625rem 1rem;
   border-radius: 0.25rem;
   cursor: pointer;
+  @media(max-width: 500px){
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
 `;
 
 export const PickerBottom = styled.div`
@@ -104,4 +128,9 @@ export const Mode = styled.div<{ $isSelected?: boolean }>`
   color: ${(props) => (props.$isSelected ? "var(--text-primary-default)" : "var(--text-secondary)")};
   background-color: var(--surpace-primary);
   border-radius: 0.25rem;
+  @media(max-width: 500px){
+    width: 49%;
+    text-align: center;
+    justify-content: center;
+  }
 `;

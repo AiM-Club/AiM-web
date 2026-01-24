@@ -5,6 +5,9 @@ export const RecruitWriteWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 3rem;
+  @media(max-width: 500px){
+    gap: 1.5rem;
+  }
 `;
 
 export const TopicWrapper = styled.div`
@@ -12,6 +15,12 @@ export const TopicWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 6.25rem 0 1rem 10%;
+  @media(max-width: 1024px){
+    padding: 1.5rem 0 0 10%;
+  }
+  @media(max-width: 500px){
+    padding: 1.5rem 0 0 5%;
+  }
 `;
 
 export const WriteContentWrapper = styled.div`
@@ -20,6 +29,10 @@ export const WriteContentWrapper = styled.div`
   width: 100%;
   gap: 3rem;
   padding: 0 10%;
+  @media(max-width: 500px){
+    gap: 1.5rem;
+    padding: 0 5%;
+  }
 `;
 
 export const Text = styled.p`
@@ -51,6 +64,9 @@ export const WriteFieldWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 1rem;
+  @media(max-width: 500px){
+    gap: 0.5rem;
+  }
 `;
 
 export const ButtonWrapper = styled.div`

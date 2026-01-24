@@ -73,11 +73,11 @@ const BannerTitleField = forwardRef<BannerTitleFieldRef>((_, ref) => {
         onChange={handleImageChange}
       />
       {imagePreview && <S.BannerImage src={imagePreview} alt="배너 이미지" />}
-      <S.BannerOverlay hasImage={!!imagePreview} />
+      <S.BannerOverlay $hasImage={!!imagePreview} />
       <S.BannerContent
         value={title}
         onChange={handleTitleChange}
-        placeholder="제목을 입력하세요 (15자 이내)"
+        placeholder="제목을 입력하세요"
         maxLength={15}
         onClick={(e) => e.stopPropagation()}
       />

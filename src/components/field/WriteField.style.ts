@@ -29,6 +29,10 @@ export const QuillWrapper = styled.div`
     font: var(--body-r-xl);
     color: var(--text-primary-default);
     border: none;
+
+    @media(max-width: 840px){
+      height: 12.5rem;
+    }
   }
 
   .ql-editor {
@@ -37,6 +41,10 @@ export const QuillWrapper = styled.div`
 
     &::-webkit-scrollbar {
       display: none;
+    }
+      
+    @media(max-width: 840px){
+      height: 12.5rem;
     }
 
     //placeholder

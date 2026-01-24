@@ -6,6 +6,9 @@ export const BannerWrapper = styled.div`
   height: 22.5rem;
   position: relative;
   background-color: var(--gray-600);
+  @media(max-width: 500px){
+    height: 12.5rem;
+  }
 `;
 
 export const FileInput = styled.input`
@@ -18,14 +21,14 @@ export const BannerImage = styled.img`
   object-fit: cover;
 `;
 
-export const BannerOverlay = styled.div<{ hasImage?: boolean }>`
+export const BannerOverlay = styled.div<{ $hasImage?: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: ${({ hasImage }) => 
-    hasImage 
+  background: ${({ $hasImage }) => 
+    $hasImage 
       ? 'transparent' 
       : `url(${BannerBackground}) no-repeat center center`};
   background-size: cover;
@@ -41,8 +44,15 @@ export const BannerContent = styled.input`
   background: transparent;
   border: none;
   outline: none;
+  width: 80%;
 
   &::placeholder {
     color: var(--text-secondary);
+  }
+
+  @media(max-width: 500px){
+    left: 5%;
+    bottom: 2rem;
+    font: var(--headline-h-s);
   }
 `;

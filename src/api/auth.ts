@@ -1,7 +1,7 @@
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse, QueryOptions } from "./types";
-import type { LoginRequest, LoginResponse, SocialLoginRequest, JoinRequest, User, ExistResponse } from "@/types/auth";
+import type { LoginRequest, LoginResponse, SocialLoginRequest, User, ExistResponse } from "@/types/auth";
 
 //로그인
 export const useLogin = () => {
