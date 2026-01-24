@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import usePagination from "@/hooks/usePagination";
 import { useGetChallengeVS } from "@/api/challenge";
 import useSearch from "@/hooks/useSearch";
+import ChallengeVSInvite from "./ChallengeVSInvite";
 
 const ChallengeVS = () => {
   const navigate = useNavigate();
@@ -56,7 +57,11 @@ const ChallengeVS = () => {
               로그인 후 이용 가능합니다
             </S.EmptyState>
           ) : (
-            <CardBoard data={challengeVSList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+            category == "INVITATION" ? (
+              <ChallengeVSInvite />
+            ) : (
+              <CardBoard data={challengeVSList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+            )
           )}
         </S.ContentWrapper>
       </S.ChallengeVSWrapper>
