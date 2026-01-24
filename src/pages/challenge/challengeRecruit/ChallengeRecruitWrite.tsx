@@ -17,7 +17,7 @@ const ChallengeRecruitWrite = () => {
         </S.TopicWrapper>
         <BannerTitleField />
         <S.WriteContentWrapper>
-          <WriteElementsSelect />
+          <WriteElementsSelect inputtable={false} />
           <S.WriteFieldWrapper>
             <WriteField />
             <FileAddBtn />

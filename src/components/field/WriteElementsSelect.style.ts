@@ -40,14 +40,14 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const InputField = styled.input<{ $width?: number | string }>`
+export const InputField = styled.input<{ $width?: number | string; $nonInputtable?: boolean }>`
   width: ${(props) => (props.$width && typeof props.$width === "number" ? `${props.$width}rem` : props.$width || "18rem")};
   flex-shrink: 0;
   padding: 0.625rem 1.2rem;
   border-radius: 0.25rem;
   font: var(--subtitle-m-l);
-  color: var(--text-primary-default);
-  background-color: var(--surpace-primary);
+  color: ${(props)=>props.$nonInputtable?"var(--text-secondary)":"var(--text-primary-default)"};
+  background-color: ${(props)=>props.$nonInputtable?"var(--surpace-tertiary)":"var(--surpace-primary)"};
   border: none;
   outline: none;
   box-sizing: border-box;
@@ -69,14 +69,14 @@ export const PickerWrapper = styled.div`
   }
 `;
 
-export const PickerTop = styled.div`
+export const PickerTop = styled.div<{ $nonInputtable?: boolean }>`
   display: flex;
-  background-color: var(--surpace-primary);
-  color: var(--text-primary-default);
+  background-color: ${(props)=>props.$nonInputtable?"var(--surpace-tertiary)":"var(--surpace-primary)"};
+  color: ${(props)=>props.$nonInputtable?"var(--text-secondary)":"var(--text-primary-default)"};
   box-sizing: border-box;
   padding: 0.625rem 1rem;
   border-radius: 0.25rem;
-  cursor: pointer;
+  cursor: ${(props)=>props.$nonInputtable?"default":"pointer"};
   @media(max-width: 500px){
     width: 100%;
     text-align: center;
@@ -133,4 +133,12 @@ export const Mode = styled.div<{ $isSelected?: boolean }>`
     text-align: center;
     justify-content: center;
   }
+`;
+
+export const DisabledWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 2rem;
 `;

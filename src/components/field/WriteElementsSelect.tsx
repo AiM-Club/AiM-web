@@ -1,6 +1,6 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
-import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useState, useRef, useEffect, forwardRef } from "react";
 import Check from "@/assets/Check.svg";
 import { z } from "zod";
 import useMedia from "@/hooks/useMedia";
@@ -32,11 +32,11 @@ export interface WriteElementsSelectRef {
 interface WriteElementsSelectProps {
   mode?: boolean;
   challenge?: boolean;
-  selectedMode?: string;
+  inputtable?: boolean;
 }
 
 const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSelectProps>(
-  ({ mode = false, challenge = true, selectedMode }, ref) => {
+  ({ mode = false, challenge = true, inputtable = true }) => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const currentDay = new Date().getDate();
@@ -53,7 +53,7 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
     const [monthOpen, setMonthOpen] = useState<boolean>(false);
     const [dayOpen, setDayOpen] = useState<boolean>(false);
     const [weekOpen, setWeekOpen] = useState(false);
-    const [currentMode, setCurrentMode] = useState<string>(selectedMode || "");
+    const [currentMode, setCurrentMode] = useState<string | null>(null);
 
     // 선택된 값 관리
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
@@ -106,49 +106,13 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
       { value: "체육", label: "체육" },
     ];
 
-    useImperativeHandle(ref, () => ({
-      validate: async () => {
-        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
-        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
-        const data: Partial<WriteElementsForm> = {
-          field: selectedField,
-          tags: filteredTags,
-          job,
-          startDate,
-          weeks: selectedWeek,
-          mode: currentMode,
-        };
-        const result = writeElementsSchema.safeParse(data);
-        if (!result.success) {
-          const newErrors: Record<string, string> = {};
-          result.error.issues.forEach((err) => {
-            if (err.path[0]) {
-              newErrors[err.path[0] as string] = err.message;
-            }
-          });
-          setErrors(newErrors);
-          const firstError = result.error.issues[0]?.message || "유효성 검사 실패";
-          return { isValid: false, error: firstError };
-        }
-        setErrors({});
-        return { isValid: true, data: result.data };
-      },
-      getData: () => {
-        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
-        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
-        return {
-          field: selectedField,
-          tags: filteredTags,
-          job,
-          startDate,
-          weeks: selectedWeek,
-          mode: currentMode || undefined,
-        };
-      },
-    }));
+    //모드 선택 시 챌린지 로드 (서버에서 받아오기)
+    const challengeOptions: SelectOption[] = [];
+
+    //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기), [] to null로 고치기
+    const [challengeInfo, setChallengeInfo] = useState<string[] | null>([]);
 
     const handleModeClick = (mode: string) => {
-      if (selectedMode) return;
       setCurrentMode(mode);
       setErrors((prev) => ({ ...prev, mode: "" }));
     }
@@ -184,157 +148,160 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
 
     return (
       <S.WriteElementsSelectWrapper>
-        <S.EachContentWrapper>
-          <S.ContentTitle>분야</S.ContentTitle>
-          <Select
-            placeholder="선택"
-            options={options}
-            width={isMobile ? "calc(100% - 4rem)" : 18}
-            value={selectedField}
-            onValueChange={handleFieldChange}
-          />
-          {errors.field && (
-            <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
-              {errors.field}
-            </p>
-          )}
-        </S.EachContentWrapper>
-        <S.EachContentWrapper>
-          <S.ContentTitle>태그</S.ContentTitle>
-          <S.InputWrapper>
-            {Array.from({ length: 3 }).map((_, i) => (
-              <S.InputField
-                key={i}
-                placeholder="#작성"
-                $width={isMobile ? "32%" : 5.6}
-                value={tagValues[i] || ""}
-                onChange={(e) => handleTagChange(i, e.target.value)}
+        {inputtable && (
+          <>
+            <S.EachContentWrapper>
+              <S.ContentTitle>분야</S.ContentTitle>
+              <Select
+                placeholder="선택"
+                options={options}
+                width={isMobile ? "calc(100% - 4rem)" : 18}
+                value={selectedField}
+                onValueChange={handleFieldChange}
               />
-            ))}
-          </S.InputWrapper>
-          {errors.tags && (
-            <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
-              {errors.tags}
-            </p>
-          )}
-        </S.EachContentWrapper>
-        <S.EachContentWrapper>
-          <S.ContentTitle>직무</S.ContentTitle>
-          <S.InputField
-            placeholder="직무를 작성하세요"
-            value={job}
-            onChange={(e) => handleJobChange(e.target.value)}
-          />
-          {errors.job && (
-            <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
-              {errors.job}
-            </p>
-          )}
-        </S.EachContentWrapper>
-        <S.EachContentWrapper>
-          <S.ContentTitle>시작일</S.ContentTitle>
-          <S.InputWrapper>
-            <S.PickerWrapper ref={yearRef}>
-              <S.PickerTop onClick={() => setYearOpen(!yearOpen)}>
-                {selectedYear}년
-              </S.PickerTop>
-              {yearOpen && (
-                <S.PickerBottom>
-                  {years.map((year) => (
-                    <S.PickerItem
-                      key={year}
-                      onClick={() => {
-                        handleDateChange(year, selectedMonth, selectedDay);
-                        setYearOpen(false);
-                      }}
-                      $isSelected={selectedYear === year}
-                    >
-                      {year}
-                    </S.PickerItem>
-                  ))}
-                </S.PickerBottom>
+              {errors.field && (
+                <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+                  {errors.field}
+                </p>
               )}
-            </S.PickerWrapper>
-            <S.PickerWrapper ref={monthRef}>
-              <S.PickerTop onClick={() => setMonthOpen(!monthOpen)}>
-                {selectedMonth}월
-              </S.PickerTop>
-              {monthOpen && (
-                <S.PickerBottom>
-                  {months.map((month) => (
-                    <S.PickerItem
-                      key={month}
-                      onClick={() => {
-                        handleDateChange(selectedYear, month, selectedDay);
-                        setMonthOpen(false);
-                      }}
-                      $isSelected={selectedMonth === month}
-                    >
-                      {month}
-                    </S.PickerItem>
-                  ))}
-                </S.PickerBottom>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>태그</S.ContentTitle>
+              <S.InputWrapper>
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <S.InputField
+                    key={i}
+                    placeholder="#작성"
+                    $width={isMobile ? "32%" : 5.6}
+                    value={tagValues[i] || ""}
+                    onChange={(e) => handleTagChange(i, e.target.value)}
+                  />
+                ))}
+              </S.InputWrapper>
+              {errors.tags && (
+                <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+                  {errors.tags}
+                </p>
               )}
-            </S.PickerWrapper>
-            <S.PickerWrapper ref={dayRef}>
-              <S.PickerTop onClick={() => setDayOpen(!dayOpen)}>
-                {selectedDay}일
-              </S.PickerTop>
-              {dayOpen && (
-                <S.PickerBottom>
-                  {days.map((day) => (
-                    <S.PickerItem
-                      key={day}
-                      onClick={() => {
-                        handleDateChange(selectedYear, selectedMonth, day);
-                        setDayOpen(false);
-                      }}
-                      $isSelected={selectedDay === day}
-                    >
-                      {day}
-                    </S.PickerItem>
-                  ))}
-                </S.PickerBottom>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>직무</S.ContentTitle>
+              <S.InputField
+                placeholder="직무를 작성하세요"
+                value={job}
+                onChange={(e) => handleJobChange(e.target.value)}
+              />
+              {errors.job && (
+                <p style={{ color: "var(--error-primary)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+                  {errors.job}
+                </p>
               )}
-            </S.PickerWrapper>
-          </S.InputWrapper>
-        </S.EachContentWrapper>
-        <S.EachContentWrapper>
-          <S.ContentTitle>기간</S.ContentTitle>
-          <S.InputWrapper>
-            <S.PickerWrapper ref={weekRef}>
-              <S.PickerTop onClick={() => setWeekOpen(!weekOpen)}>
-                {selectedWeek}주
-              </S.PickerTop>
-              {weekOpen && (
-                <S.PickerBottom>
-                  {weeks.map((week) => (
-                    <S.PickerItem
-                      key={week}
-                      onClick={() => {
-                        handleWeeksChange(week);
-                        setWeekOpen(false);
-                      }}
-                      $isSelected={selectedWeek === week}
-                    >
-                      {week}
-                    </S.PickerItem>
-                  ))}
-                </S.PickerBottom>
-              )}
-            </S.PickerWrapper>
-          </S.InputWrapper>
-        </S.EachContentWrapper>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>시작일</S.ContentTitle>
+              <S.InputWrapper>
+                <S.PickerWrapper ref={yearRef}>
+                  <S.PickerTop onClick={() => setYearOpen(!yearOpen)}>
+                    {selectedYear}년
+                  </S.PickerTop>
+                  {yearOpen && (
+                    <S.PickerBottom>
+                      {years.map((year) => (
+                        <S.PickerItem
+                          key={year}
+                          onClick={() => {
+                            handleDateChange(year, selectedMonth, selectedDay);
+                            setYearOpen(false);
+                          }}
+                          $isSelected={selectedYear === year}
+                        >
+                          {year}
+                        </S.PickerItem>
+                      ))}
+                    </S.PickerBottom>
+                  )}
+                </S.PickerWrapper>
+                <S.PickerWrapper ref={monthRef}>
+                  <S.PickerTop onClick={() => setMonthOpen(!monthOpen)}>
+                    {selectedMonth}월
+                  </S.PickerTop>
+                  {monthOpen && (
+                    <S.PickerBottom>
+                      {months.map((month) => (
+                        <S.PickerItem
+                          key={month}
+                          onClick={() => {
+                            handleDateChange(selectedYear, month, selectedDay);
+                            setMonthOpen(false);
+                          }}
+                          $isSelected={selectedMonth === month}
+                        >
+                          {month}
+                        </S.PickerItem>
+                      ))}
+                    </S.PickerBottom>
+                  )}
+                </S.PickerWrapper>
+                <S.PickerWrapper ref={dayRef}>
+                  <S.PickerTop onClick={() => setDayOpen(!dayOpen)}>
+                    {selectedDay}일
+                  </S.PickerTop>
+                  {dayOpen && (
+                    <S.PickerBottom>
+                      {days.map((day) => (
+                        <S.PickerItem
+                          key={day}
+                          onClick={() => {
+                            handleDateChange(selectedYear, selectedMonth, day);
+                            setDayOpen(false);
+                          }}
+                          $isSelected={selectedDay === day}
+                        >
+                          {day}
+                        </S.PickerItem>
+                      ))}
+                    </S.PickerBottom>
+                  )}
+                </S.PickerWrapper>
+              </S.InputWrapper>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>기간</S.ContentTitle>
+              <S.InputWrapper>
+                <S.PickerWrapper ref={weekRef}>
+                  <S.PickerTop onClick={() => setWeekOpen(!weekOpen)}>
+                    {selectedWeek}주
+                  </S.PickerTop>
+                  {weekOpen && (
+                    <S.PickerBottom>
+                      {weeks.map((week) => (
+                        <S.PickerItem
+                          key={week}
+                          onClick={() => {
+                            handleWeeksChange(week);
+                            setWeekOpen(false);
+                          }}
+                          $isSelected={selectedWeek === week}
+                        >
+                          {week}
+                        </S.PickerItem>
+                      ))}
+                    </S.PickerBottom>
+                  )}
+                </S.PickerWrapper>
+              </S.InputWrapper>
+            </S.EachContentWrapper>
+          </>)}
         {mode && (
           <S.EachContentWrapper>
             <S.ContentTitle>모드</S.ContentTitle>
             <S.InputWrapper>
               <S.Mode $isSelected={currentMode === "SOLO"} onClick={() => handleModeClick("SOLO")}>
-                {selectedMode && selectedMode === "SOLO" ? <img src={Check} /> : ""}
+                {currentMode === "SOLO" ? <img src={Check} /> : ""}
                 SOLO
               </S.Mode>
               <S.Mode $isSelected={currentMode === "VS"} onClick={() => handleModeClick("VS")}>
-                {selectedMode && selectedMode === "VS" ? <img src={Check} /> : ""}
+                {currentMode === "VS" ? <img src={Check} /> : ""}
                 VS대결
               </S.Mode>
             </S.InputWrapper>
@@ -343,9 +310,72 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
         {challenge && (
           <S.EachContentWrapper>
             <S.ContentTitle>챌린지</S.ContentTitle>
-            <Select placeholder="선택" options={options} width={isMobile ? "calc(100% - 4rem)" : 18} />
+            <Select placeholder="선택" options={challengeOptions} width={isMobile ? "calc(100% - 4rem)" : 18} />
           </S.EachContentWrapper>
         )}
+        {!inputtable && challengeInfo && (
+          <S.DisabledWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>직무</S.ContentTitle>
+              <S.InputField
+                value={job}
+                disabled={true}
+                $nonInputtable={true}
+              />
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>분야</S.ContentTitle>
+              <S.InputField
+                value={"ㅇㅇㅇ"}
+                disabled={true}
+                $nonInputtable={true}
+              />
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>태그</S.ContentTitle>
+              <S.InputWrapper>
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <S.InputField
+                    key={i}
+                    $width={isMobile ? "32%" : 5.6}
+                    value={tagValues[i] || ""}
+                    disabled={true}
+                    $nonInputtable={true}
+                  />
+                ))}
+              </S.InputWrapper>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>시작일</S.ContentTitle>
+              <S.InputWrapper>
+                <S.PickerWrapper>
+                  <S.PickerTop $nonInputtable={true}>
+                    {selectedYear}년
+                  </S.PickerTop>
+                </S.PickerWrapper>
+                <S.PickerWrapper>
+                  <S.PickerTop $nonInputtable={true}>
+                    {selectedMonth}월
+                  </S.PickerTop>
+                </S.PickerWrapper>
+                <S.PickerWrapper>
+                  <S.PickerTop $nonInputtable={true}>
+                    {selectedDay}일
+                  </S.PickerTop>
+                </S.PickerWrapper>
+              </S.InputWrapper>
+            </S.EachContentWrapper>
+            <S.EachContentWrapper>
+              <S.ContentTitle>기간</S.ContentTitle>
+              <S.InputWrapper>
+                <S.PickerWrapper>
+                  <S.PickerTop $nonInputtable={true}>
+                    {selectedWeek}주
+                  </S.PickerTop>
+                </S.PickerWrapper>
+              </S.InputWrapper>
+            </S.EachContentWrapper>
+          </S.DisabledWrapper>)}
       </S.WriteElementsSelectWrapper>
     );
   });

@@ -8,7 +8,6 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 
 const WriteReview = () => {
-  const mode = "VS대결";
   return (
     <DefaultLayout variant="home">
       <S.RecruitWriteWrapper>
@@ -17,7 +16,7 @@ const WriteReview = () => {
         </S.TopicWrapper>
         <BannerTitleField />
         <S.WriteContentWrapper>
-          <WriteElementsSelect mode={true} selectedMode={mode} />
+          <WriteElementsSelect mode={true} inputtable={false} />
           <S.WriteFieldWrapper>
             <WriteField />
             <FileAddBtn />
