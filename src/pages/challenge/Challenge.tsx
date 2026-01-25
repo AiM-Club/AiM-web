@@ -11,7 +11,7 @@ import useMedia from "@/hooks/useMedia";
 import CardSlider from "@/components/slider/CardSlider";
 
 const Challenge = () => {
-  const isMobile = useMedia(776);
+  const isMobile = useMedia(800);
 
   return (
     <DefaultLayout>

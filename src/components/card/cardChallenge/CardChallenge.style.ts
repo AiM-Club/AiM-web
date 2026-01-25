@@ -37,9 +37,9 @@ export const CardBackground = styled.img<{ $height: number | null }>`
 export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null; $ismobile: boolean }>`
   display: flex;
   justify-content: ${(props) =>
-    props.$direction == "right"
+    props.$direction == "right"&&!props.$ismobile
       ? "flex-end"
-      : props.$direction == "left"
+      : props.$direction == "left"||props.$ismobile
         ? "flex-start"
         : props.$color === "green"
           ? "flex-start"
@@ -92,6 +92,6 @@ export const CardContentWrapper = styled.div<{ $ismobile: boolean; $color: "gree
   width: 100%;
   top: ${(props)=>props.$ismobile && props.$mobileTopic !== "top"?"0":"4rem"};
   min-height: 21rem;
-  padding: 0 2rem;
+  padding: ${({$ismobile})=>($ismobile ? "0 1rem" : "0 2rem")};
   border-bottom: ${({$ismobile, $color})=>($ismobile ? `4px solid ${$color === "green" ? "var(--border-secondary-default)" : "var(--pink-400)"}`:"none")};
 `;

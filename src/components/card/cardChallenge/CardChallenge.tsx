@@ -27,7 +27,7 @@ import { useState, useEffect } from "react";
 // 2. 카드 토픽이 챌린지 랭킹 페이지와 같이 background top 위에 있을 경우 **mobileTopic을 top**으로 넘겨주세요.
 // mobileTopic을 top과 none으로 넘길 경우 카드 안 content의 wrapper의 패딩 값을 아래와 같이 바꿔주세요
 
-// @media (max-width: 776px) {
+// @media (max-width: ooopx) {
 //   padding: 2.5rem 0 1.5rem 0;
 // }
 

@@ -7,12 +7,20 @@ export const ChallengeMainContentWrapper = styled.div`
   height: fit-content;
   gap: 3.5rem;
   padding: 1.5rem 0;
+
+  @media (max-width: 800px) {
+    gap: 1.5rem;
+  }
 `;
 
 export const TryWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.875rem;
+
+  @media (max-width: 800px) {
+    gap: 0.5rem;
+  }
 `;
 
 export const TryContent = styled.div`
@@ -22,6 +30,11 @@ export const TryContent = styled.div`
   gap: 1rem;
   color: var(--text-primary-default);
   font: var(--subtitle-m-m);
+
+  @media (max-width: 800px) {
+    gap: 0.5rem;
+    font: var(--body-m-l);
+  }
 `;
 
 export const TryIconWrapper = styled.div`
@@ -35,7 +48,6 @@ export const TryIconWrapper = styled.div`
 export const TryIcon = styled.img`
   width: 100%;
   height: auto;
-  // min-height: 8rem;
 `;
 
 export const TryTextWrapper = styled.div`
@@ -48,9 +60,16 @@ export const TryTextWrapper = styled.div`
 
 export const TryNum = styled.p`
   font: var(--title-b-l);
+
+  @media (max-width: 800px) {
+  font: var(--title-b-s);
+  }
 `;
 
-export const TryText = styled.p``;
+export const TryText = styled.p`
+  @media (max-width: 800px) {
+    font: var(--body-s-l);
+  }`;
 
 // ChallengeVSMatchContent
 export const ChallengeVSMatchContentWrapper = styled.div`
