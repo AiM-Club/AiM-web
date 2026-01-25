@@ -39,12 +39,14 @@ export const Topic = styled.p`
 
 export const Content = styled.div`
   display: flex;
-  width: 100%;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
+  flex-shrink: 1;
   align-items: center;
   color: var(--text-primary-default);
   font: var(--subtitle-m-l);
   gap: 0.75rem;
+  flex-wrap: wrap;
   
   @media (max-width: 560px){
     font: var(--body-r-m);

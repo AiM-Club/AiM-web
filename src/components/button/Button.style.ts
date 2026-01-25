@@ -25,6 +25,10 @@ export const variantStyles = {
     z-index: 999;
     bottom: 8%;
     right: 10%;
+  
+    @media (max-width: 560px){
+      right: 5%;
+    }
   `,
   secondary: css`
     height: 3rem;
@@ -40,17 +44,23 @@ export const sizeStyles = {
   medium: css`
     width: 9.125rem;
     height: 3.563rem;
-    font: var(--body-m-xl);
+    font: var(--title-s-m);
+  
+    @media (max-width: 560px){
+      font: var(--body-s-m);
+      width: 6.375rem;
+      height: 2.75rem;
+    }
   `,
   large: css`
     width: 14.5rem;
     height: 3.375rem;
-    font: var(--body-m-l);
+    font: var(--title-s-m);
   `,
   req: css`
     width: 9.125rem;
     height: 3.563rem;
-    font: var(--body-m-xl);
+    font: var(--title-s-m);
   
     @media (max-width: 560px){
       font: var(--body-s-m);
