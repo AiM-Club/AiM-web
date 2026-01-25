@@ -12,7 +12,7 @@ export const PageTopic = ({ text, size }: PageTopicProps) => {
   const firstText = text.slice(0, 1);
   const elseText = text.slice(1);
 
-  const fontSize = size === "m" ? "headline-h-m" : size === "l" ? "headline-h-l" : "headline-h-s";
+  const fontSize = size === "m" ? "headline-h-m" : size === "l" ? "headline-h-l" : "title-h-s";
 
   return (
     <S.PageTopicWrapper $size={fontSize}>

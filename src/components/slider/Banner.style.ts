@@ -47,7 +47,7 @@ export const BannerContent = styled.p`
   font: var(--headline-h-l);
   
   @media (max-width: 560px){
-    font: var(--headline-h-s);
+    font: var(--title-h-s);
   }
 `;
 

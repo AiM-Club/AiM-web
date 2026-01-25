@@ -53,6 +53,6 @@ export const BannerContent = styled.input`
   @media(max-width: 500px){
     left: 5%;
     bottom: 2rem;
-    font: var(--headline-h-s);
+    font: var(--title-h-s);
   }
 `;

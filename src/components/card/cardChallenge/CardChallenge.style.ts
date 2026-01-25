@@ -48,7 +48,7 @@ export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "rig
   position: ${(props)=>props.$ismobile?"relative":"absolute"};
   height: 4.5rem;
   padding: ${(props)=>props.$ismobile?"1.5rem 0 0 0":"0 1.5rem"};
-  font: var(--headline-h-s);
+  font: ${({$ismobile})=>($ismobile ? "var(--title-h-s)" : "var(--title-h-l)")};
   color: ${(props)=>props.$ismobile?"var(--text-primary-default)": "var(--text-tertiary)"};
   width: 100%;
 `;
@@ -93,5 +93,5 @@ export const CardContentWrapper = styled.div<{ $ismobile: boolean; $color: "gree
   top: ${(props)=>props.$ismobile && props.$mobileTopic !== "top"?"0":"4rem"};
   min-height: 21rem;
   padding: ${({$ismobile})=>($ismobile ? "0 1rem" : "0 2rem")};
-  border-bottom: ${({$ismobile, $color})=>($ismobile ? `4px solid ${$color === "green" ? "var(--border-secondary-default)" : "var(--pink-400)"}`:"none")};
+  border-bottom: ${({$ismobile, $color})=>($ismobile ? `4px solid ${$color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"}`:"none")};
 `;
