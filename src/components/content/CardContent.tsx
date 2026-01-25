@@ -3,16 +3,19 @@ import { ProgressBar } from "@/components/bar/ProgressBar";
 import TryIcon from "@/assets/Try.png";
 import Plus from "@/assets/Plus.svg";
 import FileIcon from "@/assets/FileClip.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ProfileImage from "../image/ProfileImage";
 import type { CommentProps, CommentType } from "@/types/comment";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
-import { useGetWeeklyComments } from "@/api/challengeDetail";
+import { useGetWeeklyComments, usePostWeeklyComment } from "@/api/challengeDetail";
 import SubLoading from "../loading/SubLoading";
 import Comment from "@/components/comment/Comment.tsx";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -95,6 +98,34 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
   const { mutate: getWeeklyComments } = useGetWeeklyComments();
   const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
+  const [commentFile, setCommentFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
+  const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
+    ? String(progressListMap[selectedWeek].weeklyProgressId)
+    : "0";
+  const { mutate: postComment } = usePostWeeklyComment(
+    challengeId ? String(challengeId) : "0",
+    currentWeeklyProgressId
+  );
+
+  const commentSchema = z.object({
+    content: z.string().min(1, "댓글을 입력해주세요"),
+  });
+
+  type CommentForm = z.infer<typeof commentSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+  } = useForm<CommentForm>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      content: "",
+    },
+  });
 
   useEffect(() => {
     if (!contentElement) return;
@@ -168,11 +199,53 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
         },
         {
           onSuccess: (data) => {
-            console.log(data.comments);
             setWeekCommentData(data.comments);
           },
         }
       );
+    }
+  }
+
+  const onSubmit = (data: CommentForm) => {
+    console.log("댓글달기");
+    if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+
+    console.log(data);
+    console.log(commentFile);
+    const formData = new FormData();
+    formData.append("content", data.content);
+    if (commentFile) {
+      // 이미지인지 파일인지 구분
+      if (commentFile.type.startsWith("image/")) {
+        formData.append("attachedImages", commentFile);
+      } else {
+        formData.append("attachedFiles", commentFile);
+      }
+    }
+
+    postComment(formData, {
+      onSuccess: () => {
+        reset();
+        setCommentFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        // 댓글 리스트 새로고침
+        getWeeklyCommentsData(weeklyProgressId);
+      },
+      onError: (error: unknown) => {
+        console.error("댓글 작성 실패:", error);
+        alert("댓글 작성에 실패했습니다.");
+      },
+    });
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCommentFile(file);
     }
   }
 
@@ -239,27 +312,38 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     )}
                   </S.WeekTopicWrapper>
                   {commentView && <S.WeekCommentWrapper>
-                    {weekCommentData.map((data, index: number) => (
-                      <S.CommentWrapper key={index}>
+                    {weekCommentData.map((data) => (
+                      <S.CommentWrapper key={data.commentId}>
                         <Comment data={data} />
-                        {/* {data.reply?.map((replyData, replyIndex: number) => (
-                          <S.ReplyWrapper key={replyIndex}>
+                        {/* {data.reply?.map((replyData) => (
+                          <S.ReplyWrapper key={replyData.commentId}>
                             <Comment data={replyData} />
                           </S.ReplyWrapper>
                         ))} */}
                       </S.CommentWrapper>
                     ))}
                   </S.WeekCommentWrapper>}
-                  <S.WeekCommentInputWrapper>
-                    <S.FileIconLabel>
-                      <S.FileIconInput type="file" />
-                      <S.FileIconButton>
-                        <img src={FileIcon} alt="파일 업로드" />
-                      </S.FileIconButton>
-                    </S.FileIconLabel>
-                    <S.WeekCommentInput placeholder="댓글을 입력하세요" />
-                    <S.FinishBtn>완료</S.FinishBtn>
-                  </S.WeekCommentInputWrapper>
+                  {commentView && (
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <S.WeekCommentInputWrapper>
+                        <S.FileIconLabel>
+                          <S.FileIconInput
+                            ref={fileInputRef}
+                            type="file"
+                            onChange={handleFileChange}
+                          />
+                          <S.FileIconButton>
+                            <img src={FileIcon} alt="파일 업로드" />
+                          </S.FileIconButton>
+                        </S.FileIconLabel>
+                        <S.WeekCommentInput
+                          {...register("content")}
+                          placeholder="댓글을 입력하세요"
+                        />
+                        <S.FinishBtn type="submit">완료</S.FinishBtn>
+                      </S.WeekCommentInputWrapper>
+                    </form>
+                  )}
                 </S.WeekContentWrapper>
                 : <></>}
             </S.WeekItemWrapper>

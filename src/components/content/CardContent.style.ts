@@ -134,10 +134,10 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0)
-        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
-      return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
-    }}
+    if (props.$direction === 0)
+      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+    return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
+  }}
   );
 `;
 
@@ -291,7 +291,7 @@ export const WeekCommentInput = styled.input`
   }
 `;
 
-export const FinishBtn = styled.div`
+export const FinishBtn = styled.button`
   display: flex;
   flex-shrink: 0;
   padding: 1rem 1.25rem;

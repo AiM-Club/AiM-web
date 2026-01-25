@@ -69,3 +69,8 @@ export interface ChallengeSoloDetailResponse {
     challengeInfo: ChallengeInfo;
     participant: ParticipantsInfo;
 }
+
+export interface CommentPostResponse {
+    commentId: number;
+    weeksId: number;
+}

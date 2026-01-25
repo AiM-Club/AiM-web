@@ -12,12 +12,16 @@ import { useGetChallengeDetail, useGetChallengeDetailWeeks } from "@/api/challen
 import Loading from "@/components/loading/Loading";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useGetPhoto } from "@/api/photo";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import NoPhoto from "@/assets/NoPhoto.svg";
 
 const ChallengeVSMatch = () => {
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeDetail(id || "");
-  const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks } = useChallengeDetailStore();
+  const { mutate: getThumbnail } = useGetPhoto();
+  const { mutate: getMyPhoto } = useGetPhoto();
+  const { mutate: getOpponentPhoto } = useGetPhoto();
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto } = useChallengeDetailStore();
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
 
   useEffect(() => {
@@ -29,18 +33,23 @@ const ChallengeVSMatch = () => {
       setOpponentInfo(challengeDetail.data.participants.opponent);
       setChallengeDetailWeeks(challengeDetailWeeks.data);
 
-      if (challengeDetail?.data.challengeInfo.thumbnail) {
-        getPhoto(
+      if (challengeDetail?.data.challengeInfo.thumbnail?.uuid) {
+        console.log("여기")
+        getThumbnail(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
           {
             onSuccess: (photo) => {
+              console.log(photo);
               setThumbnail(photo);
+            },
+            onError: (error) => {
+              console.log(error);
             },
           }
         );
       }
       if (challengeDetail?.data.participants.me.profileImage.uuid) {
-        getPhoto(
+        getMyPhoto(
           { file_uuid: challengeDetail.data.participants.me.profileImage.uuid },
           {
             onSuccess: (photo) => {
@@ -50,7 +59,7 @@ const ChallengeVSMatch = () => {
         );
       }
       if (challengeDetail?.data.participants.opponent?.profileImage.uuid) {
-        getPhoto(
+        getOpponentPhoto(
           { file_uuid: challengeDetail.data.participants.opponent.profileImage.uuid },
           {
             onSuccess: (photo) => {
@@ -60,15 +69,14 @@ const ChallengeVSMatch = () => {
         );
       }
     }
-  }, [challengeDetail, challengeDetailWeeks, getPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeDetailWeeks]);
-
-  const opponentProfileImg = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif";
-  const myProfileImg = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif";
+  }, [challengeDetail, challengeDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeDetailWeeks]);
 
   const [cardHeight, setCardHeight] = useState<number | null>(null);
   const [viewCard, setViewCard] = useState<"left" | "right" | "both">("both");
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
+  const myPhotoUrl = useUserPhotoUrl(myPhoto);
+  const opponentPhotoUrl = useUserPhotoUrl(opponentPhoto);
 
   useEffect(() => {
     if (!contentElement) return;
@@ -92,7 +100,7 @@ const ChallengeVSMatch = () => {
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
           <S.VSMatchProgressWrapper>
-            <S.ProfileWrapper $direction={viewCard}><ProfileImage color={viewCard === "left" ? "pink" : "green"} image={viewCard === "left" ? myProfileImg : opponentProfileImg} width={4} /></S.ProfileWrapper>
+            <S.ProfileWrapper $direction={viewCard}><ProfileImage color={viewCard === "left" ? "pink" : "green"} image={viewCard === "left" ? myPhotoUrl || NoPhoto : opponentPhotoUrl || NoPhoto} width={4} /></S.ProfileWrapper>
             <VSMatchBar />
           </S.VSMatchProgressWrapper>
           <S.VSMatchCardWrapper>
