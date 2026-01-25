@@ -1,6 +1,7 @@
 import * as S from "./Comment.style";
 import Diamond from "@/assets/Diamond.svg";
 import ProfileImage from "@/components/image/ProfileImage";
+import useMedia from "@/hooks/useMedia";
 import type { CommentProps } from "@/types/comment";
 
 interface CommentComponentProps {
@@ -8,10 +9,12 @@ interface CommentComponentProps {
 }
 
 const Comment = ({ data }: CommentComponentProps) => {
+  const isMobile = useMedia(560);
+
   return (
     <S.CommentItem>
       <S.CommentProfileWrapper>
-        <ProfileImage image={data.userImg} width={2.5} />
+        <ProfileImage image={data.userImg} width={isMobile ? 2 : 2.5} />
       </S.CommentProfileWrapper>
       <S.CommentContentWrapper>
         <S.CommentHeaderWrapper>

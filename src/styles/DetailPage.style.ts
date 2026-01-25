@@ -6,6 +6,11 @@ export const RecruitDetailWrapper = styled.div`
   gap: 3rem;
   padding: 0 10%;
   margin-top: 3rem;
+  
+  @media (max-width: 560px){
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
 `;
 
 export const TopWrapper = styled.div`
@@ -13,12 +18,25 @@ export const TopWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+  position: relative;
+`;
+
+export const BtnWrapper = styled.div`
+  @media (max-width: 540px){
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  
+  @media (max-width: 560px){
+    gap: 0.5rem;
+  }
 `;
 
 export const CommentWholeWrapper = styled.div`
@@ -27,6 +45,11 @@ export const CommentWholeWrapper = styled.div`
   gap: 4rem;
   margin-top: 3.25rem;
   margin-bottom: 3.25rem;
+  
+  @media (max-width: 560px){
+    margin: 1.5rem 0;
+    gap: 1.5rem;
+  }
 `;
 
 export const CommentWrapper = styled.div`
@@ -42,6 +65,11 @@ export const ReplyWrapper = styled.div`
   padding: 1rem 3.75rem;
   border-radius: 0.5rem;
   gap: 1rem;
+  
+  @media (max-width: 560px){
+    border-radius: 0.25rem;
+    padding: 1rem 2rem;
+  }
 `;
 
 export const CommentFilesWrapper = styled.div`
@@ -60,7 +88,6 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  border: 1px solid var(--pink-500);
   border-radius: 0.25rem;
 `;
 
@@ -75,11 +102,20 @@ export const FileAddBtn = styled.div`
   border-radius: 0.25rem;
   cursor: pointer;
   font: var(--body-r-xl);
+  
+  @media (max-width: 560px){
+    width: 3.75rem;
+  }
 `;
 
 export const FileImg = styled.img`
   width: 1rem;
   height: 1rem;
+  
+  @media (max-width: 560px){
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 `;
 
 export const FileInput = styled.input`
@@ -110,6 +146,15 @@ export const SubmitBtn = styled.div`
   font: var(--body-r-xl);
   background-color: var(--surpace-primary);
   color: var(--text-primary-default);
+  
+  @media (max-width: 560px){
+    width: 3.75rem;
+  }
+`;
+
+export const SendImg = styled.img`
+  width: 1.25rem;
+  height: 1.25rem;
 `;
 
 export const InputOverlay = styled.div`

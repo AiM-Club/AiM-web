@@ -87,6 +87,7 @@ export const OAuthCallback = () => {
 
       if (!redirectUri) {
         console.error("VITE_KAKAO_REDIRECT_URI 환경 변수가 없습니다.");
+        alert("카카오 로그인 실패, 다시 시도해주세요.");
         navigate(PageEndPoints.LOGIN);
         return;
       }
@@ -106,6 +107,7 @@ export const OAuthCallback = () => {
 
             if (!data || !data.user || !data.token) {
               console.error("응답 데이터 구조가 올바르지 않습니다:", data);
+              alert("카카오 로그인 실패, 다시 시도해주세요.");
               navigate(PageEndPoints.LOGIN);
               return;
             }
@@ -118,12 +120,14 @@ export const OAuthCallback = () => {
           },
           onError: (error: any) => {
             console.error("카카오 로그인 실패:", error);
+            alert("카카오 로그인 실패, 다시 시도해주세요.");
             navigate(PageEndPoints.LOGIN);
           },
         }
       );
     } else {
       console.error("알 수 없는 OAuth provider:", providerName);
+      alert("카카오 로그인 실패, 다시 시도해주세요.");
       navigate(PageEndPoints.LOGIN);
     }
   }, [location, navigate, provider, googleLoginMutate, kakaoLoginMutate, setUser, setUserPhoto]);

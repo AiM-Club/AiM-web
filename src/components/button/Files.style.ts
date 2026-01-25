@@ -14,7 +14,7 @@ export const File = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  height: 3.25rem;
+  min-height: 3.25rem;
   border-radius: 0.25rem;
   background-color: var(--surpace-primary);
   font: var(--body-r-m);
@@ -26,6 +26,8 @@ export const NameWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+  width: calc(100% - 2rem);
+  word-break: break-all;
 `;
 
 export const FileIcon = styled.img`
