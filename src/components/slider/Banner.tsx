@@ -6,11 +6,11 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 
 interface BannerProps {
-  writer?: string;
+  isMine?: boolean;
 }
 
-const Banner = ({ writer }: BannerProps) => {
-  const { challengeInfo, thumbnail } = useChallengeDetailStore();
+const Banner = ({ isMine }: BannerProps) => {
+  const { challengeInfo, thumbnail, myInfo } = useChallengeDetailStore();
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(false);
   const logined = true;
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
@@ -21,9 +21,9 @@ const Banner = ({ writer }: BannerProps) => {
       <S.BannerOverlay />
       <S.BannerContentWrapper>
         <S.BannerContent>{challengeInfo?.name}</S.BannerContent>
-        {writer &&
+        {!isMine &&
           <S.WriterWrapper>
-            <p>{writer}</p>
+            <p>{myInfo?.nickname}</p>
             {logined && <S.HeartWrapper>
               <img src={isHeartClicked ? HeartFill : Heart} onClick={() => setIsHeartClicked(!isHeartClicked)} />
               <p>10</p>
