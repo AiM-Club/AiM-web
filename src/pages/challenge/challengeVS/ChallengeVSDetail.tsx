@@ -34,7 +34,6 @@ const ChallengeVSMatch = () => {
       setChallengeDetailWeeks(challengeDetailWeeks.data);
 
       if (challengeDetail?.data.challengeInfo.thumbnail?.uuid) {
-        console.log("여기")
         getThumbnail(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
           {
@@ -44,9 +43,12 @@ const ChallengeVSMatch = () => {
             },
             onError: (error) => {
               console.log(error);
+              setThumbnail(null);
             },
           }
         );
+      } else {
+        setThumbnail(null);
       }
       if (challengeDetail?.data.participants.me.profileImage.uuid) {
         getMyPhoto(
