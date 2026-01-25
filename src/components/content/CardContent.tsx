@@ -16,6 +16,7 @@ import Comment from "@/components/comment/Comment.tsx";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import XIcon from "@/assets/X.png";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -249,6 +250,13 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     }
   }
 
+  const handleFileDelete = () => {
+    setCommentFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }
+
   if (!challengeInfo || !challengeId) return <SubLoading />;
 
   return (
@@ -326,21 +334,33 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                   {commentView && (
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <S.WeekCommentInputWrapper>
-                        <S.FileIconLabel>
-                          <S.FileIconInput
-                            ref={fileInputRef}
-                            type="file"
-                            onChange={handleFileChange}
-                          />
-                          <S.FileIconButton>
-                            <img src={FileIcon} alt="파일 업로드" />
-                          </S.FileIconButton>
-                        </S.FileIconLabel>
                         <S.WeekCommentInput
                           {...register("content")}
                           placeholder="댓글을 입력하세요"
                         />
-                        <S.FinishBtn type="submit">완료</S.FinishBtn>
+                        <S.FileIconWrapper>
+                          <S.FileIconContentWrapper>
+                            <S.FileIconLabel>
+                              <S.FileIconInput
+                                ref={fileInputRef}
+                                type="file"
+                                onChange={handleFileChange}
+                              />
+                              <S.FileIconButton>
+                                <img src={FileIcon} alt="파일 업로드" />
+                              </S.FileIconButton>
+                            </S.FileIconLabel>
+                            {commentFile && (
+                              <S.FileNameWrapper>
+                                <S.FileName>{commentFile.name}</S.FileName>
+                                <S.FileNameDeleteBtn onClick={handleFileDelete}>
+                                  <img src={XIcon} alt="파일 삭제" />
+                                </S.FileNameDeleteBtn>
+                              </S.FileNameWrapper>
+                            )}
+                          </S.FileIconContentWrapper>
+                          <S.FinishBtn type="submit">완료</S.FinishBtn>
+                        </S.FileIconWrapper>
                       </S.WeekCommentInputWrapper>
                     </form>
                   )}
