@@ -13,12 +13,14 @@ type BannerTitleForm = z.infer<typeof bannerTitleSchema>;
 export interface BannerTitleFieldRef {
   validate: () => Promise<{ isValid: boolean; data?: BannerTitleForm; error?: string }>;
   getData: () => BannerTitleForm;
+  getImageFile: () => File | null;
 }
 
 const BannerTitleField = forwardRef<BannerTitleFieldRef>((_, ref) => {
   const [imagePreview, setImagePreview] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useImperativeHandle(ref, () => ({
@@ -40,11 +42,13 @@ const BannerTitleField = forwardRef<BannerTitleFieldRef>((_, ref) => {
       title,
       bannerImage: imagePreview || undefined,
     }),
+    getImageFile: () => imageFile,
   }));
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
