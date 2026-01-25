@@ -6,9 +6,10 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl.ts";
 import { useGetPhoto } from "@/api/photo.ts";
 import { useEffect, useRef } from "react";
 import NoPhoto from "@/assets/NoPhoto.svg";
+import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
 
 interface CardVSItems {
-    data: ChallengeVSResponse;
+    data: ChallengeVSResponse | ChallengeRecruitResponse;
     onLoadingChange?: (isLoading: boolean) => void;
     onClick?: () => void;
 }
