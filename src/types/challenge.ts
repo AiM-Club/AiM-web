@@ -21,7 +21,7 @@ export interface ChallengeVSListResponse {
 
 export interface ChallengeVSResponse {
     challengeId: number;
-    thumbnail: string | null;
+    thumbnail: ProfileImage | null;
     user: ChallengeUser;
     startDate: string;
     duration: string;
