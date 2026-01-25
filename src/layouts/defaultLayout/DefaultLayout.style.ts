@@ -10,9 +10,17 @@ export const LayoutWrapper = styled.div`
   position: relative;
 `;
 
-export const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div<{ $isDrawerOpen?: boolean }>`
   display: flex;
   overflow: hidden;
+  height: 100vh;
+  
+  @media (max-width: 1024px) {
+    position: ${({ $isDrawerOpen }) => ($isDrawerOpen ? 'fixed' : 'relative')};
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
 `;
 
 export const SidebarWrapper = styled.div`
@@ -32,7 +40,7 @@ export const SidebarWrapper = styled.div`
   }
 `;
 
-export const MainWrapper = styled.main`
+export const MainWrapper = styled.main<{ $isDrawerOpen?: boolean }>`
   flex: 1;
   overflow-y: auto;
   position: relative;
@@ -41,6 +49,10 @@ export const MainWrapper = styled.main`
   background-repeat: no-repeat;
   background-position: center 32.5rem; 
   background-size: 100% auto;
+  
+  @media (max-width: 1024px) {
+    overflow-y: ${({ $isDrawerOpen }) => ($isDrawerOpen ? 'hidden' : 'auto')};
+  }
 `;
 
 export const MainContent = styled.div<{ $variant: "default" | "login" | "home" }>`
