@@ -39,7 +39,7 @@ const CreateChallenge = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // 각 컴포넌트의 유효성 검사 실행
     const [bannerResult, elementsResult] = await Promise.all([
       bannerTitleRef.current?.validate() || Promise.resolve({ isValid: false }),
@@ -66,6 +66,12 @@ const CreateChallenge = () => {
       fromData.append("userRequest", formData.aiRequest);
       fromData.append("mode", elementsData?.mode || "");
       fromData.append("visibility", formData.isPublic ? "PUBLIC" : "PRIVATE");
+
+      // 이미지 파일 추가
+      const imageFile = bannerTitleRef.current?.getImageFile();
+      if (imageFile) {
+        fromData.append("thumbnail", imageFile);
+      }
 
       // FormData 내용 콘솔 출력
       for (const [key, value] of fromData.entries()) {
