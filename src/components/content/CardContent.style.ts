@@ -233,6 +233,13 @@ export const WeekCommentWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const CommentPageNav = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 1rem 0;
+`;
+
 export const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
