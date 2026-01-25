@@ -319,10 +319,17 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
                     <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
                     <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
-                    <S.FileUpload>
-                      <img src={FileIcon} />
-                      인증샷 파일 업로드
-                    </S.FileUpload>
+                    {kind === "opponent" ? (
+                      <S.FileUpload>
+                        <img src={FileIcon} />
+                        인증샷 파일 업로드
+                      </S.FileUpload>
+                    ) : (
+                      <S.FileUpload>
+                        <img src={FileIcon} />
+                        인증샷 파일 업로드
+                      </S.FileUpload>
+                    )}
                     {selectedWeek === currentWeek ? (
                       <S.TimerWrapper>
                         <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
