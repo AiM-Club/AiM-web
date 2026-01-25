@@ -45,6 +45,17 @@ export const CommentText = styled.div`
   word-break: break-word;
 `;
 
+export const CommentFile = styled.div`
+  display: flex;
+  font: var(--body-r-xs);
+  color: var(--text-secondary);
+  word-break: break-word;
+  padding: 0.5rem 0.625rem;
+  border-radius: 6.25rem;
+  background-color: var(--surpace-tertiary);
+  width: fit-content;
+`;
+
 export const CommentBottomWrapper = styled.div`
   display: flex;
   flex-direction: row;

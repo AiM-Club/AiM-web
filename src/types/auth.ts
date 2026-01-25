@@ -15,6 +15,7 @@ export interface LoginResponse {
 }
 
 export interface User {
+    id: number;
     loginId: string;
     email: string | null;
     nickname: string;
@@ -31,8 +32,8 @@ export interface User {
     lastModifiedAt: string;
 }
 
-export interface Tier{
-  name: "BRONZE | SILVER | GOLD | DIAMOND";
+export interface Tier {
+    name: "BRONZE | SILVER | GOLD | DIAMOND";
 }
 
 export interface ProfileImage {
@@ -50,15 +51,15 @@ export interface Token {
     refreshTokenExpiresAt: string;
 }
 
-export interface JoinRequest{
-  loginId: string;
-  nickname: string;
-  password: string;
-  birthday: string;
-  profileImage?: File|null;
-  gender: "MALE" | "FEMALE" | "OTHER";
+export interface JoinRequest {
+    loginId: string;
+    nickname: string;
+    password: string;
+    birthday: string;
+    profileImage?: File | null;
+    gender: "MALE" | "FEMALE" | "OTHER";
 }
 
 export interface ExistResponse {
-  isExist: boolean;
+    isExist: boolean;
 }

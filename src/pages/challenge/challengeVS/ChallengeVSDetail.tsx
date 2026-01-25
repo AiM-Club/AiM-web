@@ -14,8 +14,10 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useGetPhoto } from "@/api/photo";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
+import { useAuthStore } from "@/stores/authStore";
 
 const ChallengeVSMatch = () => {
+  const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeDetail(id || "");
   const { mutate: getThumbnail } = useGetPhoto();
@@ -23,6 +25,7 @@ const ChallengeVSMatch = () => {
   const { mutate: getOpponentPhoto } = useGetPhoto();
   const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto } = useChallengeDetailStore();
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
+  const [isMine, setIsMine] = useState(false);
 
   useEffect(() => {
     if (challengeDetail && challengeDetailWeeks) {
@@ -32,21 +35,23 @@ const ChallengeVSMatch = () => {
       setMyInfo(challengeDetail.data.participants.me);
       setOpponentInfo(challengeDetail.data.participants.opponent);
       setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setIsMine(challengeDetail.data.participants.me.id === user?.id);
 
       if (challengeDetail?.data.challengeInfo.thumbnail?.uuid) {
-        console.log("여기")
         getThumbnail(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
           {
             onSuccess: (photo) => {
-              console.log(photo);
               setThumbnail(photo);
             },
             onError: (error) => {
               console.log(error);
+              setThumbnail(null);
             },
           }
         );
+      } else {
+        setThumbnail(null);
       }
       if (challengeDetail?.data.participants.me.profileImage.uuid) {
         getMyPhoto(
@@ -95,7 +100,7 @@ const ChallengeVSMatch = () => {
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner />
+        <Banner isMine={isMine} />
         <S.VSMatchContentWrapper ref={setContentElement}>
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}

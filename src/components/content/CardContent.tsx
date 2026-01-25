@@ -16,6 +16,8 @@ import Comment from "@/components/comment/Comment.tsx";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import XIcon from "@/assets/X.png";
+import SubPagination from "../pagination/SubPagination";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -100,6 +102,8 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
   const [commentFile, setCommentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(1);
 
   // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
   const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
@@ -185,25 +189,36 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       return;
     }
     setSelectedWeek(week);
+    setCurrentPage(0); // 주차 변경 시 첫 페이지로 리셋
     if (value === "VS") {
-      getWeeklyCommentsData(weeklyProgressId);
+      getWeeklyCommentsData(weeklyProgressId, 0);
     }
   }
 
-  const getWeeklyCommentsData = (weeklyProgressId: number) => {
+  const getWeeklyCommentsData = (weeklyProgressId: number, page: number = currentPage) => {
     if (weeklyProgressId && challengeId) {
       getWeeklyComments(
         {
           challengeId: challengeId,
           weeksId: String(weeklyProgressId),
+          page: page,
+          size: 10,
         },
         {
           onSuccess: (data) => {
             setWeekCommentData(data.comments);
+            setTotalPage(data.pageInfo.totalPages);
           },
         }
       );
     }
+  }
+
+  const handleCommentPageChange = (page: number) => {
+    if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+    setCurrentPage(page);
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+    getWeeklyCommentsData(weeklyProgressId, page);
   }
 
   const onSubmit = (data: CommentForm) => {
@@ -232,8 +247,9 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-        // 댓글 리스트 새로고침
-        getWeeklyCommentsData(weeklyProgressId);
+        // 댓글 리스트 새로고침 (첫 페이지로)
+        setCurrentPage(0);
+        getWeeklyCommentsData(weeklyProgressId, 0);
       },
       onError: (error: unknown) => {
         console.error("댓글 작성 실패:", error);
@@ -246,6 +262,13 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     const file = e.target.files?.[0];
     if (file) {
       setCommentFile(file);
+    }
+  }
+
+  const handleFileDelete = () => {
+    setCommentFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   }
 
@@ -296,10 +319,17 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
                     <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
                     <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
-                    <S.FileUpload>
-                      <img src={FileIcon} />
-                      인증샷 파일 업로드
-                    </S.FileUpload>
+                    {kind === "opponent" ? (
+                      <S.FileUpload>
+                        <img src={FileIcon} />
+                        인증샷 파일 업로드
+                      </S.FileUpload>
+                    ) : (
+                      <S.FileUpload>
+                        <img src={FileIcon} />
+                        인증샷 파일 업로드
+                      </S.FileUpload>
+                    )}
                     {selectedWeek === currentWeek ? (
                       <S.TimerWrapper>
                         <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
@@ -322,25 +352,46 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                         ))} */}
                       </S.CommentWrapper>
                     ))}
+                    {totalPage > 1 && (
+                      <S.CommentPageNav>
+                        <SubPagination
+                          currentPage={currentPage + 1}
+                          totalPage={totalPage}
+                          callback={(page) => handleCommentPageChange(page - 1)}
+                        />
+                      </S.CommentPageNav>
+                    )}
                   </S.WeekCommentWrapper>}
                   {commentView && (
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <S.WeekCommentInputWrapper>
-                        <S.FileIconLabel>
-                          <S.FileIconInput
-                            ref={fileInputRef}
-                            type="file"
-                            onChange={handleFileChange}
-                          />
-                          <S.FileIconButton>
-                            <img src={FileIcon} alt="파일 업로드" />
-                          </S.FileIconButton>
-                        </S.FileIconLabel>
                         <S.WeekCommentInput
                           {...register("content")}
                           placeholder="댓글을 입력하세요"
                         />
-                        <S.FinishBtn type="submit">완료</S.FinishBtn>
+                        <S.FileIconWrapper>
+                          <S.FileIconContentWrapper>
+                            <S.FileIconLabel>
+                              <S.FileIconInput
+                                ref={fileInputRef}
+                                type="file"
+                                onChange={handleFileChange}
+                              />
+                              <S.FileIconButton>
+                                <img src={FileIcon} alt="파일 업로드" />
+                              </S.FileIconButton>
+                            </S.FileIconLabel>
+                            {commentFile && (
+                              <S.FileNameWrapper>
+                                <S.FileName>{commentFile.name}</S.FileName>
+                                <S.FileNameDeleteBtn onClick={handleFileDelete}>
+                                  <img src={XIcon} alt="파일 삭제" />
+                                </S.FileNameDeleteBtn>
+                              </S.FileNameWrapper>
+                            )}
+                          </S.FileIconContentWrapper>
+                          <S.FinishBtn type="submit">완료</S.FinishBtn>
+                        </S.FileIconWrapper>
                       </S.WeekCommentInputWrapper>
                     </form>
                   )}

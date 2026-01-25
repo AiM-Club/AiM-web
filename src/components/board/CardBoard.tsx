@@ -7,16 +7,17 @@ import { useState, useEffect, useCallback } from "react";
 import { PageEndPoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
 import { useNavigate } from "react-router-dom";
+import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
 
 interface CardBoardProps {
-    data: ChallengeVSResponse[];
+    data: ChallengeVSResponse[] | ChallengeRecruitResponse[];
     currentPage?: number;
     totalPage?: number;
     handlePageChange?: (page: number) => void;
     isPagination?: boolean;
     isLoading?: boolean;
     //나중에 type 필수로 변경해야함
-    type?: "vs" | "solo" | "qna" | "review";
+    type?: "vs" | "solo" | "qna" | "review" | "recruit";
 }
 
 const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPagination = true, isLoading = false, type }: CardBoardProps) => {
@@ -41,7 +42,7 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
     }, []);
 
     const navigateToDetail = useCallback((challengeId: number) => {
-        navigate(buildPath(type === "vs" ? PageEndPoints.CHALLENGE_VS_DETAIL : type === "solo" ? PageEndPoints.CHALLENGE_SOLO_DETAIL : type === "qna" ? PageEndPoints.QNA_DETAIL : PageEndPoints.REVIEW_DETAIL, { id: challengeId }));
+        navigate(buildPath(type === "vs" ? PageEndPoints.CHALLENGE_VS_DETAIL : type === "solo" ? PageEndPoints.CHALLENGE_SOLO_DETAIL : type === "qna" ? PageEndPoints.QNA_DETAIL : type === "review" ? PageEndPoints.REVIEW_DETAIL : PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: challengeId }));
     }, [navigate, type]);
 
     return (
@@ -52,10 +53,10 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
                     <S.ResultListWrapper>
                         {data?.map((item) => (
                             <CardVS
-                                key={item.challengeId}
+                                key={type === "recruit" ? item.postId : item.challengeId}
                                 data={item}
-                                onLoadingChange={(isLoading) => handleCardLoadingChange(item.challengeId, isLoading)}
-                                onClick={() => navigateToDetail(item.challengeId)}
+                                onLoadingChange={(isLoading) => handleCardLoadingChange(type === "recruit" ? item.postId! : item.challengeId!, isLoading)}
+                                onClick={() => navigateToDetail(type === "recruit" ? item.postId! : item.challengeId!)}
                             />
                         ))}
                     </S.ResultListWrapper>
