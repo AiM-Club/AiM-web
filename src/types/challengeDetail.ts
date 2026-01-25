@@ -1,4 +1,4 @@
-import type { ProfileImage } from "./auth";
+import type { ImageResponse } from "./common";
 
 export interface ChallengeVSDetailResponse {
     challengeInfo: ChallengeInfo;
@@ -7,7 +7,7 @@ export interface ChallengeVSDetailResponse {
 }
 
 export interface ChallengeInfo {
-    thumbnail: string | null;
+    thumbnail: ImageResponse;
     name: string;
     fields: Detailfields[];
     tags: DetailTags[];
@@ -40,7 +40,7 @@ export interface Participants {
 
 export interface ParticipantsInfo {
     id: number;
-    profileImage: ProfileImage;
+    profileImage: ImageResponse;
     nickname: string;
     progressRate: number;
     successRate: number;
@@ -63,4 +63,9 @@ export interface ProgressList {
     content: string;
     stopwatchTimeSeconds: number;
     isComplete: boolean;
+}
+
+export interface ChallengeSoloDetailResponse {
+    challengeInfo: ChallengeInfo;
+    participant: ParticipantsInfo;
 }

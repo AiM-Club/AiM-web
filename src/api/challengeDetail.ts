@@ -1,7 +1,7 @@
 import { useFetch, useFetchMutation } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
-import type { ChallengeDetailWeeksResponse, ChallengeVSDetailResponse } from "@/types/challengeDetail";
+import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
 import { api } from "./utils";
 import type { CommentResponse } from "@/types/comment";
@@ -30,4 +30,9 @@ export const useGetWeeklyComments = () => {
             return (res as unknown as { data: CommentResponse }).data;
         },
     });
+}
+
+//solo챌린지 overview
+export const useGetChallengeSoloDetail = (challengeId: string) => {
+    return useFetch<ApiResponse<ChallengeSoloDetailResponse>>(buildPath(ApiEndpoints.CHALLENGE_SOLO_DETAIL, { challengeId }));
 }

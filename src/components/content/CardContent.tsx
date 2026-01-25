@@ -25,6 +25,7 @@ interface ChallengeMainProps {
 interface ChallengeVSMatchProps {
   color: "green" | "pink";
   kind: "opponent" | "my";
+  value: "VS" | "SOLO";
   weekData?: WeekProps[];
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
@@ -80,7 +81,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true }: ChallengeVSMatchProps) => {
   const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
@@ -148,21 +149,18 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
   }, [weekWrapperRef, challengeInfo?.totalWeeks]);
 
   const handleWeekClick = (week: number, weeklyProgressId: number) => {
-    console.log(week);
-    console.log(weeklyProgressId);
     if (selectedWeek === week) {
-      console.log("닫기");
       setSelectedWeek(null);
       return;
     }
-    console.log("열기");
     setSelectedWeek(week);
-    getWeeklyCommentsData(weeklyProgressId);
+    if (value === "VS") {
+      getWeeklyCommentsData(weeklyProgressId);
+    }
   }
 
   const getWeeklyCommentsData = (weeklyProgressId: number) => {
     if (weeklyProgressId && challengeId) {
-      console.log("가져오기 2");
       getWeeklyComments(
         {
           challengeId: challengeId,

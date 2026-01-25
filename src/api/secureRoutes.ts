@@ -16,4 +16,5 @@ export const secureRoutes = [
     { method: Method.GET, url: ApiEndpoints.CHALLENGE_DETAIL_WEEKS },
     { method: Method.GET, url: ApiEndpoints.CHALLENGE_VS_DETAIL },
     { method: Method.GET, url: ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS },
+    { method: Method.GET, url: ApiEndpoints.CHALLENGE_SOLO_DETAIL },
 ];

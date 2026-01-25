@@ -1,5 +1,5 @@
 import type { ChallengeInfo, Dominance, ParticipantsInfo, ChallengeDetailWeeksResponse, ProgressList } from "@/types/challengeDetail";
-import type { Comment } from "@/types/comment";
+import type { CommentType } from "@/types/comment";
 import { create } from "zustand";
 
 interface ChallengeDetailStore {
@@ -13,7 +13,6 @@ interface ChallengeDetailStore {
   opponentPhoto: Blob | null;
   challengeDetailWeeks: ChallengeDetailWeeksResponse | null;
   progressListMap: Record<number, ProgressList>;
-  commentListMap: Record<number, Comment[]>;
   setChallengeInfo: (challengeInfo: ChallengeInfo) => void;
   setChallengeId: (challengeId: number | null) => void;
   setDominance: (dominance: Dominance) => void;
@@ -36,7 +35,6 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   opponentPhoto: null,
   challengeDetailWeeks: null,
   progressListMap: {},
-  commentListMap: {},
   setChallengeId: (challengeId) => set({ challengeId: challengeId }),
   setChallengeInfo: (challengeInfo) => set({ challengeInfo: challengeInfo }),
   setDominance: (dominance) => set({ dominance: dominance }),
@@ -47,11 +45,9 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   setOpponentPhoto: (opponentPhoto) => set({ opponentPhoto: opponentPhoto }),
   setChallengeDetailWeeks: (weeks) => {
     const progressListMap: Record<number, ProgressList> = {};
-    const commentListMap: Record<number, Comment[]> = {};
     weeks.progressList.forEach((progress) => {
       progressListMap[progress.weekNumber] = progress;
-      commentListMap[progress.weekNumber] = [];
     });
-    set({ challengeDetailWeeks: weeks, progressListMap, commentListMap });
+    set({ challengeDetailWeeks: weeks, progressListMap });
   },
 }));

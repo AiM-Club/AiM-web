@@ -31,7 +31,7 @@ const ChallengeVSMatch = () => {
 
       if (challengeDetail?.data.challengeInfo.thumbnail) {
         getPhoto(
-          { file_uuid: challengeDetail.data.challengeInfo.thumbnail },
+          { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
           {
             onSuccess: (photo) => {
               setThumbnail(photo);
@@ -87,7 +87,7 @@ const ChallengeVSMatch = () => {
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" />
+        <Banner />
         <S.VSMatchContentWrapper ref={setContentElement}>
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
@@ -102,7 +102,7 @@ const ChallengeVSMatch = () => {
               </CardChallenge> : <></>}
             {viewCard === "right" || viewCard === "both" ?
               <CardChallenge cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={setViewCard}>
-                <ChallengeVSMatchContent color="pink" kind="my" viewCard={viewCard} />
+                <ChallengeVSMatchContent color="pink" kind="my" viewCard={viewCard} value="VS" />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>
