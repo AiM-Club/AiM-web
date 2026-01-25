@@ -1,7 +1,9 @@
 import type { ChallengeInfo, Dominance, ParticipantsInfo, ChallengeDetailWeeksResponse, ProgressList } from "@/types/challengeDetail";
+import type { Comment } from "@/types/comment";
 import { create } from "zustand";
 
 interface ChallengeDetailStore {
+  challengeId: number | null;
   challengeInfo: ChallengeInfo | null;
   dominance: Dominance | null;
   myInfo: ParticipantsInfo | null;
@@ -11,7 +13,9 @@ interface ChallengeDetailStore {
   opponentPhoto: Blob | null;
   challengeDetailWeeks: ChallengeDetailWeeksResponse | null;
   progressListMap: Record<number, ProgressList>;
+  commentListMap: Record<number, Comment[]>;
   setChallengeInfo: (challengeInfo: ChallengeInfo) => void;
+  setChallengeId: (challengeId: number | null) => void;
   setDominance: (dominance: Dominance) => void;
   setMyInfo: (myInfo: ParticipantsInfo) => void;
   setOpponentInfo: (opponentInfo: ParticipantsInfo | null) => void;
@@ -22,6 +26,7 @@ interface ChallengeDetailStore {
 }
 
 export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
+  challengeId: null,
   challengeInfo: null,
   dominance: null,
   myInfo: null,
@@ -31,6 +36,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   opponentPhoto: null,
   challengeDetailWeeks: null,
   progressListMap: {},
+  commentListMap: {},
+  setChallengeId: (challengeId) => set({ challengeId: challengeId }),
   setChallengeInfo: (challengeInfo) => set({ challengeInfo: challengeInfo }),
   setDominance: (dominance) => set({ dominance: dominance }),
   setMyInfo: (myInfo) => set({ myInfo: myInfo }),
@@ -40,9 +47,11 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   setOpponentPhoto: (opponentPhoto) => set({ opponentPhoto: opponentPhoto }),
   setChallengeDetailWeeks: (weeks) => {
     const progressListMap: Record<number, ProgressList> = {};
+    const commentListMap: Record<number, Comment[]> = {};
     weeks.progressList.forEach((progress) => {
       progressListMap[progress.weekNumber] = progress;
+      commentListMap[progress.weekNumber] = [];
     });
-    set({ challengeDetailWeeks: weeks, progressListMap });
+    set({ challengeDetailWeeks: weeks, progressListMap, commentListMap });
   },
 }));

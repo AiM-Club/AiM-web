@@ -20,7 +20,7 @@ const rankStringMap: Record<string, string> = {
 const tierOrder = ["bronze", "silver", "gold", "diamond"];
 
 export const getRankImg = (tier: string) => {
-  return rankImgMap[tier];
+  return rankImgMap[tier.toLowerCase()];
 };
 
 export const getRankString = (tier: string) => {

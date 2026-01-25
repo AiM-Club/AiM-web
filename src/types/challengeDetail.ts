@@ -1,6 +1,6 @@
 import type { ProfileImage } from "./auth";
 
-export interface ChallengeVSDetailResponse{
+export interface ChallengeVSDetailResponse {
     challengeInfo: ChallengeInfo;
     dominance: Dominance;
     participants: Participants;
@@ -55,6 +55,7 @@ export interface ChallengeDetailWeeksResponse {
 }
 
 export interface ProgressList {
+    weeklyProgressId: number;
     weekNumber: number;
     weekStartDate: string;
     weekEndDate: string;

@@ -5,12 +5,14 @@ import Plus from "@/assets/Plus.svg";
 import FileIcon from "@/assets/FileClip.svg";
 import { useEffect, useState } from "react";
 import ProfileImage from "../image/ProfileImage";
-import type { CommentProps } from "@/types/comment";
-import Comment from "@/components/comment/Comment";
+import type { CommentProps, CommentType } from "@/types/comment";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
-  import NoPhoto from "@/assets/NoPhoto.svg";
-  import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
+import NoPhoto from "@/assets/NoPhoto.svg";
+import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
+import { useGetWeeklyComments } from "@/api/challengeDetail";
+import SubLoading from "../loading/SubLoading";
+import Comment from "@/components/comment/Comment.tsx";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -37,36 +39,6 @@ interface WeekProps {
   timer: string;
   comments: CommentProps[];
 }
-
-const weekCommentData = [
-  {
-    commentId: 1,
-    comment: "댓글 용",
-    userName: "작성자",
-    userGrade: "A",
-    userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-    time: "2026.01.01",
-    reply: [
-      {
-        commentId: 1,
-        comment: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-        userName: "작성자1",
-        userGrade: "A",
-        userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-        time: "2026.01.01",
-      }
-    ]
-  },
-  {
-    commentId: 2,
-    comment: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
-    userName: "작성자",
-    userGrade: "A",
-    userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-    time: "2026.01.01",
-    reply: [],
-  }
-]
 
 const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCount }: ChallengeMainProps) => {
   return (
@@ -109,8 +81,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: ChallengeVSMatchProps) => {
-  const { myInfo, opponentInfo, myPhoto, opponentPhoto, dominance, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
-  const data = kind === "opponent" ? opponentInfo : myInfo;
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
@@ -121,8 +92,8 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
-
-  if(!challengeInfo) return null;
+  const { mutate: getWeeklyComments } = useGetWeeklyComments();
+  const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
 
   useEffect(() => {
     if (!contentElement) return;
@@ -174,15 +145,40 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
     return () => {
       resizeObserver.disconnect();
     };
-  }, [weekWrapperRef, challengeInfo.totalWeeks]);
+  }, [weekWrapperRef, challengeInfo?.totalWeeks]);
 
-  const handleWeekClick = (week: number) => {
+  const handleWeekClick = (week: number, weeklyProgressId: number) => {
+    console.log(week);
+    console.log(weeklyProgressId);
     if (selectedWeek === week) {
+      console.log("닫기");
       setSelectedWeek(null);
       return;
     }
+    console.log("열기");
     setSelectedWeek(week);
+    getWeeklyCommentsData(weeklyProgressId);
   }
+
+  const getWeeklyCommentsData = (weeklyProgressId: number) => {
+    if (weeklyProgressId && challengeId) {
+      console.log("가져오기 2");
+      getWeeklyComments(
+        {
+          challengeId: challengeId,
+          weeksId: String(weeklyProgressId),
+        },
+        {
+          onSuccess: (data) => {
+            console.log(data.comments);
+            setWeekCommentData(data.comments);
+          },
+        }
+      );
+    }
+  }
+
+  if (!challengeInfo || !challengeId) return <SubLoading />;
 
   return (
     <S.ChallengeVSMatchContentWrapper ref={setContentElement}>
@@ -212,14 +208,15 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
       <S.WeekWrapper ref={setWeekWrapperRef}>
         {Array.from({ length: firstRowCount > 0 ? Math.ceil(challengeInfo.totalWeeks / firstRowCount) * firstRowCount : challengeInfo?.totalWeeks ?? 0 }).map((_, index) => {
           const weekNumber = index + 1;
+          const weekKey = progressListMap[weekNumber]?.weeklyProgressId ?? index;
           if (weekNumber > challengeInfo.totalWeeks) {
             // 공간 유지를 위해서 첫 줄의 아이템 개수만큼 반복하되 display: none으로 없는 주차 숨김
             return <S.WeekItemWrapper key={index} style={{ visibility: 'hidden' }} />;
           }
 
           return weekNumber <= challengeInfo.totalWeeks ? (
-            <S.WeekItemWrapper key={index}>
-              <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber)} $selected={selectedWeek === weekNumber}>
+            <S.WeekItemWrapper key={progressListMap[weekNumber]?.weeklyProgressId}>
+              <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차
               </S.CurrentWeekItem>
               {selectedWeek === weekNumber ?
@@ -234,12 +231,12 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
                     </S.FileUpload>
                     {selectedWeek === currentWeek ? (
                       <S.TimerWrapper>
-                      <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
                         <S.TimerBtn>Start</S.TimerBtn>
                       </S.TimerWrapper>
                     ) : (
                       <S.TimerWrapper>
-                      <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
                       </S.TimerWrapper>
                     )}
                   </S.WeekTopicWrapper>
@@ -247,11 +244,11 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
                     {weekCommentData.map((data, index: number) => (
                       <S.CommentWrapper key={index}>
                         <Comment data={data} />
-                        {data.reply?.map((replyData, replyIndex: number) => (
+                        {/* {data.reply?.map((replyData, replyIndex: number) => (
                           <S.ReplyWrapper key={replyIndex}>
                             <Comment data={replyData} />
                           </S.ReplyWrapper>
-                        ))}
+                        ))} */}
                       </S.CommentWrapper>
                     ))}
                   </S.WeekCommentWrapper>}
@@ -269,8 +266,8 @@ const ChallengeVSMatchContent = ({ color, kind, viewCard, commentView = true }: 
                 : <></>}
             </S.WeekItemWrapper>
           ) : (
-            <S.WeekItemWrapper key={index}>
-              <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber)}>
+            <S.WeekItemWrapper key={weekKey}>
+              <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)}>
                 {weekNumber}주차
               </S.TotalWeekItem>
             </S.WeekItemWrapper>

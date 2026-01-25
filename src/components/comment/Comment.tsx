@@ -1,26 +1,28 @@
 import * as S from "./Comment.style";
-import Diamond from "@/assets/Diamond.svg";
 import ProfileImage from "@/components/image/ProfileImage";
-import type { CommentProps } from "@/types/comment";
+import type { CommentType } from "@/types/comment";
+import NoPhoto from "@/assets/NoPhoto.svg";
+import { getRankImg } from "@/utils/userRank";
+import { formatDay } from "@/utils/useTime";
 
 interface CommentComponentProps {
-  data: CommentProps;
+  data: CommentType;
 }
 
 const Comment = ({ data }: CommentComponentProps) => {
   return (
     <S.CommentItem>
       <S.CommentProfileWrapper>
-        <ProfileImage image={data.userImg} width={2.5} />
+        <ProfileImage image={NoPhoto} width={2.5} />
       </S.CommentProfileWrapper>
       <S.CommentContentWrapper>
         <S.CommentHeaderWrapper>
-          <S.CommentUserName>{data.userName}</S.CommentUserName>
-          <S.CommentUserGrade src={Diamond} />
+          <S.CommentUserName>{data.writerInfo.nickname}</S.CommentUserName>
+          <S.CommentUserGrade src={getRankImg(data.writerInfo.tier?.name || "bronze")} />
         </S.CommentHeaderWrapper>
-        <S.CommentText>{data.comment}</S.CommentText>
+        <S.CommentText>{data.content}</S.CommentText>
         <S.CommentBottomWrapper>
-          <S.CommentTime>{data.time}</S.CommentTime>
+          <S.CommentTime>{formatDay(data.createdAt)}</S.CommentTime>
           <S.CommentReplyBtn>답글쓰기</S.CommentReplyBtn>
         </S.CommentBottomWrapper>
       </S.CommentContentWrapper>

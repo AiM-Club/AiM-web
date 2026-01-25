@@ -3,8 +3,8 @@ import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
 import type { ChallengeDetailWeeksResponse, ChallengeVSDetailResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
-import axios from "axios";
-import { getDomain } from "./utils";
+import { api } from "./utils";
+import type { CommentResponse } from "@/types/comment";
 
 //vs대결 overview
 export const useGetChallengeDetail = (challengeId: string) => {
@@ -17,12 +17,17 @@ export const useGetChallengeDetailWeeks = (challengeId: string) => {
 }
 
 //주차별 댓글 조회
-// export const useGetPhoto = () => {
-//     return useFetchMutation<{ challengeId: string, weeksId: string }, ApiResponse<CommentResponse>>(ApiEndpoints.PHOTO, {
-//         mutationFn: async ({ challengeId, weeksId }) => {
-//             const res = await axios.get(
-//                 getDomain(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, { challengeId, weeksId })),
-//             );
-//             return res.data;
-//         },
-//     });
+export const useGetWeeklyComments = () => {
+    return useFetchMutation<{ challengeId: number, weeksId: string, page?: number, size?: number }, CommentResponse>(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, {
+        mutationFn: async ({ challengeId, weeksId, page = 0, size = 10 }) => {
+            const url = buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, { challengeId, weeksId });
+            const params: Record<string, number> = {
+                page,
+                size,
+            };
+
+            const res = await api.get<CommentResponse>(url, params);
+            return (res as unknown as { data: CommentResponse }).data;
+        },
+    });
+}
