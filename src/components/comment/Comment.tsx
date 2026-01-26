@@ -7,6 +7,8 @@ import { formatDay } from "@/utils/useTime";
 import { useGetPhoto } from "@/api/photo";
 import { useEffect, useState } from "react";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import { useImageOpen } from "@/hooks/useImageOpen";
 
 interface CommentComponentProps {
   data: CommentType;
@@ -14,7 +16,10 @@ interface CommentComponentProps {
 
 const Comment = ({ data }: CommentComponentProps) => {
   const { mutate: getThumbnail } = useGetPhoto();
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+
   useEffect(() => {
     if (data.writerInfo.profileImage.uuid) {
       getThumbnail({ file_uuid: data.writerInfo.profileImage.uuid }, {
@@ -38,7 +43,16 @@ const Comment = ({ data }: CommentComponentProps) => {
           <S.CommentUserGrade src={getRankImg(data.writerInfo.tier?.name || "bronze")} />
         </S.CommentHeaderWrapper>
         <S.CommentText>{data.content}</S.CommentText>
-        {(data.attachedFiles.length > 0 || data.attachedImages.length > 0) && <S.CommentFile>{data.attachedFiles.length > 0 ? data.attachedFiles[0].fileName : data.attachedImages.length > 0 ? data.attachedImages[0].fileName : ""}</S.CommentFile>}
+        {data.attachedFiles.length > 0 && (
+          <S.CommentFile onClick={() => downloadFile(data.attachedFiles[0])}>
+            {data.attachedFiles[0].fileName}
+          </S.CommentFile>
+        )}
+        {data.attachedImages.length > 0 && (
+          <S.CommentFile onClick={() => openImage(data.attachedImages[0])}>
+            {data.attachedImages[0].fileName}
+          </S.CommentFile>
+        )}
         <S.CommentBottomWrapper>
           <S.CommentTime>{formatDay(data.createdAt)}</S.CommentTime>
           <S.CommentReplyBtn>답글쓰기</S.CommentReplyBtn>

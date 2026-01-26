@@ -54,6 +54,12 @@ export const CommentFile = styled.div`
   border-radius: 6.25rem;
   background-color: var(--surpace-tertiary);
   width: fit-content;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export const CommentBottomWrapper = styled.div`
