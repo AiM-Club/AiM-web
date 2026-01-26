@@ -10,12 +10,14 @@ import { useGetPhoto } from "@/api/photo";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading/Loading";
+import { useAuthStore } from "@/stores/authStore";
 
 const ChallengeVSSoloDetail = () => {
+  const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeDetailWeeks } = useChallengeDetailStore();
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
   const [isMine, setIsMine] = useState(false);
 
@@ -25,6 +27,8 @@ const ChallengeVSSoloDetail = () => {
       setChallengeId(Number(id));
       setChallengeInfo(challengeDetail.data.challengeInfo);
       setMyInfo(challengeDetail.data.participant);
+      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setIsMine(challengeDetail.data.participant.id === user?.id);
       if (challengeDetail?.data.challengeInfo.thumbnail) {
         getPhoto(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
@@ -48,12 +52,12 @@ const ChallengeVSSoloDetail = () => {
     }
   }, [challengeDetail, id, setChallengeId, setChallengeInfo, setMyInfo]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isLoadingWeeks) return <Loading />;
 
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner />
+        <Banner isMine={isMine} />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
           <CardChallenge topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
