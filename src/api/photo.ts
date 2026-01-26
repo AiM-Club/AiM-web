@@ -16,3 +16,16 @@ export const useGetPhoto = () => {
         },
     });
 };
+
+//파일 다운로드
+export const useDownloadPhoto = () => {
+    return useFetchMutation<{ file_uuid: string }, Blob>(ApiEndpoints.DOWNLOAD_PHOTO, {
+        mutationFn: async ({ file_uuid }) => {
+            const res = await axios.get(
+                getDomain(buildPath(ApiEndpoints.DOWNLOAD_PHOTO, { file_uuid })),
+                { responseType: "blob" }
+            );
+            return res.data;
+        },
+    });
+};
