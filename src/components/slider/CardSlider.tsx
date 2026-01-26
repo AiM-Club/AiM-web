@@ -62,7 +62,6 @@ const CardSlider = ({ children }: { children: React.ReactNode }) => {
   const handleWheel = (e: React.WheelEvent) => {
     // 가로 스크롤 감지 (deltaX가 세로 스크롤보다 크면 가로 스크롤로 판단)
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 30) {
-      e.preventDefault();
       if (e.deltaX > 0 && currentIndex < childrenCount - 1) {
         setCurrentIndex(currentIndex + 1);
       } else if (e.deltaX < 0 && currentIndex > 0) {

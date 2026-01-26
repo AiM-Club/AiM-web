@@ -141,4 +141,7 @@ export const DisabledWrapper = styled.div`
   width: 100%;
   flex-wrap: wrap;
   gap: 2rem;
+  @media(max-width: 500px){
+    gap: 0.5rem;
+  }
 `;
