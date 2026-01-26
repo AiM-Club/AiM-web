@@ -178,6 +178,31 @@ export const WeekTopicContent = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+export const ProofWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const ProofFileNameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+export const ProofFileName = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surpace-tertiary);
+  border-radius: 6.25rem;
+  padding: 0.25rem 0.5rem;
+  font: var(--body-r-s);
+  color: var(--text-primary-default);
+  cursor: pointer;
+`;
+
 export const FileUpload = styled.div`
   display: flex;
   flex-direction: row;
@@ -335,9 +360,14 @@ export const FileNameWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-export const FileName = styled.p`
+export const FileName = styled.div`
   font: var(--body-r-s);
   color: var(--text-primary-default);
+`;
+
+export const ProofFileIconLabel = styled.label`
+  display: flex;
+  cursor: pointer;
 `;
 
 export const FileNameDeleteBtn = styled.button`

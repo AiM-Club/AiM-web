@@ -10,9 +10,11 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
-import { useGetWeeklyComments, usePostWeeklyComment } from "@/api/challengeDetail";
+import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
 import SubLoading from "../loading/SubLoading";
 import Comment from "@/components/comment/Comment.tsx";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import { useImageOpen } from "@/hooks/useImageOpen";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -87,9 +89,11 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
   const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
   const currentWeek = challengeDetailWeeks?.currentWeek;
@@ -99,9 +103,12 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
   const { mutate: getWeeklyComments } = useGetWeeklyComments();
+  const { mutate: postWeeklyProof } = usePostWeeklyProof(String(challengeId ?? "0"));
+  const { refetch: refetchChallengeDetailWeeks } = useGetChallengeDetailWeeks(String(challengeId ?? "0"));
   const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
   const [commentFile, setCommentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const proofFileInputRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
 
@@ -272,6 +279,40 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     }
   }
 
+  const handleProofFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+    const formData = new FormData();
+    formData.append("weeklyProgressId", String(weeklyProgressId));
+
+    if (file.type.startsWith("image/")) {
+      formData.append("attachedImages", file);
+    } else {
+      formData.append("attachedFiles", file);
+    }
+
+    postWeeklyProof(formData, {
+      onSuccess: async () => {
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+        // 주 정보 다시 가져오기
+        const { data } = await refetchChallengeDetailWeeks();
+        if (data?.data) {
+          setChallengeDetailWeeks(data.data);
+        }
+      },
+      onError: (error: unknown) => {
+        console.error("인증샷 업로드 실패:", error);
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+      },
+    });
+  }
+
   if (!challengeInfo || !challengeId) return <SubLoading />;
 
   return (
@@ -319,17 +360,39 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
                     <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
                     <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
-                    {kind === "opponent" ? (
-                      <S.FileUpload>
-                        <img src={FileIcon} />
-                        인증샷 파일 업로드
-                      </S.FileUpload>
-                    ) : (
-                      <S.FileUpload>
-                        <img src={FileIcon} />
-                        인증샷 파일 업로드
-                      </S.FileUpload>
-                    )}
+                    <S.ProofWrapper>
+                      {progressListMap[selectedWeek]?.proofImages.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofImages.map((image) => (
+                              <S.ProofFileName key={image.uuid} onClick={() => openImage(image)}>{image.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {progressListMap[selectedWeek]?.proofFiles.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofFiles.map((file) => (
+                              <S.ProofFileName key={file.uuid} onClick={() => downloadFile(file)}>{file.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {kind === "my" &&
+                        <S.ProofFileIconLabel>
+                          <S.FileIconInput
+                            ref={proofFileInputRef}
+                            type="file"
+                            onChange={handleProofFileChange}
+                          />
+                          <S.FileUpload>
+                            <img src={FileIcon} />
+                            인증샷 파일 업로드
+                          </S.FileUpload>
+                        </S.ProofFileIconLabel>
+                      }
+                    </S.ProofWrapper>
                     {selectedWeek === currentWeek ? (
                       <S.TimerWrapper>
                         <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>

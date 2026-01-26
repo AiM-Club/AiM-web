@@ -43,6 +43,7 @@ export enum ApiEndpoints {
   KAKAO_LOGIN = "/auth/login/kakao",
   MY_PROFILE = "/users/profile",
   PHOTO = "/files/images/:file_uuid",
+  DOWNLOAD_PHOTO = "/files/downloads/:file_uuid",
   CHALLENGE = "/challenges",
   CHALLENGE_VS = "/challenges/vs",
   CHALLENGE_SOLO = "/challenges/solo",
@@ -50,5 +51,6 @@ export enum ApiEndpoints {
   CHALLENGE_SOLO_DETAIL = "/challenges/solo/:challengeId/overview",
   CHALLENGE_DETAIL_WEEKS = "/challenges/:challengeId/weeks",
   CHALLENGE_DETAIL_WEEKS_COMMENTS = "/challenges/:challengeId/weeks/:weeksId/comments",
+  CHALLENGE_DETAIL_WEEKS_PROOF = "/challenges/:challengeId/weeks/proof",
   VS_RECRUIT = "/posts/vs",
 }

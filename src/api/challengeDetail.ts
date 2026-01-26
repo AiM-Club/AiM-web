@@ -42,3 +42,8 @@ export const useGetChallengeSoloDetail = (challengeId: string) => {
 export const usePostWeeklyComment = (challengeId: string, weeksId: string) => {
     return usePost<FormData, ApiResponse<CommentPostResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, { challengeId, weeksId }));
 }
+
+//주차별 챌린지 인증샷 업로드
+export const usePostWeeklyProof = (challengeId: string) => {
+    return usePost<FormData, string>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_PROOF, { challengeId }));
+}
