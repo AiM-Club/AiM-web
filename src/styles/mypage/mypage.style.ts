@@ -6,6 +6,10 @@ export const mypageWrapper = styled.div`
     flex-direction: column;
     gap: 6.25rem;
     width: 100%;
+
+    @media (max-width: 700px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const MyLevelWrapper = styled.div`
@@ -13,6 +17,10 @@ export const MyLevelWrapper = styled.div`
     flex-direction: column;
     gap: 4rem;
     width: 100%;
+
+    @media (max-width: 700px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const MyLevelContent = styled.div`
@@ -48,13 +56,17 @@ export const MyLevelImage = styled.img`
     height: 100%;
     aspect-ratio: 1;
 
-    @media (max-width: 390px) {
+    @media (max-width: 700px) {
         width: 10rem;
     }
 `;
 
 export const MyLevelText = styled.p`
     font: var(--title-b-l);
+
+    @media (max-width: 700px) {
+      font: var(--body-s-xl);
+    }
 `;
 
 export const MyLevelInfoWrapper = styled.div`
@@ -64,6 +76,10 @@ export const MyLevelInfoWrapper = styled.div`
     flex: 1;
     justify-content: flex-end;
     padding: 1.5rem 0;
+
+    @media (max-width: 700px) {
+      gap: 1rem;
+    }
 `;
 
 export const MyLevelInfo = styled.div`
@@ -73,6 +89,11 @@ export const MyLevelInfo = styled.div`
     padding: 0.625rem 1.5rem;
     width: fit-content;
     height: fit-content;
+
+    @media (max-width: 700px) {
+      padding: 0.5rem 1rem;
+      font: var(--body-m-m);
+    }
 `;
 
 export const LevelInfo = styled.div`
@@ -80,11 +101,19 @@ export const LevelInfo = styled.div`
     display: flex;
     justify-content: space-between;
     font: var(--subtitle-m-m);
+
+    @media (max-width: 700px) {
+      font: var(--body-r-l);
+    }
 `;
 
 export const NextLevel = styled.p`
     font: var(--subtitle-m-m);
     color: var(--text-secondary);
+
+    @media (max-width: 700px) {
+      font: var(--body-r-l);
+    }
 `;
 
 export const LevelInfoWrapper = styled.div`
@@ -92,6 +121,10 @@ export const LevelInfoWrapper = styled.div`
     flex-direction: column;
     gap: 4rem;
     width: 100%;
+
+    @media (max-width: 700px) {
+      gap: 1.5rem;
+    }
 `;
 
 export const LevelInfoContent = styled.div`
@@ -99,13 +132,10 @@ export const LevelInfoContent = styled.div`
     grid-template-columns: repeat(4, 1fr);
     padding: 0 1rem;
     width: 100%;
+    gap: 2rem 0;
 
-    @media (max-width: 470px) {
+    @media (max-width: 700px) {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (min-width: 470px) and (max-width: 700px) {
-        grid-template-columns: repeat(3, 1fr);
     }
 
     @media (min-width: 700px) and (max-width: 1024px) {
@@ -127,6 +157,10 @@ export const LevelInfoItem = styled.div`
     align-items: center;
     gap: 1rem;
     width: 100%;
+
+    @media (max-width: 700px) {
+      gap: 0.5rem;
+    }
 `;
 
 export const LevelInfoImage = styled.img`
@@ -134,18 +168,26 @@ export const LevelInfoImage = styled.img`
     height: 100%;
     aspect-ratio: 1;
 
-    @media (max-width: 470px) {
-        width: 8rem;
+    @media (max-width: 700px) {
+        width: 5rem;
     }
 `;
 
 export const LevelInfoItemTitle = styled.p`
     font: var(--title-s-l);
+
+    @media (max-width: 700px) {
+      font: var(--body-s-l);
+    }
 `;
 
 export const LevelInfoItemDescription = styled.p`
     font: var(--subtitle-m-m);
     color: var(--text-secondary);
+
+    @media (max-width: 700px) {
+      font: var(--body-r-m);
+    }
 `;
 
 export const EmptyState = styled.div`
