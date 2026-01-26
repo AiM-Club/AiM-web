@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export const ProgressBarWrapper = styled.div<{ $height: number }>`
+export const ProgressBarWrapper = styled.div<{ $barText: "main" | "sub"; $height: number }>`
   display: flex;
   flex-direction: column;
-  gap: ${(props) => (props.$height <= 32 ? 1 : 1.5)}rem;
+  gap: ${(props) => (props.$barText === "sub" ? 0.5 : props.$height <= 32 ? 1 : 1.5)}rem;
   width: 100%;
 
   @media (max-width: 560px) {
@@ -16,8 +16,8 @@ export const ProgressBarTextWrapper = styled.div`
   flex-direction: row;
 `;
 
-export const ProgressBarText = styled.div<{ $height: number }>`
-  font: ${(props) => (props.$height <= 20 ? "var(--body-m-m)" : props.$height <= 32 ? "var(--subtitle-m-m)" : "var(--subtitle-m-l)")};
+export const ProgressBarText = styled.div<{ $barText: "main" | "sub"; $height: number }>`
+  font: ${(props) => (props.$height <= 20 || props.$barText === "sub" ? "var(--body-m-m)" : props.$height <= 32 ? "var(--subtitle-m-m)" : "var(--subtitle-m-l)")};
   color: var(--text-primary-default);
   
   @media (max-width: 560px) {
@@ -25,10 +25,10 @@ export const ProgressBarText = styled.div<{ $height: number }>`
   }
 `;
 
-export const ProgressBar = styled.div<{ $barText: "main" | "sub"; $height: number }>`
+export const ProgressBar = styled.div<{ $height: number; $background: "black" | "gray" }>`
   position: relative;
   width: 100%;
-  background-color: ${(props) => props.$barText === "main" ? "var(--surpace-primary)" : "var(--surpace-secondary)"};
+  background-color: ${(props) => props.$background === "gray" ? "var(--surpace-primary)" : "var(--surpace-secondary)"};
   height: ${(props) => props.$height}px;
   border-radius: ${(props) => (props.$height > 32 ? 0.5 : props.$height > 20 ? 0.25 : 0.125)}rem;
   overflow: hidden; /* 넘치는 부분 가리기 */

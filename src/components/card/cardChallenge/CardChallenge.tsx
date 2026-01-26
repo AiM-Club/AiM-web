@@ -13,6 +13,7 @@ import greenCardBottomHoverLong from "@/assets/CardGreenHoverLong.png"
 import pinkCardBottomHoverLong from "@/assets/CardPinkHoverLong.png"
 import pinkCardStraightTop from "@/assets/CardPinkStraightTop.png"
 import PinkCardShortLeft from "@/assets/PinkCardLeft.png";
+import PinkCardShortLeftHover from "@/assets/PinkCardLeftHover.png";
 import pinkCardStraightBottom from "@/assets/CardPinkStraightBottom.png"
 import pinkCardStraightHoverTop from "@/assets/CardPinkStraightHoverTop.png"
 import pinkCardStraightHoverBottom from "@/assets/CardPinkStraightHoverBottom.png"
@@ -21,6 +22,7 @@ import GreenTopMobile from "@/assets/CardGreenTopMobile.png";
 import RightArrow from "@/assets/BlackRightArrow.svg";
 import LeftArrow from "@/assets/BlackLeftArrow.svg";
 import { useState, useEffect } from "react";
+import { PageTopic } from "@/components/text/PageTopic";
 
 // To 작업자: 모바일일 경우 카드 토픽이 단순히 밑으로 내려오는게 아닌
 // 1. 구조가 바뀌는 경우 **mobileTopic을 none**으로 넘겨 topic을 카드에선 제거하고 카드 안 content에 추가해주세요.
@@ -75,7 +77,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
     if (color === "green") {
       return isHovered ? greenCardTopHover : greenCardTop;
     } else if (color === "pink" && topicDirection === "left") {
-      return isHovered ? pinkCardStraightHoverTop : backgroundHeight > 600 ? pinkCardStraightTop : PinkCardShortLeft;
+      return isHovered && backgroundHeight > 600 ? pinkCardStraightHoverTop : isHovered ? PinkCardShortLeftHover : backgroundHeight > 600 ? pinkCardStraightTop : PinkCardShortLeft;
     } else {
       return isHovered ? pinkCardTopHover : pinkCardTop;
     }
@@ -130,7 +132,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
       $height={backgroundHeight}
       $ismobile={isMobile}
     >
-      {isMobile && mobileTopic === "top" && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}>{topic}</S.CardTopic>}
+      {isMobile && mobileTopic === "top" && <S.CardTopic $mobileTopic={mobileTopic} $color={color} $direction={topicDirection} $ismobile={isMobile}><PageTopic text={topic} size="s" /></S.CardTopic>}
       <S.CardBackgroundWrapper>
         <S.CardBackgroundTop $image={getCardImageTop().toString().split('/').pop()?.split('?')[0] || ''} src={getCardImageTop()} $ismobile={isMobile} />
         {!isMobile && <S.CardBackground src={getCardImageBottom()} $height={backgroundHeight} />}

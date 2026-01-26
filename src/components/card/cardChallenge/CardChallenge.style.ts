@@ -13,7 +13,6 @@ export const CardBackgroundWrapper = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  // height: 20rem;
 `;
 
 export const CardBackgroundTop = styled.img<{ $image: string; $ismobile: boolean }>`
@@ -34,7 +33,7 @@ export const CardBackground = styled.img<{ $height: number | null }>`
   height: ${(props) => (props.$height ? `${props.$height}px` : "25rem")};
 `;
 
-export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null; $ismobile: boolean }>`
+export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null; $ismobile: boolean; $mobileTopic?: "none" | "top" | "normal"; }>`
   display: flex;
   justify-content: ${(props) =>
     props.$direction == "right"&&!props.$ismobile
@@ -46,8 +45,8 @@ export const CardTopic = styled.div<{ $color: "green" | "pink"; $direction: "rig
           : "flex-end"};
   align-items: center;
   position: ${(props)=>props.$ismobile?"relative":"absolute"};
-  height: 4.5rem;
-  padding: ${(props)=>props.$ismobile?"1.5rem 0 0 0":"0 1.5rem"};
+  height: ${(props)=>props.$ismobile ? "" : "4.5rem"};
+  padding: ${(props)=>props.$ismobile&& props.$mobileTopic !== "top"?"1.5rem 0 0 0":props.$ismobile?0:"0 1.5rem"};
   font: ${({$ismobile})=>($ismobile ? "var(--title-h-s)" : "var(--title-h-l)")};
   color: ${(props)=>props.$ismobile?"var(--text-primary-default)": "var(--text-tertiary)"};
   width: 100%;
@@ -90,8 +89,8 @@ export const CardContentWrapper = styled.div<{ $ismobile: boolean; $color: "gree
   align-items: center;
   position: absolute;
   width: 100%;
-  top: ${(props)=>props.$ismobile && props.$mobileTopic !== "top"?"0":"4rem"};
+  top: ${(props)=>props.$ismobile?"0":"4rem"};
   min-height: 21rem;
-  padding: ${({$ismobile})=>($ismobile ? "0 1rem" : "0 2rem")};
+  padding: ${(props)=>(props.$ismobile&& props.$mobileTopic === "top" ? "1rem 1rem 0 1rem" : props.$ismobile ? "0 1rem" : "0 2rem")};
   border-bottom: ${({$ismobile, $color})=>($ismobile ? `4px solid ${$color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"}`:"none")};
 `;
