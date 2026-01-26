@@ -5,10 +5,10 @@ import Banner from "@/components/slider/Banner";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeSolo/ChallengeVSSoloDetail.style";
 import { useParams } from "react-router-dom";
-import { useGetChallengeSoloDetail } from "@/api/challengeDetail";
+import { useGetChallengeDetailWeeks, useGetChallengeSoloDetail } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/components/loading/Loading";
 
 const ChallengeVSSoloDetail = () => {
@@ -16,9 +16,11 @@ const ChallengeVSSoloDetail = () => {
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
   const { mutate: getPhoto } = useGetPhoto();
   const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto } = useChallengeDetailStore();
+  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
+  const [isMine, setIsMine] = useState(false);
 
   useEffect(() => {
-    if (challengeDetail) {
+    if (challengeDetail && challengeDetailWeeks) {
       console.log(challengeDetail);
       setChallengeId(Number(id));
       setChallengeInfo(challengeDetail.data.challengeInfo);
@@ -54,7 +56,7 @@ const ChallengeVSSoloDetail = () => {
         <Banner />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
-          <CardChallenge topicDirection="left" cardNum={3} color="pink" topic="ME : 사용자 닉네임" openBtn={false} viewCard="right">
+          <CardChallenge topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
             <ChallengeVSMatchContent commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
