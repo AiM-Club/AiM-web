@@ -66,6 +66,7 @@ export interface ProgressList {
     proofImages: ImageResponse[];
     proofFiles: ImageResponse[];
     stopwatchTimeSeconds: number;
+    weeklyStatus: string;
     isComplete: boolean;
 }
 
