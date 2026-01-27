@@ -345,14 +345,13 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       <S.WeekWrapper ref={setWeekWrapperRef}>
         {Array.from({ length: firstRowCount > 0 ? Math.ceil(challengeInfo.totalWeeks / firstRowCount) * firstRowCount : challengeInfo?.totalWeeks ?? 0 }).map((_, index) => {
           const weekNumber = index + 1;
-          const weekKey = progressListMap[weekNumber]?.weeklyProgressId ?? index;
           if (weekNumber > challengeInfo.totalWeeks) {
             // 공간 유지를 위해서 첫 줄의 아이템 개수만큼 반복하되 display: none으로 없는 주차 숨김
             return <S.WeekItemWrapper key={index} style={{ visibility: 'hidden' }} />;
           }
 
           return weekNumber <= challengeInfo.totalWeeks ? (
-            <S.WeekItemWrapper key={progressListMap[weekNumber]?.weeklyProgressId}>
+            <S.WeekItemWrapper key={`week-${weekNumber}-${progressListMap[weekNumber]?.weeklyProgressId ?? index}`}>
               <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차
               </S.CurrentWeekItem>
@@ -464,7 +463,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                 : <></>}
             </S.WeekItemWrapper>
           ) : (
-            <S.WeekItemWrapper key={weekKey}>
+            <S.WeekItemWrapper key={`week-empty-${index}`}>
               <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)}>
                 {weekNumber}주차
               </S.TotalWeekItem>
