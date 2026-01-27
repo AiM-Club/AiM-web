@@ -4,6 +4,10 @@ export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (max-width: 560px) {
+    gap: 0.5rem;
+  }
 `;
 
 export const TopWrapper = styled.div`

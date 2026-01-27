@@ -26,6 +26,7 @@ interface ChallengeVSMatchProps {
   weekData?: WeekProps[];
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
+  isMobile?: boolean;
 }
 
 interface WeekProps {
@@ -108,7 +109,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard, commentView = true }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard, commentView = true, isMobile = false }: ChallengeVSMatchProps) => {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
@@ -185,7 +186,7 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
             <ProgressBar text="성공률" progress={success} height={32} color={color} />
           </S.RowProgressWrapper>
         </S.ProfileWrapper> :
-        color === "pink" ?
+        color === "pink" && !isMobile ?
           <S.ProfileWrapper>
             <S.ProgressWrapper>
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
@@ -194,7 +195,10 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
             <ProfileImage image={profileImg} width={9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
-            <ProfileImage image={profileImg} width={9} />
+            <S.ProfileTopWrapper>
+              <ProfileImage image={profileImg} width={isMobile ? 5 : 9} />
+              {isMobile && <S.ProfileName>유저_닉네임</S.ProfileName>}
+            </S.ProfileTopWrapper>
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />

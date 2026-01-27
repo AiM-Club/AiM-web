@@ -78,6 +78,10 @@ export const ChallengeVSMatchContentWrapper = styled.div`
   gap: 3rem;
   padding: 1.5rem 0;
   width: 100%;
+
+  @media (max-width: 770px) {
+    gap: 1.5rem;
+  }
 `;
 
 export const ProfileWrapper = styled.div`
@@ -86,6 +90,27 @@ export const ProfileWrapper = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   width: 100%;
+
+  @media (max-width: 770px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+`;
+
+export const ProfileTopWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+  width: 100%;
+`;
+
+export const ProfileName = styled.div`
+  display: flex;
+  font: var(--title-h-s);
+  color: var(--text-primary-default);
+  padding-bottom: 0.75rem;
+  align-items: flex-end;
 `;
 
 export const RowProgressWrapper = styled.div`
@@ -103,6 +128,11 @@ export const ProgressWrapper = styled.div`
   flex: 1;
   padding: 0 0 1% 0;
   gap: 1.5rem;
+  width: 100%;
+
+  @media (max-width: 770px) {
+    gap: 1rem;
+  }
 `;
 export const WeekWrapper = styled.div`
   display: flex;
@@ -111,6 +141,10 @@ export const WeekWrapper = styled.div`
   gap: 1rem;
   width: 100%;
   flex-wrap: wrap;
+
+  @media (max-width: 770px) {
+    gap: 0.5rem;
+  }
 `;
 
 export const WeekItemWrapper = styled.div`
@@ -119,6 +153,11 @@ export const WeekItemWrapper = styled.div`
   min-width: 7rem;
   max-width: 10rem;
   flex: 1;
+
+  @media (max-width: 770px) {
+    min-width: 6rem;
+    max-width: 8rem;
+  }
 `;
 
 export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
@@ -133,6 +172,12 @@ export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
   padding-bottom: ${(props) => (props.$selected ? "2.5rem" : "1.5rem")};
   font: var(--body-r-xl);
   cursor: pointer;
+
+  @media (max-width: 770px) {
+    font: var(--body-s-m);
+    padding: 1.2rem 0.5rem;
+    padding-bottom: ${(props) => (props.$selected ? "1.5rem" : "1rem")};
+  }
 `;
 
 export const TotalWeekItem = styled.div`
@@ -144,6 +189,11 @@ export const TotalWeekItem = styled.div`
   border-radius: 0.25rem;
   color: var(--text-secondary);
   font: var(--body-r-xl);
+
+  @media (max-width: 770px) {
+    font: var(--body-s-m);
+    padding: 1.2rem 0.5rem;
+  }
 `;
 
 export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: number; $width: number }>`
@@ -158,6 +208,16 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
       return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
     }}
   );
+
+  @media (max-width: 770px) {
+  transform: translateX(
+    ${(props) => {
+      if (props.$direction === 0)
+        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+      return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
+    }}
+  );
+  }
 `;
 
 export const WeekTopicWrapper = styled.div<{ $direction: number }>`
@@ -171,6 +231,10 @@ export const WeekTopicWrapper = styled.div<{ $direction: number }>`
         ? "0.25rem"
         : "0 0.25rem 0.25rem 0.25rem"};
   padding: 1.25rem 2.5rem;
+
+  @media (max-width: 770px) {
+    padding: 1.25rem 1.5rem;
+  }
 `;
 
 export const WeekTopicTitle = styled.div`
@@ -179,6 +243,10 @@ export const WeekTopicTitle = styled.div`
   margin-bottom: 0.5rem;
   font: var(--body-m-xl);
   color: var(--text-primary-default);
+
+  @media (max-width: 770px) {
+    font: var(--body-m-l);
+  }
 `;
 
 export const WeekTopicDate = styled.div`
@@ -187,6 +255,10 @@ export const WeekTopicDate = styled.div`
     font: var(--body-r-m);
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
+
+  @media (max-width: 770px) {
+    font: var(--body-r-s);
+  }
 `;
 
 export const WeekTopicContent = styled.div`
@@ -209,6 +281,10 @@ export const FileUpload = styled.div`
   width: fit-content;
   cursor: pointer;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 770px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const TimerWrapper = styled.div`

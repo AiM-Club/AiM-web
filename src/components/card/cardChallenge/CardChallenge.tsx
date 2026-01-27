@@ -138,7 +138,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
         {!isMobile && <S.CardBackground src={getCardImageBottom()} $height={backgroundHeight} />}
       </S.CardBackgroundWrapper>
       {!isMobile && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}>{topic}</S.CardTopic>}
-      {openBtn && (
+      {openBtn && !isMobile && (
         color === "green" ?
           <S.OpenBtnWrapper $color={color}>
             <S.OpenBtn $color={color} onClick={handleOpenBtn}>{viewCard === "both" ? "펼치기" : "나가기"}<S.OpenBtnIcon src={RightArrow} /></S.OpenBtn>
