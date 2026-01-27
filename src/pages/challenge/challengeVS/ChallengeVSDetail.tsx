@@ -23,9 +23,17 @@ const ChallengeVSMatch = () => {
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getMyPhoto } = useGetPhoto();
   const { mutate: getOpponentPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto } = useChallengeDetailStore();
-  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "");
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail } = useChallengeDetailStore();
+  const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
+  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
+    enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
+  });
   const [isMine, setIsMine] = useState(false);
+
+  // challengeId가 변경될 때 store 초기화
+  useEffect(() => {
+    resetChallengeDetail();
+  }, [id, resetChallengeDetail]);
 
   useEffect(() => {
     if (challengeDetail && challengeDetailWeeks) {

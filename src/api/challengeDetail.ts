@@ -1,7 +1,7 @@
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { ApiResponse } from "./types";
-import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse } from "@/types/challengeDetail";
+import type { ApiResponse, QueryOptions } from "./types";
+import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse, ChallengeLikeResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
 import { api } from "./utils";
 import type { CommentResponse } from "@/types/comment";
@@ -12,8 +12,8 @@ export const useGetChallengeDetail = (challengeId: string) => {
 }
 
 //챌린지 주차별 내용 리스트 조회
-export const useGetChallengeDetailWeeks = (challengeId: string) => {
-    return useFetch<ApiResponse<ChallengeDetailWeeksResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS, { challengeId }));
+export const useGetChallengeDetailWeeks = (challengeId: string, userId: string, options?: QueryOptions<ApiResponse<ChallengeDetailWeeksResponse>>) => {
+    return useFetch<ApiResponse<ChallengeDetailWeeksResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS, { challengeId }), { userId }, options);
 }
 
 //주차별 댓글 조회
@@ -41,4 +41,14 @@ export const useGetChallengeSoloDetail = (challengeId: string) => {
 //댓글 작성
 export const usePostWeeklyComment = (challengeId: string, weeksId: string) => {
     return usePost<FormData, ApiResponse<CommentPostResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_COMMENTS, { challengeId, weeksId }));
+}
+
+//주차별 챌린지 인증샷 업로드
+export const usePostWeeklyProof = (challengeId: string) => {
+    return usePost<FormData, string>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_PROOF, { challengeId }));
+}
+
+//챌린지 좋아요
+export const useChallengeLike = (challengeId: string) => {
+    return usePost<void, ChallengeLikeResponse>(buildPath(ApiEndpoints.CHALLENGE_LIKE, { challengeId }));
 }

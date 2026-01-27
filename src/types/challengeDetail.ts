@@ -9,6 +9,8 @@ export interface ChallengeVSDetailResponse {
 export interface ChallengeInfo {
     thumbnail: ImageResponse;
     name: string;
+    isLiked: boolean;
+    likedCount: number;
     fields: Detailfields[];
     tags: DetailTags[];
     job: string;
@@ -61,7 +63,10 @@ export interface ProgressList {
     weekEndDate: string;
     title: string;
     content: string;
+    proofImages: ImageResponse[];
+    proofFiles: ImageResponse[];
     stopwatchTimeSeconds: number;
+    weeklyStatus: string;
     isComplete: boolean;
 }
 
@@ -73,4 +78,8 @@ export interface ChallengeSoloDetailResponse {
 export interface CommentPostResponse {
     commentId: number;
     weeksId: number;
+}
+
+export interface ChallengeLikeResponse {
+    likes: boolean;
 }

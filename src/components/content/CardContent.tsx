@@ -10,9 +10,11 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
-import { useGetWeeklyComments, usePostWeeklyComment } from "@/api/challengeDetail";
+import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
 import SubLoading from "../loading/SubLoading";
 import Comment from "@/components/comment/Comment.tsx";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import { useImageOpen } from "@/hooks/useImageOpen";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -87,9 +89,11 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap } = useChallengeDetailStore();
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
   const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
   const currentWeek = challengeDetailWeeks?.currentWeek;
@@ -99,11 +103,17 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
   const { mutate: getWeeklyComments } = useGetWeeklyComments();
+  const { mutate: postWeeklyProof } = usePostWeeklyProof(String(challengeId ?? "0"));
+  const { refetch: refetchChallengeDetailWeeks } = useGetChallengeDetailWeeks(String(challengeId ?? "0"), myInfo?.id ? String(myInfo.id) : "", {
+    enabled: false, // refetch만 사용하므로 자동 실행 비활성화
+  });
   const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
   const [commentFile, setCommentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const proofFileInputRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
 
   // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
   const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
@@ -222,15 +232,15 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   }
 
   const onSubmit = (data: CommentForm) => {
-    console.log("댓글달기");
     if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
 
     const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
 
-    console.log(data);
-    console.log(commentFile);
     const formData = new FormData();
     formData.append("content", data.content);
+    if (selectedCommentId) {
+      formData.append("parentCommentId", String(selectedCommentId));
+    }
     if (commentFile) {
       // 이미지인지 파일인지 구분
       if (commentFile.type.startsWith("image/")) {
@@ -244,6 +254,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       onSuccess: () => {
         reset();
         setCommentFile(null);
+        setSelectedCommentId(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -258,6 +269,10 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     });
   }
 
+  const handleReplyClick = (commentId: number) => {
+    setSelectedCommentId(commentId);
+  }
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -270,6 +285,40 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  }
+
+  const handleProofFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+    const formData = new FormData();
+    formData.append("weeklyProgressId", String(weeklyProgressId));
+
+    if (file.type.startsWith("image/")) {
+      formData.append("attachedImages", file);
+    } else {
+      formData.append("attachedFiles", file);
+    }
+
+    postWeeklyProof(formData, {
+      onSuccess: async () => {
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+        // 주 정보 다시 가져오기
+        const { data } = await refetchChallengeDetailWeeks();
+        if (data?.data) {
+          setChallengeDetailWeeks(data.data);
+        }
+      },
+      onError: (error: unknown) => {
+        console.error("인증샷 업로드 실패:", error);
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+      },
+    });
   }
 
   if (!challengeInfo || !challengeId) return <SubLoading />;
@@ -302,14 +351,13 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       <S.WeekWrapper ref={setWeekWrapperRef}>
         {Array.from({ length: firstRowCount > 0 ? Math.ceil(challengeInfo.totalWeeks / firstRowCount) * firstRowCount : challengeInfo?.totalWeeks ?? 0 }).map((_, index) => {
           const weekNumber = index + 1;
-          const weekKey = progressListMap[weekNumber]?.weeklyProgressId ?? index;
           if (weekNumber > challengeInfo.totalWeeks) {
             // 공간 유지를 위해서 첫 줄의 아이템 개수만큼 반복하되 display: none으로 없는 주차 숨김
             return <S.WeekItemWrapper key={index} style={{ visibility: 'hidden' }} />;
           }
 
           return weekNumber <= challengeInfo.totalWeeks ? (
-            <S.WeekItemWrapper key={progressListMap[weekNumber]?.weeklyProgressId}>
+            <S.WeekItemWrapper key={`week-${weekNumber}-${progressListMap[weekNumber]?.weeklyProgressId ?? index}`}>
               <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차
               </S.CurrentWeekItem>
@@ -319,17 +367,39 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
                     <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
                     <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
-                    {kind === "opponent" ? (
-                      <S.FileUpload>
-                        <img src={FileIcon} />
-                        인증샷 파일 업로드
-                      </S.FileUpload>
-                    ) : (
-                      <S.FileUpload>
-                        <img src={FileIcon} />
-                        인증샷 파일 업로드
-                      </S.FileUpload>
-                    )}
+                    <S.ProofWrapper>
+                      {progressListMap[selectedWeek]?.proofImages.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofImages.map((image) => (
+                              <S.ProofFileName key={image.uuid} onClick={() => openImage(image)}>{image.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {progressListMap[selectedWeek]?.proofFiles.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofFiles.map((file) => (
+                              <S.ProofFileName key={file.uuid} onClick={() => downloadFile(file)}>{file.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {kind === "my" &&
+                        <S.ProofFileIconLabel>
+                          <S.FileIconInput
+                            ref={proofFileInputRef}
+                            type="file"
+                            onChange={handleProofFileChange}
+                          />
+                          <S.FileUpload>
+                            <img src={FileIcon} />
+                            인증샷 파일 업로드
+                          </S.FileUpload>
+                        </S.ProofFileIconLabel>
+                      }
+                    </S.ProofWrapper>
                     {selectedWeek === currentWeek ? (
                       <S.TimerWrapper>
                         <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
@@ -344,12 +414,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                   {commentView && <S.WeekCommentWrapper>
                     {weekCommentData.map((data) => (
                       <S.CommentWrapper key={data.commentId}>
-                        <Comment data={data} />
-                        {/* {data.reply?.map((replyData) => (
+                        <Comment
+                          data={data}
+                          onReplyClick={handleReplyClick}
+                          isSelected={selectedCommentId === data.commentId}
+                        />
+                        {data.childrenComments?.map((replyData) => (
                           <S.ReplyWrapper key={replyData.commentId}>
-                            <Comment data={replyData} />
+                            <Comment data={replyData} type="reply" />
                           </S.ReplyWrapper>
-                        ))} */}
+                        ))}
                       </S.CommentWrapper>
                     ))}
                     {totalPage > 1 && (
@@ -364,10 +438,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                   </S.WeekCommentWrapper>}
                   {commentView && (
                     <form onSubmit={handleSubmit(onSubmit)}>
+                      {selectedCommentId && (
+                        <S.ReplyIndicator>
+                          답글 작성 중...
+                          <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
+                        </S.ReplyIndicator>
+                      )}
                       <S.WeekCommentInputWrapper>
                         <S.WeekCommentInput
                           {...register("content")}
-                          placeholder="댓글을 입력하세요"
+                          placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
                         />
                         <S.FileIconWrapper>
                           <S.FileIconContentWrapper>
@@ -399,7 +479,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                 : <></>}
             </S.WeekItemWrapper>
           ) : (
-            <S.WeekItemWrapper key={weekKey}>
+            <S.WeekItemWrapper key={`week-empty-${index}`}>
               <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)}>
                 {weekNumber}주차
               </S.TotalWeekItem>

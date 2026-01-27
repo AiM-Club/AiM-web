@@ -7,14 +7,22 @@ import { formatDay } from "@/utils/useTime";
 import { useGetPhoto } from "@/api/photo";
 import { useEffect, useState } from "react";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import { useImageOpen } from "@/hooks/useImageOpen";
 
 interface CommentComponentProps {
   data: CommentType;
+  onReplyClick?: (commentId: number) => void;
+  type?: "comment" | "reply";
+  isSelected?: boolean;
 }
 
-const Comment = ({ data }: CommentComponentProps) => {
+const Comment = ({ data, onReplyClick, type = "comment", isSelected }: CommentComponentProps) => {
   const { mutate: getThumbnail } = useGetPhoto();
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+
   useEffect(() => {
     if (data.writerInfo.profileImage.uuid) {
       getThumbnail({ file_uuid: data.writerInfo.profileImage.uuid }, {
@@ -28,7 +36,7 @@ const Comment = ({ data }: CommentComponentProps) => {
   const thumbnailUrl = useUserPhotoUrl(thumbnail ?? null);
 
   return (
-    <S.CommentItem>
+    <S.CommentItem $isSelected={isSelected}>
       <S.CommentProfileWrapper>
         <ProfileImage image={thumbnailUrl || NoPhoto} width={2.5} />
       </S.CommentProfileWrapper>
@@ -38,10 +46,19 @@ const Comment = ({ data }: CommentComponentProps) => {
           <S.CommentUserGrade src={getRankImg(data.writerInfo.tier?.name || "bronze")} />
         </S.CommentHeaderWrapper>
         <S.CommentText>{data.content}</S.CommentText>
-        {(data.attachedFiles.length > 0 || data.attachedImages.length > 0) && <S.CommentFile>{data.attachedFiles.length > 0 ? data.attachedFiles[0].fileName : data.attachedImages.length > 0 ? data.attachedImages[0].fileName : ""}</S.CommentFile>}
+        {data.attachedFiles.length > 0 && (
+          <S.CommentFile onClick={() => downloadFile(data.attachedFiles[0])}>
+            {data.attachedFiles[0].fileName}
+          </S.CommentFile>
+        )}
+        {data.attachedImages.length > 0 && (
+          <S.CommentFile onClick={() => openImage(data.attachedImages[0])}>
+            {data.attachedImages[0].fileName}
+          </S.CommentFile>
+        )}
         <S.CommentBottomWrapper>
           <S.CommentTime>{formatDay(data.createdAt)}</S.CommentTime>
-          <S.CommentReplyBtn>답글쓰기</S.CommentReplyBtn>
+          {type === "comment" && <S.CommentReplyBtn onClick={() => onReplyClick?.(data.commentId)}>답글쓰기</S.CommentReplyBtn>}
         </S.CommentBottomWrapper>
       </S.CommentContentWrapper>
     </S.CommentItem>

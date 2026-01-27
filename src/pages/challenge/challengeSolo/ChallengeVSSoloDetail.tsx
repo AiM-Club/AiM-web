@@ -5,26 +5,40 @@ import Banner from "@/components/slider/Banner";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeSolo/ChallengeVSSoloDetail.style";
 import { useParams } from "react-router-dom";
-import { useGetChallengeSoloDetail } from "@/api/challengeDetail";
+import { useGetChallengeDetailWeeks, useGetChallengeSoloDetail } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/components/loading/Loading";
+import { useAuthStore } from "@/stores/authStore";
 
 const ChallengeVSSoloDetail = () => {
+  const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
+  const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeDetailWeeks, resetChallengeDetail } = useChallengeDetailStore();
+  const myUserId = challengeDetail?.data.participant.id ? String(challengeDetail.data.participant.id) : "";
+  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
+    enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
+  });
+  const [isMine, setIsMine] = useState(false);
+
+  // challengeId가 변경될 때 store 초기화
+  useEffect(() => {
+    resetChallengeDetail();
+  }, [id, resetChallengeDetail]);
 
   useEffect(() => {
-    if (challengeDetail) {
-      console.log(challengeDetail);
+    if (challengeDetail && challengeDetailWeeks) {
       setChallengeId(Number(id));
       setChallengeInfo(challengeDetail.data.challengeInfo);
       setMyInfo(challengeDetail.data.participant);
+      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setIsMine(challengeDetail.data.participant.id === user?.id);
       if (challengeDetail?.data.challengeInfo.thumbnail) {
-        getPhoto(
+        getThumbnail(
           { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
           {
             onSuccess: (photo) => {
@@ -44,17 +58,17 @@ const ChallengeVSSoloDetail = () => {
         );
       }
     }
-  }, [challengeDetail, id, setChallengeId, setChallengeInfo, setMyInfo]);
+  }, [challengeDetail, challengeDetailWeeks, id, setChallengeId, setChallengeInfo, setMyInfo, setChallengeDetailWeeks, setThumbnail, setMyPhoto, getThumbnail, getPhoto, user?.id]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isLoadingWeeks) return <Loading />;
 
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner />
+        <Banner isMine={isMine} />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
-          <CardChallenge topicDirection="left" cardNum={3} color="pink" topic="ME : 사용자 닉네임" openBtn={false} viewCard="right">
+          <CardChallenge topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
             <ChallengeVSMatchContent commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
