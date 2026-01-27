@@ -18,5 +18,11 @@ export const CategoryButton = styled.button<{ $isActive: boolean }>`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 560px) {
+      width: 5rem;
+      height: 2.25rem;
+      font: var(--body-r-m);
+    }
 `;
 

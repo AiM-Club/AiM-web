@@ -32,6 +32,11 @@ export const Trigger = styled(SelectMenu.Trigger)<{ $width?: number | string }>`
   &[data-placeholder] {
     color: ${(props) => (props.$width && typeof props.$width === "number" ? "var(--text-secondary)" : "var(--text-primary-default)")};
   }
+
+    @media (max-width: 560px) {
+      padding: ${({ $width }) => ($width && typeof $width === "number" ? "0.625rem 1rem" : "0.75rem 1rem")};
+      font: var(--body-r-m);
+    }
 `;
 
 export const IconWrapper = styled.div`

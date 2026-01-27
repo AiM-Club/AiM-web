@@ -25,10 +25,6 @@ export const variantStyles = {
     z-index: 999;
     bottom: 8%;
     right: 10%;
-  
-    @media (max-width: 560px){
-      right: 5%;
-    }
   `,
   secondary: css`
     height: 3rem;

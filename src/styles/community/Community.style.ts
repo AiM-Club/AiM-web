@@ -5,6 +5,10 @@ export const CommunityWrapper = styled.div`
     flex-direction: column;
     gap: 6.25rem;
     width: 100%;
+
+    @media (max-width: 560px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const ContentWrapper = styled.div`
@@ -12,4 +16,8 @@ export const ContentWrapper = styled.div`
     flex-direction: column;
     gap: 3rem;
     width: 100%;
+
+    @media (max-width: 560px) {
+      gap: 1.5rem;
+    }
 `;

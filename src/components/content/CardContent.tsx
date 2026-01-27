@@ -500,7 +500,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
 const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
   const navigate = useNavigate();
   return (
-    <S.PlusIconWrapper $height={height} onClick={() => navigate(PageEndPoints.CHALLENGE_VS_INVITE)}>
+    <S.PlusIconWrapper $height={height} onClick={() => navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`)}>
       <S.PlusIcon src={Plus} />
       초대
     </S.PlusIconWrapper>

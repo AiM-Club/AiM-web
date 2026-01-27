@@ -11,6 +11,10 @@ export const HomeWrapper = styled.div`
     width: 90%;
     margin: 1rem auto;
   }
+
+  @media (max-width: 560px) {
+    gap: 2.5rem;
+  }
 `;
 
 export const CardWrapper = styled.div`

@@ -8,24 +8,23 @@ import SearchField from "@/components/field/SearchField";
 
 
 const Search = () => {
-    const [searchParams] = useSearchParams();
-    const keyword = searchParams.get("keyword") || "";
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword") || "";
 
-    return (
-        <DefaultLayout>
-            <S.SearchWrapper>
-                
-                    <S.SearchTopic>
-                        <img src={titleUnion} />
-                        `{keyword}` 검색 결과
-                    </S.SearchTopic>
-                    <S.ResultWrapper>
-                        <SearchField />
-                        <CardBoard data={searchVsData}/>
-                    </S.ResultWrapper>
-            </S.SearchWrapper>
-        </DefaultLayout>
-    )
+  return (
+    <DefaultLayout>
+      <S.SearchWrapper>
+        <S.SearchTopic>
+          <img src={titleUnion} />
+          `{keyword}` 검색 결과
+        </S.SearchTopic>
+        <S.ResultWrapper>
+          <SearchField />
+          <CardBoard data={searchVsData} />
+        </S.ResultWrapper>
+      </S.SearchWrapper>
+    </DefaultLayout>
+  )
 }
 
 export default Search;

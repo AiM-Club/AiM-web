@@ -7,6 +7,10 @@ export const SearchWrapper = styled.div`
     gap: 6.25rem;
     width: 100%;
     height: 100%;
+
+    @media (max-width: 560px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const ResultWrapper = styled.div`

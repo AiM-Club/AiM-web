@@ -5,6 +5,10 @@ export const ChallengeVSInviteWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 6.25rem;
+
+    @media (max-width: 560px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const InviteContentWrapper = styled.div`
