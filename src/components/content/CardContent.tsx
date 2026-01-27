@@ -232,13 +232,10 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   }
 
   const onSubmit = (data: CommentForm) => {
-    console.log("댓글달기");
     if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
 
     const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
 
-    console.log(data);
-    console.log(commentFile);
     const formData = new FormData();
     formData.append("content", data.content);
     if (selectedCommentId) {
