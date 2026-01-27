@@ -67,6 +67,12 @@ const CreateChallenge = () => {
       fromData.append("mode", elementsData?.mode || "");
       fromData.append("visibility", formData.isPublic ? "PUBLIC" : "PRIVATE");
 
+      // 이미지 파일 추가
+      const imageFile = bannerTitleRef.current?.getImageFile();
+      if (imageFile) {
+        fromData.append("thumbnail", imageFile);
+      }
+
       // FormData 내용 콘솔 출력
       for (const [key, value] of fromData.entries()) {
         console.log(`FormData -> ${key}:`, value);

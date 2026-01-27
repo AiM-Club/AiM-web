@@ -23,6 +23,7 @@ import RightArrow from "@/assets/BlackRightArrow.svg";
 import LeftArrow from "@/assets/BlackLeftArrow.svg";
 import { useState, useEffect } from "react";
 import { PageTopic } from "@/components/text/PageTopic";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 
 // To 작업자: 모바일일 경우 카드 토픽이 단순히 밑으로 내려오는게 아닌
 // 1. 구조가 바뀌는 경우 **mobileTopic을 none**으로 넘겨 topic을 카드에선 제거하고 카드 안 content에 추가해주세요.
@@ -44,7 +45,8 @@ import { PageTopic } from "@/components/text/PageTopic";
 
 interface CardChallengeProps {
   color: "green" | "pink";
-  topic: string;
+  kind?: "opponent" | "my";
+  topic?: string;
   topicDirection?: "left" | "right" | null;
   openBtn: boolean;
   children: React.ReactNode;
@@ -64,11 +66,17 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal" }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal" }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
+  const { myInfo, opponentInfo } = useChallengeDetailStore();
 
+  if (topic) {
+    topic = topic;
+  } else {
+    topic = kind === "opponent" ? opponentInfo?.nickname : `ME : ${myInfo?.nickname}`;
+  }
   const getCardImageTop = () => {
     if (isMobile) {
       if (color === "green") return GreenTopMobile;
@@ -132,7 +140,7 @@ export const CardChallenge = ({ color, topic, topicDirection = null, openBtn, ch
       $height={backgroundHeight}
       $ismobile={isMobile}
     >
-      {isMobile && mobileTopic === "top" && <S.CardTopic $mobileTopic={mobileTopic} $color={color} $direction={topicDirection} $ismobile={isMobile}><PageTopic text={topic} size="s" /></S.CardTopic>}
+      {isMobile && mobileTopic === "top" && <S.CardTopic $mobileTopic={mobileTopic} $color={color} $direction={topicDirection} $ismobile={isMobile}><PageTopic text={topic || ""} size="s" /></S.CardTopic>}
       <S.CardBackgroundWrapper>
         <S.CardBackgroundTop $image={getCardImageTop().toString().split('/').pop()?.split('?')[0] || ''} src={getCardImageTop()} $ismobile={isMobile} />
         {!isMobile && <S.CardBackground src={getCardImageBottom()} $height={backgroundHeight} />}

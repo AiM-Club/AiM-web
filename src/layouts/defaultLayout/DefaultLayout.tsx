@@ -54,9 +54,9 @@ const DefaultLayout = ({ children, variant = "default" }: DefaultLayoutProps) =>
 
     return (
         <S.LayoutWrapper>
-            <S.ContentWrapper>
+            <S.ContentWrapper $isDrawerOpen={isDrawerOpen}>
                 {showsidebar && <S.SidebarWrapper><Sidebar /></S.SidebarWrapper>}
-                <S.MainWrapper>
+                <S.MainWrapper $isDrawerOpen={isDrawerOpen}>
                     <Header variant={variant} onMenuClick={() => setIsDrawerOpen(true)} />
                     <S.MainContent $variant={variant}>{children}</S.MainContent>
                 </S.MainWrapper>

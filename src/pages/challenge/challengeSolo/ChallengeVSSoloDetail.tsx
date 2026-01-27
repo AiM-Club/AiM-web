@@ -5,24 +5,71 @@ import Banner from "@/components/slider/Banner";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeSolo/ChallengeVSSoloDetail.style";
 import { useParams } from "react-router-dom";
+import { useGetChallengeDetailWeeks, useGetChallengeSoloDetail } from "@/api/challengeDetail";
+import { useGetPhoto } from "@/api/photo";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
+import { useEffect, useState } from "react";
+import Loading from "@/components/loading/Loading";
+import { useAuthStore } from "@/stores/authStore";
 
 const ChallengeVSSoloDetail = () => {
+  const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
+  const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
+  const { mutate: getThumbnail } = useGetPhoto();
+  const { mutate: getPhoto } = useGetPhoto();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeDetailWeeks, resetChallengeDetail } = useChallengeDetailStore();
+  const myUserId = challengeDetail?.data.participant.id ? String(challengeDetail.data.participant.id) : "";
+  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
+    enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
+  });
+  const [isMine, setIsMine] = useState(false);
 
-  const fieldData = ["분야1", "분야2", "분야3"];
-  const tagData = ["태그1", "태그2", "태그3"];
-  const wordData = "작성된 직무";
-  const startData = "2025.11.07";
-  const endData = "2025.11.30";
+  // challengeId가 변경될 때 store 초기화
+  useEffect(() => {
+    resetChallengeDetail();
+  }, [id, resetChallengeDetail]);
+
+  useEffect(() => {
+    if (challengeDetail && challengeDetailWeeks) {
+      setChallengeId(Number(id));
+      setChallengeInfo(challengeDetail.data.challengeInfo);
+      setMyInfo(challengeDetail.data.participant);
+      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setIsMine(challengeDetail.data.participant.id === user?.id);
+      if (challengeDetail?.data.challengeInfo.thumbnail) {
+        getThumbnail(
+          { file_uuid: challengeDetail.data.challengeInfo.thumbnail.uuid },
+          {
+            onSuccess: (photo) => {
+              setThumbnail(photo);
+            },
+          }
+        );
+      }
+      if (challengeDetail?.data.participant.profileImage.uuid) {
+        getPhoto(
+          { file_uuid: challengeDetail.data.participant.profileImage.uuid },
+          {
+            onSuccess: (photo) => {
+              setMyPhoto(photo);
+            },
+          }
+        );
+      }
+    }
+  }, [challengeDetail, challengeDetailWeeks, id, setChallengeId, setChallengeInfo, setMyInfo, setChallengeDetailWeeks, setThumbnail, setMyPhoto, getThumbnail, getPhoto, user?.id]);
+
+  if (isLoading || isLoadingWeeks) return <Loading />;
 
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner topic="제목 작성은 15글자 이하" image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" />
+        <Banner isMine={isMine} />
         <S.ChallengeVSSoloDetailContentWrapper>
-          <FieldTagWorkPeriod fieldData={fieldData} tagData={tagData} wordData={wordData} startData={startData} endData={endData} week={5} />
-          <CardChallenge topicDirection="left" cardNum={3} color="pink" topic="ME : 사용자 닉네임" openBtn={false} viewCard="right">
-            <ChallengeVSMatchContent commentView={false} color="pink" progress={80} success={80} totalWeek={9} currentWeek={5} viewCard="right" profileImg="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif" />
+          <FieldTagWorkPeriod />
+          <CardChallenge topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
+            <ChallengeVSMatchContent commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
       </S.ChallengeVSSoloDetailWrapper>

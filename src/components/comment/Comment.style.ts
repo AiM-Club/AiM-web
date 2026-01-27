@@ -1,9 +1,12 @@
 import styled from "styled-components";
-export const CommentItem = styled.div`
+export const CommentItem = styled.div<{ $isSelected?: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 1.25rem;
   width: 100%;
+  border: ${props => props.$isSelected ? '1px solid var(--pink-800)' : 'none'};
+  border-radius: 0.5rem;
+  padding: ${props => props.$isSelected ? '0.5rem' : '0'};
 `;
 
 export const CommentProfileWrapper = styled.div`
@@ -50,6 +53,23 @@ export const CommentText = styled.div`
   
   @media (max-width: 560px){
     font: var(--body-r-m);
+  }
+`;
+
+export const CommentFile = styled.div`
+  display: flex;
+  font: var(--body-r-xs);
+  color: var(--text-secondary);
+  word-break: break-word;
+  padding: 0.5rem 0.625rem;
+  border-radius: 6.25rem;
+  background-color: var(--surpace-tertiary);
+  width: fit-content;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
   }
 `;
 

@@ -3,10 +3,23 @@ import { ProgressBar } from "@/components/bar/ProgressBar";
 import TryIcon from "@/assets/Try.png";
 import Plus from "@/assets/Plus.svg";
 import FileIcon from "@/assets/FileClip.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ProfileImage from "../image/ProfileImage";
-import type { CommentProps } from "@/types/comment";
-import Comment from "@/components/comment/Comment";
+import type { CommentProps, CommentType } from "@/types/comment";
+import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
+import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import NoPhoto from "@/assets/NoPhoto.svg";
+import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
+import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
+import SubLoading from "../loading/SubLoading";
+import Comment from "@/components/comment/Comment.tsx";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import { useImageOpen } from "@/hooks/useImageOpen";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import XIcon from "@/assets/X.png";
+import SubPagination from "../pagination/SubPagination";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -18,11 +31,8 @@ interface ChallengeMainProps {
 
 interface ChallengeVSMatchProps {
   color: "green" | "pink";
-  progress: number;
-  success: number;
-  profileImg: string;
-  totalWeek: number;
-  currentWeek: number;
+  kind: "opponent" | "my";
+  value: "VS" | "SOLO";
   weekData?: WeekProps[];
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
@@ -38,36 +48,6 @@ interface WeekProps {
   timer: string;
   comments: CommentProps[];
 }
-
-const weekCommentData = [
-  {
-    commentId: 1,
-    comment: "댓글 용",
-    userName: "작성자",
-    userGrade: "A",
-    userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-    time: "2026.01.01",
-    reply: [
-      {
-        commentId: 1,
-        comment: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-        userName: "작성자1",
-        userGrade: "A",
-        userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-        time: "2026.01.01",
-      }
-    ]
-  },
-  {
-    commentId: 2,
-    comment: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
-    userName: "작성자",
-    userGrade: "A",
-    userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-    time: "2026.01.01",
-    reply: [],
-  }
-]
 
 const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCount }: ChallengeMainProps) => {
   return (
@@ -109,12 +89,58 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWeek, currentWeek, viewCard, commentView = true, isMobile = false }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false }: ChallengeVSMatchProps) => {
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
+  const photo = kind === "opponent" ? opponentPhoto : myPhoto;
+  const photoSrc = useUserPhotoUrl(photo);
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
+  const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
+  const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
+  const currentWeek = challengeDetailWeeks?.currentWeek;
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
   const [weekWrapperRef, setWeekWrapperRef] = useState<HTMLDivElement | null>(null);
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
+  const { mutate: getWeeklyComments } = useGetWeeklyComments();
+  const { mutate: postWeeklyProof } = usePostWeeklyProof(String(challengeId ?? "0"));
+  const { refetch: refetchChallengeDetailWeeks } = useGetChallengeDetailWeeks(String(challengeId ?? "0"), myInfo?.id ? String(myInfo.id) : "", {
+    enabled: false, // refetch만 사용하므로 자동 실행 비활성화
+  });
+  const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
+  const [commentFile, setCommentFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const proofFileInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+
+  // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
+  const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
+    ? String(progressListMap[selectedWeek].weeklyProgressId)
+    : "0";
+  const { mutate: postComment } = usePostWeeklyComment(
+    challengeId ? String(challengeId) : "0",
+    currentWeeklyProgressId
+  );
+
+  const commentSchema = z.object({
+    content: z.string().min(1, "댓글을 입력해주세요"),
+  });
+
+  type CommentForm = z.infer<typeof commentSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+  } = useForm<CommentForm>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      content: "",
+    },
+  });
 
   useEffect(() => {
     if (!contentElement) return;
@@ -166,21 +192,143 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
     return () => {
       resizeObserver.disconnect();
     };
-  }, [weekWrapperRef, totalWeek, currentWeek]);
+  }, [weekWrapperRef, challengeInfo?.totalWeeks]);
 
-  const handleWeekClick = (week: number) => {
+  const handleWeekClick = (week: number, weeklyProgressId: number) => {
     if (selectedWeek === week) {
       setSelectedWeek(null);
       return;
     }
     setSelectedWeek(week);
+    setCurrentPage(0); // 주차 변경 시 첫 페이지로 리셋
+    if (value === "VS") {
+      getWeeklyCommentsData(weeklyProgressId, 0);
+    }
   }
+
+  const getWeeklyCommentsData = (weeklyProgressId: number, page: number = currentPage) => {
+    if (weeklyProgressId && challengeId) {
+      getWeeklyComments(
+        {
+          challengeId: challengeId,
+          weeksId: String(weeklyProgressId),
+          page: page,
+          size: 10,
+        },
+        {
+          onSuccess: (data) => {
+            setWeekCommentData(data.comments);
+            setTotalPage(data.pageInfo.totalPages);
+          },
+        }
+      );
+    }
+  }
+
+  const handleCommentPageChange = (page: number) => {
+    if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+    setCurrentPage(page);
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+    getWeeklyCommentsData(weeklyProgressId, page);
+  }
+
+  const onSubmit = (data: CommentForm) => {
+    if (!selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+
+    const formData = new FormData();
+    formData.append("content", data.content);
+    if (selectedCommentId) {
+      formData.append("parentCommentId", String(selectedCommentId));
+    }
+    if (commentFile) {
+      // 이미지인지 파일인지 구분
+      if (commentFile.type.startsWith("image/")) {
+        formData.append("attachedImages", commentFile);
+      } else {
+        formData.append("attachedFiles", commentFile);
+      }
+    }
+
+    postComment(formData, {
+      onSuccess: () => {
+        reset();
+        setCommentFile(null);
+        setSelectedCommentId(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        // 댓글 리스트 새로고침 (첫 페이지로)
+        setCurrentPage(0);
+        getWeeklyCommentsData(weeklyProgressId, 0);
+      },
+      onError: (error: unknown) => {
+        console.error("댓글 작성 실패:", error);
+        alert("댓글 작성에 실패했습니다.");
+      },
+    });
+  }
+
+  const handleReplyClick = (commentId: number) => {
+    setSelectedCommentId(commentId);
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCommentFile(file);
+    }
+  }
+
+  const handleFileDelete = () => {
+    setCommentFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }
+
+  const handleProofFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedWeek || !challengeId || !progressListMap[selectedWeek]?.weeklyProgressId) return;
+
+    const weeklyProgressId = progressListMap[selectedWeek].weeklyProgressId;
+    const formData = new FormData();
+    formData.append("weeklyProgressId", String(weeklyProgressId));
+
+    if (file.type.startsWith("image/")) {
+      formData.append("attachedImages", file);
+    } else {
+      formData.append("attachedFiles", file);
+    }
+
+    postWeeklyProof(formData, {
+      onSuccess: async () => {
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+        // 주 정보 다시 가져오기
+        const { data } = await refetchChallengeDetailWeeks();
+        if (data?.data) {
+          setChallengeDetailWeeks(data.data);
+        }
+      },
+      onError: (error: unknown) => {
+        console.error("인증샷 업로드 실패:", error);
+        if (proofFileInputRef.current) {
+          proofFileInputRef.current.value = "";
+        }
+      },
+    });
+  }
+
+  if (!challengeInfo || !challengeId) return <SubLoading />;
 
   return (
     <S.ChallengeVSMatchContentWrapper ref={setContentElement}>
       {viewCard === "left" || viewCard === "right" ?
         <S.ProfileWrapper>
-          <ProfileImage image={profileImg} width={wholeWidth * 0.018} />
+          <ProfileImage image={photoSrc || NoPhoto} width={wholeWidth * 0.018} />
           <S.RowProgressWrapper>
             <ProgressBar text="진도율" progress={progress} height={32} color={color} />
             <ProgressBar text="성공률" progress={success} height={32} color={color} />
@@ -192,74 +340,152 @@ const ChallengeVSMatchContent = ({ color, progress, success, profileImg, totalWe
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
             </S.ProgressWrapper>
-            <ProfileImage image={profileImg} width={9} />
+            <ProfileImage image={photoSrc || NoPhoto} width={9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
             <S.ProfileTopWrapper>
-              <ProfileImage image={profileImg} width={isMobile ? 5 : 9} />
+              <ProfileImage image={photoSrc || NoPhoto} width={9} />
               {isMobile && <S.ProfileName>유저_닉네임</S.ProfileName>}
             </S.ProfileTopWrapper>
+            <ProfileImage image={photoSrc || NoPhoto} width={9} />
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
             </S.ProgressWrapper>
           </S.ProfileWrapper>}
       <S.WeekWrapper ref={setWeekWrapperRef}>
-        {Array.from({ length: firstRowCount > 0 ? Math.ceil(totalWeek / firstRowCount) * firstRowCount : totalWeek }).map((_, index) => {
+        {Array.from({ length: firstRowCount > 0 ? Math.ceil(challengeInfo.totalWeeks / firstRowCount) * firstRowCount : challengeInfo?.totalWeeks ?? 0 }).map((_, index) => {
           const weekNumber = index + 1;
-          if (weekNumber > totalWeek) {
+          if (weekNumber > challengeInfo.totalWeeks) {
             // 공간 유지를 위해서 첫 줄의 아이템 개수만큼 반복하되 display: none으로 없는 주차 숨김
             return <S.WeekItemWrapper key={index} style={{ visibility: 'hidden' }} />;
           }
 
-          return weekNumber < currentWeek ? (
-            <S.WeekItemWrapper key={index}>
-              <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber)} $selected={selectedWeek === weekNumber}>
+          return weekNumber <= challengeInfo.totalWeeks ? (
+            <S.WeekItemWrapper key={`week-${weekNumber}-${progressListMap[weekNumber]?.weeklyProgressId ?? index}`}>
+              <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차
               </S.CurrentWeekItem>
               {selectedWeek === weekNumber ?
                 <S.WeekContentWrapper $direction={weekNumber % firstRowCount} $rowcount={firstRowCount} $width={wholeWidth}>
                   <S.WeekTopicWrapper $direction={weekNumber % firstRowCount}>
-                    <S.WeekTopicTitle>제목 (AI 생성)</S.WeekTopicTitle>
-                    <S.WeekTopicDate>2026년 01월 01일 ~ 2026년 01월 07일</S.WeekTopicDate>
-                    <S.WeekTopicContent>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque id pulvinar velit. Etiam mollis euismod interdum. In hac habitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum</S.WeekTopicContent>
-                    <S.FileUpload>
-                      <img src={FileIcon} />
-                      인증샷 파일 업로드
-                    </S.FileUpload>
-                    <S.TimerWrapper>
-                      <S.Timer>00 : 00</S.Timer>
-                      <S.TimerBtn>Start</S.TimerBtn>
-                    </S.TimerWrapper>
+                    <S.WeekTopicTitle>{progressListMap[selectedWeek]?.title}</S.WeekTopicTitle>
+                    <S.WeekTopicDate>{formatDateKR(progressListMap[selectedWeek]?.weekStartDate)} ~ {formatDateKR(progressListMap[selectedWeek]?.weekEndDate)}</S.WeekTopicDate>
+                    <S.WeekTopicContent>{progressListMap[selectedWeek]?.content}</S.WeekTopicContent>
+                    <S.ProofWrapper>
+                      {progressListMap[selectedWeek]?.proofImages.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofImages.map((image) => (
+                              <S.ProofFileName key={image.uuid} onClick={() => openImage(image)}>{image.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {progressListMap[selectedWeek]?.proofFiles.length > 0 &&
+                        <S.FileIconContentWrapper>
+                          <S.ProofFileNameWrapper>
+                            {progressListMap[selectedWeek]?.proofFiles.map((file) => (
+                              <S.ProofFileName key={file.uuid} onClick={() => downloadFile(file)}>{file.fileName}</S.ProofFileName>
+                            ))}
+                          </S.ProofFileNameWrapper>
+                        </S.FileIconContentWrapper>
+                      }
+                      {kind === "my" &&
+                        <S.ProofFileIconLabel>
+                          <S.FileIconInput
+                            ref={proofFileInputRef}
+                            type="file"
+                            onChange={handleProofFileChange}
+                          />
+                          <S.FileUpload>
+                            <img src={FileIcon} />
+                            인증샷 파일 업로드
+                          </S.FileUpload>
+                        </S.ProofFileIconLabel>
+                      }
+                    </S.ProofWrapper>
+                    {selectedWeek === currentWeek ? (
+                      <S.TimerWrapper>
+                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                        <S.TimerBtn>Start</S.TimerBtn>
+                      </S.TimerWrapper>
+                    ) : (
+                      <S.TimerWrapper>
+                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                      </S.TimerWrapper>
+                    )}
                   </S.WeekTopicWrapper>
                   {commentView && <S.WeekCommentWrapper>
-                    {weekCommentData.map((data, index: number) => (
-                      <S.CommentWrapper key={index}>
-                        <Comment data={data} />
-                        {data.reply?.map((replyData, replyIndex: number) => (
-                          <S.ReplyWrapper key={replyIndex}>
-                            <Comment data={replyData} />
+                    {weekCommentData.map((data) => (
+                      <S.CommentWrapper key={data.commentId}>
+                        <Comment
+                          data={data}
+                          onReplyClick={handleReplyClick}
+                          isSelected={selectedCommentId === data.commentId}
+                        />
+                        {data.childrenComments?.map((replyData) => (
+                          <S.ReplyWrapper key={replyData.commentId}>
+                            <Comment data={replyData} type="reply" />
                           </S.ReplyWrapper>
                         ))}
                       </S.CommentWrapper>
                     ))}
+                    {totalPage > 1 && (
+                      <S.CommentPageNav>
+                        <SubPagination
+                          currentPage={currentPage + 1}
+                          totalPage={totalPage}
+                          callback={(page) => handleCommentPageChange(page - 1)}
+                        />
+                      </S.CommentPageNav>
+                    )}
                   </S.WeekCommentWrapper>}
-                  <S.WeekCommentInputWrapper>
-                    <S.FileIconLabel>
-                      <S.FileIconInput type="file" />
-                      <S.FileIconButton>
-                        <img src={FileIcon} alt="파일 업로드" />
-                      </S.FileIconButton>
-                    </S.FileIconLabel>
-                    <S.WeekCommentInput placeholder="댓글을 입력하세요" />
-                    <S.FinishBtn>완료</S.FinishBtn>
-                  </S.WeekCommentInputWrapper>
+                  {commentView && (
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      {selectedCommentId && (
+                        <S.ReplyIndicator>
+                          답글 작성 중...
+                          <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
+                        </S.ReplyIndicator>
+                      )}
+                      <S.WeekCommentInputWrapper>
+                        <S.WeekCommentInput
+                          {...register("content")}
+                          placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
+                        />
+                        <S.FileIconWrapper>
+                          <S.FileIconContentWrapper>
+                            <S.FileIconLabel>
+                              <S.FileIconInput
+                                ref={fileInputRef}
+                                type="file"
+                                onChange={handleFileChange}
+                              />
+                              <S.FileIconButton>
+                                <img src={FileIcon} alt="파일 업로드" />
+                              </S.FileIconButton>
+                            </S.FileIconLabel>
+                            {commentFile && (
+                              <S.FileNameWrapper>
+                                <S.FileName>{commentFile.name}</S.FileName>
+                                <S.FileNameDeleteBtn onClick={handleFileDelete}>
+                                  <img src={XIcon} alt="파일 삭제" />
+                                </S.FileNameDeleteBtn>
+                              </S.FileNameWrapper>
+                            )}
+                          </S.FileIconContentWrapper>
+                          <S.FinishBtn type="submit">완료</S.FinishBtn>
+                        </S.FileIconWrapper>
+                      </S.WeekCommentInputWrapper>
+                    </form>
+                  )}
                 </S.WeekContentWrapper>
                 : <></>}
             </S.WeekItemWrapper>
           ) : (
-            <S.WeekItemWrapper key={index}>
-              <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber)}>
+            <S.WeekItemWrapper key={`week-empty-${index}`}>
+              <S.TotalWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)}>
                 {weekNumber}주차
               </S.TotalWeekItem>
             </S.WeekItemWrapper>

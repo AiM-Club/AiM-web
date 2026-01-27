@@ -4,3 +4,11 @@ export interface PageResponse {
     totalElements: number;
     totalPages: number;
 }
+
+export interface ImageResponse {
+    uuid: string;
+    fileName: string;
+    size: number;
+    filePath: string;
+    handlingType: string;
+}

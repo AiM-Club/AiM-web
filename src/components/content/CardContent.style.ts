@@ -203,10 +203,10 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0)
-        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
-      return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
-    }}
+    if (props.$direction === 0)
+      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+    return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
+  }}
   );
 
   @media (max-width: 770px) {
@@ -269,6 +269,31 @@ export const WeekTopicContent = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+export const ProofWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const ProofFileNameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+export const ProofFileName = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surpace-tertiary);
+  border-radius: 6.25rem;
+  padding: 0.25rem 0.5rem;
+  font: var(--body-r-s);
+  color: var(--text-primary-default);
+  cursor: pointer;
+`;
+
 export const FileUpload = styled.div`
   display: flex;
   flex-direction: row;
@@ -328,6 +353,13 @@ export const WeekCommentWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const CommentPageNav = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 1rem 0;
+`;
+
 export const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -339,15 +371,55 @@ export const ReplyWrapper = styled.div`
   margin-left: 3.75rem;
 `;
 
+export const ReplyIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--surpace-tertiary);
+  border-radius: 0.5rem;
+  font: var(--body-r-s);
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+`;
+
+export const ReplyCancelBtn = styled.button`
+  background: none;
+  border: none;
+  color: var(--text-primary-default);
+  cursor: pointer;
+  font: var(--body-r-s);
+  padding: 0;
+  text-decoration: underline;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 export const WeekCommentInputWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
+`;
+
+export const FileIconWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.25rem 1rem 1.25rem;
+  background-color: var(--surpace-primary);
+`;
+
+export const FileIconContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
   gap: 0.5rem;
 `;
 
 export const FileIconLabel = styled.label`
   display: flex;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -359,22 +431,22 @@ export const FileIconButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 1.563rem;
+  height: 1.563rem;
   background-color: var(--surpace-primary);
-  border-radius: 0.25rem;
   cursor: pointer;
 
   img {
     width: 1rem;
     height: 1rem;
+    object-fit: contain;
   }
 `;
 
 export const WeekCommentInput = styled.input`
-  background-color: var(--surpace-tertiary);
+  background-color: var(--surpace-primary);
   font: var(--body-r-m);
-  border-radius: 0.25rem;
+  border-radius: 0.25rem 0.25rem 0rem 0;
   padding: 1rem 1.25rem;
   color: var(--text-primary-default);
   flex: 1;
@@ -386,17 +458,58 @@ export const WeekCommentInput = styled.input`
   }
 `;
 
-export const FinishBtn = styled.div`
+export const FinishBtn = styled.button`
   display: flex;
   flex-shrink: 0;
-  padding: 1rem 1.25rem;
+  padding: 0.25rem 0.563rem;
   background-color: var(--surpace-primary);
   width: fit-content;
   border-radius: 0.25rem;
+  border: 1px solid var(--text-secondary);
   font: var(--body-r-m);
-  color: var(--text-primary-default);
+  color: var(--text-secondary);
   cursor: pointer;
 `;
+
+export const FileNameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surpace-tertiary);
+  border-radius: 6.25rem;
+  padding: 0.25rem 0.5rem;
+  gap: 0.5rem;
+`;
+
+export const FileName = styled.div`
+  font: var(--body-r-s);
+  color: var(--text-primary-default);
+`;
+
+export const ProofFileIconLabel = styled.label`
+  display: flex;
+  cursor: pointer;
+`;
+
+export const FileNameDeleteBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  background-color: var(--surpace-primary);
+  border-radius: 6.25rem;
+  border: none;
+  padding: 0;
+
+  img {
+    width: 0.75rem;
+    height: 0.75rem;
+    object-fit: contain;
+  }
+`;
+
 
 // ChallengeVSMatchContentInvite
 export const PlusIconWrapper = styled.div<{ $height: number | null }>`

@@ -6,14 +6,16 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl.ts";
 import { useGetPhoto } from "@/api/photo.ts";
 import { useEffect, useRef } from "react";
 import NoPhoto from "@/assets/NoPhoto.svg";
+import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
 
 interface CardVSItems {
-    data: ChallengeVSResponse;
+    data: ChallengeVSResponse | ChallengeRecruitResponse;
     onLoadingChange?: (isLoading: boolean) => void;
     onClick?: () => void;
 }
 const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
-    const { data: photo, mutate: getPhoto, isPending } = useGetPhoto();
+    const { data: userPhoto, mutate: getUserPhoto, isPending: isUserPhotoPending } = useGetPhoto();
+    const { data: thumbnailPhoto, mutate: getThumbnailPhoto, isPending: isThumbnailPhotoPending } = useGetPhoto();
     const onLoadingChangeRef = useRef(onLoadingChange);
 
     useEffect(() => {
@@ -22,15 +24,23 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
 
     useEffect(() => {
         if (data.user.profileImage.uuid) {
-            getPhoto({ file_uuid: data.user.profileImage.uuid });
+            getUserPhoto({ file_uuid: data.user.profileImage.uuid });
         }
-    }, [data.user.profileImage.uuid, getPhoto]);
+    }, [data.user.profileImage.uuid, getUserPhoto]);
 
     useEffect(() => {
-        onLoadingChangeRef.current?.(isPending);
-    }, [isPending]);
+        if (data.thumbnail) {
+            getThumbnailPhoto({ file_uuid: data.thumbnail.uuid });
+        }
+    }, [data.thumbnail, getThumbnailPhoto]);
 
-    const userPhotoUrl = useUserPhotoUrl(photo ?? null);
+    useEffect(() => {
+        onLoadingChangeRef.current?.(isUserPhotoPending || isThumbnailPhotoPending);
+    }, [isUserPhotoPending, isThumbnailPhotoPending]);
+
+    const userPhotoUrl = useUserPhotoUrl(userPhoto ?? null);
+    const thumbnailPhotoUrl = useUserPhotoUrl(thumbnailPhoto ?? null);
+
     return (
         <S.CardWrapper onClick={onClick}>
             <S.CardContent>
@@ -38,7 +48,7 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
                     <S.UserImg src={userPhotoUrl || NoPhoto} />
                     <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg(data.user?.badge?.toLowerCase() || "bronze")} /></S.UserName>
                 </S.UserInfo>
-                <S.VSImg src={NoPhoto} />
+                <S.VSImg src={thumbnailPhotoUrl || NoPhoto} />
                 <S.VSInfoWrapper>
                     <S.VSInfo>
                         <S.InfoDate>

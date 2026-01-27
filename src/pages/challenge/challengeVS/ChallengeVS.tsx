@@ -60,7 +60,7 @@ const ChallengeVS = () => {
             category == "INVITATION" ? (
               <ChallengeVSInvite />
             ) : (
-              <CardBoard data={challengeVSList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+              <CardBoard data={challengeVSList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} type="vs" />
             )
           )}
         </S.ContentWrapper>
