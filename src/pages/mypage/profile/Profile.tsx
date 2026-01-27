@@ -11,9 +11,6 @@ import Button from "@/components/button/Button";
 
 const Profile = () => {
   const isMobile = useMedia(700);
-
-  const fieldData = ["분야1", "분야2", "분야3"];
-  const tagData = ["태그1", "태그2", "태그3"];
   const myProfileImg = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif";
 
   return (
@@ -35,7 +32,7 @@ const Profile = () => {
                 </S.RankInfo>
               </S.profileInfo>
             </S.profileInfoWrapper>
-            <FieldTagWorkPeriod fieldData={fieldData} tagData={tagData} />
+            <FieldTagWorkPeriod />
           </S.profileHeader>
           <S.profileContent>
             <CardChallenge isMobile={isMobile} color="pink" topic="ALL 챌린지" openBtn={false} topicDirection="left" >
