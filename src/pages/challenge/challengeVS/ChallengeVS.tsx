@@ -27,6 +27,12 @@ const ChallengeVS = () => {
     setTotalPage(challengeVSList?.data.page.totalPages || 1);
   }, [challengeVSList?.data.page.totalPages, setTotalPage]);
 
+  useEffect(() => {
+    if (category === "INVITATION") {
+      navigate(PageEndPoints.CHALLENGE_VS_INVITE);
+    }
+  }, [category, navigate]);
+
 
   return (
     <DefaultLayout>
