@@ -22,6 +22,7 @@ interface ChallengeDetailStore {
   setOpponentPhoto: (opponentPhoto: Blob | null) => void;
   setChallengeDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
   resetChallengeDetail: () => void;
+  updateChallengeLike: (isLiked: boolean) => void;
 }
 
 export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
@@ -61,5 +62,15 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
     opponentPhoto: null,
     challengeDetailWeeks: null,
     progressListMap: {},
+  }),
+  updateChallengeLike: (isLiked) => set((state) => {
+    if (!state.challengeInfo) return state;
+    return {
+      challengeInfo: {
+        ...state.challengeInfo,
+        isLiked,
+        likedCount: isLiked ? state.challengeInfo.likedCount + 1 : Math.max(0, state.challengeInfo.likedCount - 1),
+      },
+    };
   }),
 }));

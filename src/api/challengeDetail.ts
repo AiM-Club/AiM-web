@@ -1,7 +1,7 @@
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse, QueryOptions } from "./types";
-import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse } from "@/types/challengeDetail";
+import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse, ChallengeLikeResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
 import { api } from "./utils";
 import type { CommentResponse } from "@/types/comment";
@@ -46,4 +46,9 @@ export const usePostWeeklyComment = (challengeId: string, weeksId: string) => {
 //주차별 챌린지 인증샷 업로드
 export const usePostWeeklyProof = (challengeId: string) => {
     return usePost<FormData, string>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS_PROOF, { challengeId }));
+}
+
+//챌린지 좋아요
+export const useChallengeLike = (challengeId: string) => {
+    return usePost<void, ChallengeLikeResponse>(buildPath(ApiEndpoints.CHALLENGE_LIKE, { challengeId }));
 }

@@ -78,3 +78,7 @@ export interface CommentPostResponse {
     commentId: number;
     weeksId: number;
 }
+
+export interface ChallengeLikeResponse {
+    likes: boolean;
+}
