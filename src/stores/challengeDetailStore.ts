@@ -1,5 +1,4 @@
 import type { ChallengeInfo, Dominance, ParticipantsInfo, ChallengeDetailWeeksResponse, ProgressList } from "@/types/challengeDetail";
-import type { CommentType } from "@/types/comment";
 import { create } from "zustand";
 
 interface ChallengeDetailStore {
@@ -22,6 +21,7 @@ interface ChallengeDetailStore {
   setMyPhoto: (myPhoto: Blob | null) => void;
   setOpponentPhoto: (opponentPhoto: Blob | null) => void;
   setChallengeDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
+  resetChallengeDetail: () => void;
 }
 
 export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
@@ -50,4 +50,16 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
     });
     set({ challengeDetailWeeks: weeks, progressListMap });
   },
+  resetChallengeDetail: () => set({
+    challengeId: null,
+    challengeInfo: null,
+    dominance: null,
+    myInfo: null,
+    opponentInfo: null,
+    thumbnail: null,
+    myPhoto: null,
+    opponentPhoto: null,
+    challengeDetailWeeks: null,
+    progressListMap: {},
+  }),
 }));

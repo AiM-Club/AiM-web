@@ -89,7 +89,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks } = useChallengeDetailStore();
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const { downloadFile } = useFileDownload();
@@ -104,7 +104,9 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
   const { mutate: getWeeklyComments } = useGetWeeklyComments();
   const { mutate: postWeeklyProof } = usePostWeeklyProof(String(challengeId ?? "0"));
-  const { refetch: refetchChallengeDetailWeeks } = useGetChallengeDetailWeeks(String(challengeId ?? "0"));
+  const { refetch: refetchChallengeDetailWeeks } = useGetChallengeDetailWeeks(String(challengeId ?? "0"), myInfo?.id ? String(myInfo.id) : "", {
+    enabled: false, // refetch만 사용하므로 자동 실행 비활성화
+  });
   const [weekCommentData, setWeekCommentData] = useState<CommentType[]>([]);
   const [commentFile, setCommentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);

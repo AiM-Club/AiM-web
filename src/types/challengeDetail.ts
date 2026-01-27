@@ -9,6 +9,8 @@ export interface ChallengeVSDetailResponse {
 export interface ChallengeInfo {
     thumbnail: ImageResponse;
     name: string;
+    isLiked: boolean;
+    likedCount: number;
     fields: Detailfields[];
     tags: DetailTags[];
     job: string;

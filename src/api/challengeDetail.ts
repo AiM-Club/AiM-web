@@ -1,6 +1,6 @@
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { ApiResponse } from "./types";
+import type { ApiResponse, QueryOptions } from "./types";
 import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
 import { api } from "./utils";
@@ -12,8 +12,8 @@ export const useGetChallengeDetail = (challengeId: string) => {
 }
 
 //챌린지 주차별 내용 리스트 조회
-export const useGetChallengeDetailWeeks = (challengeId: string) => {
-    return useFetch<ApiResponse<ChallengeDetailWeeksResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS, { challengeId }));
+export const useGetChallengeDetailWeeks = (challengeId: string, userId: string, options?: QueryOptions<ApiResponse<ChallengeDetailWeeksResponse>>) => {
+    return useFetch<ApiResponse<ChallengeDetailWeeksResponse>>(buildPath(ApiEndpoints.CHALLENGE_DETAIL_WEEKS, { challengeId }), { userId }, options);
 }
 
 //주차별 댓글 조회
