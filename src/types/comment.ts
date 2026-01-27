@@ -20,7 +20,7 @@ export interface CommentType {
   attachedFiles: ProfileImage[];
   createdAt: string;
   updatedAt: string;
-  childrenComments: string;
+  childrenComments: CommentType[];
 }
 
 export interface writerInfo extends User {

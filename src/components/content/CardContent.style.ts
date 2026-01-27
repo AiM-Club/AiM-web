@@ -276,6 +276,32 @@ export const ReplyWrapper = styled.div`
   margin-left: 3.75rem;
 `;
 
+export const ReplyIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--surpace-tertiary);
+  border-radius: 0.5rem;
+  font: var(--body-r-s);
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+`;
+
+export const ReplyCancelBtn = styled.button`
+  background: none;
+  border: none;
+  color: var(--text-primary-default);
+  cursor: pointer;
+  font: var(--body-r-s);
+  padding: 0;
+  text-decoration: underline;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 export const WeekCommentInputWrapper = styled.div`
   display: flex;
   flex-direction: column;

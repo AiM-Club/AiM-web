@@ -1,9 +1,12 @@
 import styled from "styled-components";
-export const CommentItem = styled.div`
+export const CommentItem = styled.div<{ $isSelected?: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 1.25rem;
   width: 100%;
+  border: ${props => props.$isSelected ? '1px solid var(--pink-800)' : 'none'};
+  border-radius: 0.5rem;
+  padding: ${props => props.$isSelected ? '0.5rem' : '0'};
 `;
 
 export const CommentProfileWrapper = styled.div`

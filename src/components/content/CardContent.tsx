@@ -113,6 +113,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const proofFileInputRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
 
   // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
   const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
@@ -240,6 +241,9 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     console.log(commentFile);
     const formData = new FormData();
     formData.append("content", data.content);
+    if (selectedCommentId) {
+      formData.append("parentCommentId", String(selectedCommentId));
+    }
     if (commentFile) {
       // 이미지인지 파일인지 구분
       if (commentFile.type.startsWith("image/")) {
@@ -253,6 +257,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       onSuccess: () => {
         reset();
         setCommentFile(null);
+        setSelectedCommentId(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -265,6 +270,10 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
         alert("댓글 작성에 실패했습니다.");
       },
     });
+  }
+
+  const handleReplyClick = (commentId: number) => {
+    setSelectedCommentId(commentId);
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -408,12 +417,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                   {commentView && <S.WeekCommentWrapper>
                     {weekCommentData.map((data) => (
                       <S.CommentWrapper key={data.commentId}>
-                        <Comment data={data} />
-                        {/* {data.reply?.map((replyData) => (
+                        <Comment
+                          data={data}
+                          onReplyClick={handleReplyClick}
+                          isSelected={selectedCommentId === data.commentId}
+                        />
+                        {data.childrenComments?.map((replyData) => (
                           <S.ReplyWrapper key={replyData.commentId}>
-                            <Comment data={replyData} />
+                            <Comment data={replyData} type="reply" />
                           </S.ReplyWrapper>
-                        ))} */}
+                        ))}
                       </S.CommentWrapper>
                     ))}
                     {totalPage > 1 && (
@@ -428,10 +441,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                   </S.WeekCommentWrapper>}
                   {commentView && (
                     <form onSubmit={handleSubmit(onSubmit)}>
+                      {selectedCommentId && (
+                        <S.ReplyIndicator>
+                          답글 작성 중...
+                          <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
+                        </S.ReplyIndicator>
+                      )}
                       <S.WeekCommentInputWrapper>
                         <S.WeekCommentInput
                           {...register("content")}
-                          placeholder="댓글을 입력하세요"
+                          placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
                         />
                         <S.FileIconWrapper>
                           <S.FileIconContentWrapper>
