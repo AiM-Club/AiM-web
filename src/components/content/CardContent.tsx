@@ -20,6 +20,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import XIcon from "@/assets/X.png";
 import SubPagination from "../pagination/SubPagination";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -328,26 +330,25 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     <S.ChallengeVSMatchContentWrapper ref={setContentElement}>
       {viewCard === "left" || viewCard === "right" ?
         <S.ProfileWrapper>
-          <ProfileImage image={photoSrc || NoPhoto} width={wholeWidth * 0.018} />
+          <S.ProfileTopWrapper>
+            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
+            {isMobile && <S.ProfileName>유저_닉네임</S.ProfileName>}
+          </S.ProfileTopWrapper>
           <S.RowProgressWrapper>
             <ProgressBar text="진도율" progress={progress} height={32} color={color} />
             <ProgressBar text="성공률" progress={success} height={32} color={color} />
           </S.RowProgressWrapper>
         </S.ProfileWrapper> :
-        color === "pink" && !isMobile ?
+        color === "pink" ?
           <S.ProfileWrapper>
             <S.ProgressWrapper>
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
             </S.ProgressWrapper>
-            <ProfileImage image={photoSrc || NoPhoto} width={9} />
+            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
-            <S.ProfileTopWrapper>
-              <ProfileImage image={photoSrc || NoPhoto} width={9} />
-              {isMobile && <S.ProfileName>유저_닉네임</S.ProfileName>}
-            </S.ProfileTopWrapper>
-            <ProfileImage image={photoSrc || NoPhoto} width={9} />
+            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
@@ -497,8 +498,9 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
 }
 
 const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
+  const navigate = useNavigate();
   return (
-    <S.PlusIconWrapper $height={height}>
+    <S.PlusIconWrapper $height={height} onClick={() => navigate(PageEndPoints.CHALLENGE_VS_INVITE)}>
       <S.PlusIcon src={Plus} />
       초대
     </S.PlusIconWrapper>

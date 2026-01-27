@@ -119,6 +119,12 @@ export const RowProgressWrapper = styled.div`
   gap: 3%;
   flex-direction: row;
   padding: 0 0 1% 0;
+
+  @media (max-width: 770px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
 `;
 
 export const ProgressWrapper = styled.div`
@@ -151,7 +157,7 @@ export const WeekItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 7rem;
-  max-width: 10rem;
+  max-width: 11rem;
   flex: 1;
 
   @media (max-width: 770px) {
@@ -212,8 +218,12 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   @media (max-width: 770px) {
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0)
+      if (props.$direction === 0 && props.$width <= 129*props.$rowcount+8*(props.$rowcount-1))
         return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+      if (props.$direction === 0 && props.$width > 129*props.$rowcount+8*(props.$rowcount-1))
+        return `calc(-8.5rem * (${props.$rowcount} - 1))`;
+      if(props.$width > 122*props.$rowcount+8*(props.$rowcount-1))
+        return `calc(-8.5rem * (${props.$direction - 1}))`;
       return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
     }}
   );

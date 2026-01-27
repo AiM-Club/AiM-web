@@ -31,6 +31,10 @@ export const VSMatchProgressWrapper = styled.div`
 export const ProfileWrapper = styled.div<{ $direction: "left" | "right" | "both" }>`
   display: flex;
   justify-content: ${(props) => (props.$direction === "left" ? "flex-end" : "flex-start")};
+
+  @media (max-width: 770px) {
+    justify-content: space-between;
+  }
 `;
 
 export const VSMatchCardWrapper = styled.div`

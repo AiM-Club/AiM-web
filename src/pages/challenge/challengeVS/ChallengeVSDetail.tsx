@@ -9,7 +9,7 @@ import useMedia from "@/hooks/useMedia";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeVS/ChallengeVSDetail.style";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetChallengeDetail, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
 import Loading from "@/components/loading/Loading";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
@@ -17,6 +17,7 @@ import { useGetPhoto } from "@/api/photo";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const ChallengeVSMatch = () => {
   const { user } = useAuthStore();
@@ -27,6 +28,7 @@ const ChallengeVSMatch = () => {
   const { mutate: getOpponentPhoto } = useGetPhoto();
   const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
+  const opponentUserId = challengeDetail?.data?.participants?.opponent ? String(challengeDetail.data.participants.opponent.id) : null;
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
     enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
   });
@@ -86,11 +88,12 @@ const ChallengeVSMatch = () => {
     }
   }, [challengeDetail, challengeDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeDetailWeeks]);
 
+  const isMobile = useMedia(770);
+  const navigate = useNavigate();
   const [cardHeight, setCardHeight] = useState<number | null>(null);
   const [viewCard, setViewCard] = useState<"left" | "right" | "both">("both");
   const [wholeWidth, setWholeWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
-  const isMobile = useMedia(770);
   const myPhotoUrl = useUserPhotoUrl(myPhoto);
   const opponentPhotoUrl = useUserPhotoUrl(opponentPhoto);
 
@@ -106,6 +109,19 @@ const ChallengeVSMatch = () => {
     resizeObserver.observe(contentElement);
   }, [contentElement])
 
+  useEffect(() => {
+    setViewCard(isMobile ? "right" : "both");
+  }, [isMobile]);
+
+  const handleViewCard = (view: "left" | "right") => {
+    if (isMobile && !opponentUserId && view === "left") {
+      navigate(PageEndPoints.CHALLENGE_VS_INVITE);
+      return;
+    }
+    if (isMobile) { setViewCard(view); return; }
+    return;
+  }
+
   if (isLoading || isLoadingWeeks) return <Loading />;
 
   return (
@@ -116,16 +132,21 @@ const ChallengeVSMatch = () => {
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
           <S.VSMatchProgressWrapper>
-            <S.ProfileWrapper $direction={viewCard}><ProfileImage color={viewCard === "left" ? "pink" : "green"} image={viewCard === "left" ? myPhotoUrl || NoPhoto : opponentPhotoUrl || NoPhoto} width={isMobile ? 2 : 4} /></S.ProfileWrapper>
-            <VSMatchBar />
+            {viewCard !== "both" && <S.ProfileWrapper $direction={viewCard}>
+              <div onClick={() => handleViewCard("left")}><ProfileImage color={viewCard === "left" && !isMobile ? "pink" : "green"} image={viewCard === "left" && !isMobile ? myPhotoUrl || NoPhoto : !opponentUserId && isMobile ? Plus : opponentPhotoUrl || NoPhoto} width={isMobile ? 2 : 4} /></div>
+              {isMobile && <div onClick={() => handleViewCard("right")}><ProfileImage color={"pink"} image={myPhotoUrl || NoPhoto} width={isMobile ? 2 : 4} /></div>}
+            </S.ProfileWrapper>}
+            {opponentUserId && <VSMatchBar />}
           </S.VSMatchProgressWrapper>
           <S.VSMatchCardWrapper>
-            {viewCard === "left" || viewCard === "both" ?
-              <CardChallenge isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={setViewCard}>
-                <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} />
+            {(viewCard !== "right" && !isMobile) || (isMobile && viewCard === "left") ?
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+                {opponentUserId ?
+                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="my" viewCard={viewCard} value="VS" />
+                  : <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} />}
               </CardChallenge> : <></>}
-            {viewCard === "right" || viewCard === "both" ?
-              <CardChallenge isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={setViewCard}>
+            {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
