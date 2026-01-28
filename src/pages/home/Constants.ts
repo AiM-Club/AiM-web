@@ -1,4 +1,3 @@
-import Profile from "@/assets/ProfileImg.png";
 import AllField from "@/assets/field/AllField.svg";
 import IT from "@/assets/field/ITField.svg";
 import Economy from "@/assets/field/EconomyField.svg";

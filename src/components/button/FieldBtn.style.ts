@@ -9,4 +9,9 @@ export const FieldBtnWrapper = styled.div`
   border-radius: 4rem;
   padding: 0.5rem 1.25rem;
   width: fit-content;
+  
+  @media (max-width: 560px){
+    font: var(--body-r-m);
+    padding: 0.25rem 0.625rem;
+  }
 `;

@@ -96,7 +96,9 @@ const CreateChallenge = () => {
           <S.TopicWrapper>
             <PageTopic text="챌린지 개설" size="l" />
           </S.TopicWrapper>
-          <BannerTitleField ref={bannerTitleRef} />
+          <S.BannerWrapper>
+            <BannerTitleField ref={bannerTitleRef} />
+          </S.BannerWrapper>
           <S.WriteContentWrapper>
             <WriteElementsSelect ref={writeElementsRef} mode={true} challenge={false} />
             <S.WriteFieldWrapper>
@@ -127,7 +129,9 @@ const CreateChallenge = () => {
                   <p>비공개</p>
                 </S.Radio>
               </S.RadioWrapper>
-              <Button type="submit" disabled={!isValid}>완료</Button>
+              <S.SubmitBtnWrapper>
+                <Button type="submit" disabled={!isValid}>완료</Button>
+              </S.SubmitBtnWrapper>
             </S.ButtonWrapper>
           </S.WriteContentWrapper>
         </form>

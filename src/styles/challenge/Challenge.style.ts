@@ -4,6 +4,10 @@ export const ChallengeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6.25rem;
+
+  @media (max-width: 800px) {
+    gap: 3rem;
+  }
 `;
 
 export const ChallengeRecordWrapper = styled.div`

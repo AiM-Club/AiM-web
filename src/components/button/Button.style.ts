@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 
 export type ButtonVariant = "primary" | "fixed" | "secondary";
 
-export type ButtonSize = "medium" | "large";
+export type ButtonSize = "medium" | "large" | "req";
 
 export type ButtonColor = "pink" | "green" | "gray";
 
@@ -14,7 +14,6 @@ export interface StyledButtonProps {
   $variant?: ButtonVariant;
   $size?: ButtonSize;
   $color?: ButtonColor;
-  $size?: "medium" | "large" | "req";
   $isClicked?: boolean;
   $bgImg?: string;
 }
@@ -41,17 +40,29 @@ export const sizeStyles = {
   medium: css`
     width: 9.125rem;
     height: 3.563rem;
-    font: var(--body-m-xl);
+    font: var(--title-s-m);
+  
+    @media (max-width: 560px){
+      font: var(--body-s-m);
+      width: 6.375rem;
+      height: 2.75rem;
+    }
   `,
   large: css`
     width: 14.5rem;
     height: 3.375rem;
-    font: var(--body-m-l);
+    font: var(--title-s-m);
   `,
   req: css`
-    width: 10.5rem;
+    width: 9.125rem;
     height: 3.563rem;
-    font: var(--body-m-xl);
+    font: var(--title-s-m);
+  
+    @media (max-width: 560px){
+      font: var(--body-s-m);
+      width: 6.375rem;
+      height: 2.75rem;
+    }
   `,
 };
 

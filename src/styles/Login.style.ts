@@ -5,6 +5,11 @@ export const LoginWrapper = styled.div`
   flex-direction: column;
   width: 29.126rem;
   margin: 6.25rem auto;
+  
+  @media (max-width: 560px){
+    width: 100%;
+    margin: 1.5rem auto 2.5rem auto;
+  }
 `;
 
 export const TopicText = styled.div`

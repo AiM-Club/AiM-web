@@ -1,5 +1,6 @@
 import * as S from "./Comment.style";
 import ProfileImage from "@/components/image/ProfileImage";
+import useMedia from "@/hooks/useMedia";
 import type { CommentType } from "@/types/comment";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { getRankImg } from "@/utils/userRank";
@@ -22,6 +23,7 @@ const Comment = ({ data, onReplyClick, type = "comment", isSelected }: CommentCo
   const { downloadFile } = useFileDownload();
   const { openImage } = useImageOpen();
   const [thumbnail, setThumbnail] = useState<Blob | null>(null);
+  const isMobile = useMedia(560);
 
   useEffect(() => {
     if (data.writerInfo.profileImage.uuid) {
@@ -38,7 +40,7 @@ const Comment = ({ data, onReplyClick, type = "comment", isSelected }: CommentCo
   return (
     <S.CommentItem $isSelected={isSelected}>
       <S.CommentProfileWrapper>
-        <ProfileImage image={thumbnailUrl || NoPhoto} width={2.5} />
+        <ProfileImage image={thumbnailUrl || NoPhoto} width={isMobile ? 2 : 2.5} />
       </S.CommentProfileWrapper>
       <S.CommentContentWrapper>
         <S.CommentHeaderWrapper>

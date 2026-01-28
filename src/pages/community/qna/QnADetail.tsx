@@ -1,4 +1,3 @@
-import Button from "@/components/button/Button";
 import FileIcon from "@/assets/FileClip.svg";
 import Files from "@/components/button/Files";
 import Comment from "@/components/comment/Comment";
@@ -103,7 +102,7 @@ const QnADetail = () => {
 
   return (
     <DefaultLayout variant="home">
-      <Banner writer="작성자 이름" image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" topic="제목 작성은 15글자 이하" />
+      <Banner />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField mode="SOLO" />

@@ -5,6 +5,12 @@ export const RankingWrapper = styled.div`
     flex-direction: column;
     gap: 4rem;
     width: 100%;
+    //왜 이걸 추가해야 스크롤이 한개만 생기지 ;;
+    height: calc(100vh - 15.5rem);
+  
+    @media (max-width: 560px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const RankingContentWrapper = styled.div`
@@ -23,12 +29,21 @@ export const RankingList = styled.div`
     display: flex;
     gap: 2rem;
     width: 100%;
+    flex-wrap: wrap;
+
+    @media (max-width: 560px) {
+      gap: 2.5rem;
+    }
 `;
 
 export const TopRankingWrapper = styled.div`
     display: flex;
     flex-direction: column;
     flex: 500;
+
+    @media (max-width: 1600px) {
+      flex: 1;
+    }
 `;
 
 export const NextRankingWrapper = styled.div`
@@ -37,4 +52,11 @@ export const NextRankingWrapper = styled.div`
     gap: 2rem;
     padding-top: 2.5rem;
     flex: 664;
+
+    @media (max-width: 1600px) {
+      flex: none;
+      width: 100%;
+      padding: 0;
+      gap: 2.5rem;
+    }
 `;
