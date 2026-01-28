@@ -10,7 +10,7 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
-import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
+import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks, usePostChallengeRecruit } from "@/api/challengeDetail";
 import SubLoading from "../loading/SubLoading";
 import Comment from "@/components/comment/Comment.tsx";
 import { useFileDownload } from "@/hooks/useFileDownload";
@@ -498,12 +498,20 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   )
 }
 
-const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
+const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | null, isMine?: boolean }) => {
+  const { challengeId } = useChallengeDetailStore();
+  const { mutate: postChallengeRecruit } = usePostChallengeRecruit(String(challengeId ?? "0"));
   const navigate = useNavigate();
   return (
-    <S.PlusIconWrapper $height={height} onClick={() => navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`)}>
+    <S.PlusIconWrapper $height={height} onClick={() => {
+      if (isMine) {
+        navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`);
+      } else {
+        postChallengeRecruit();
+      }
+    }}>
       <S.PlusIcon src={Plus} />
-      초대
+      {isMine ? "초대" : "대결 요청"}
     </S.PlusIconWrapper>
   )
 }

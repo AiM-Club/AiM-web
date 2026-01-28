@@ -54,4 +54,5 @@ export enum ApiEndpoints {
   CHALLENGE_DETAIL_WEEKS_PROOF = "/challenges/:challengeId/weeks/proof",
   VS_RECRUIT = "/posts/vs",
   CHALLENGE_LIKE = "/challenges/:challengeId/likes",
+  VS_REQUEST = "/challenges/vs/request/send/:challengeId",
 }

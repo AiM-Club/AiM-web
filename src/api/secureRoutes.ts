@@ -21,4 +21,5 @@ export const secureRoutes = [
     { method: Method.POST, url: ApiEndpoints.CHALLENGE_DETAIL_WEEKS_PROOF },
     { method: Method.POST, url: ApiEndpoints.CHALLENGE_LIKE },
     { method: Method.POST, url: ApiEndpoints.VS_RECRUIT },
+    { method: Method.POST, url: ApiEndpoints.VS_REQUEST },
 ];

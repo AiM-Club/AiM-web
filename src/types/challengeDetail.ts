@@ -83,3 +83,9 @@ export interface CommentPostResponse {
 export interface ChallengeLikeResponse {
     likes: boolean;
 }
+
+export interface ChallengeRequestResponse {
+    requestId: number;
+    challengeId: number;
+    status: string;
+}
