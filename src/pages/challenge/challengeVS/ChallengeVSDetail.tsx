@@ -142,12 +142,12 @@ const ChallengeVSMatch = () => {
             {(viewCard !== "right" && !isMobile) || (isMobile && viewCard === "left") ?
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 {opponentUserId ?
-                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="my" viewCard={viewCard} value="VS" />
+                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" />
                   : <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
-                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" />
+                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" isMine={isMine} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>

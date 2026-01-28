@@ -39,6 +39,7 @@ interface ChallengeVSMatchProps {
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
   isMobile?: boolean;
+  isMine?: boolean;
 }
 
 interface WeekProps {
@@ -91,7 +92,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false }: ChallengeVSMatchProps) => {
+const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false }: ChallengeVSMatchProps) => {
   const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
@@ -392,7 +393,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                           </S.ProofFileNameWrapper>
                         </S.FileIconContentWrapper>
                       }
-                      {kind === "my" &&
+                      {kind === "my" && isMine &&
                         <S.ProofFileIconLabel>
                           <S.FileIconInput
                             ref={proofFileInputRef}
