@@ -15,7 +15,7 @@ interface SelectProps {
   options?: SelectOption[];
   value?: string;
   onValueChange?: (value: string) => void;
-  width?: number;
+  width?: number | string;
 }
 
 

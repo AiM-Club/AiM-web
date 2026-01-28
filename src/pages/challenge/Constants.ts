@@ -32,7 +32,7 @@ export const cardVSData: ChallengeVSResponse[] = [
 ];
 
 export const rankingListData = [
-    {id:1, userImg:Profile, userName:"작성자작성자작성자작성자작성자", 
+    {id:1, userImg:Profile, userName:"작성자작성자작성자작성", 
         rank:"bronze", level:10, tryNum: 10, successNum: 10, successPercent: 100},
     {id:2, userImg:Profile, userName:"작성자", 
         rank:"bronze", level:10, tryNum: 10, successNum: 10, successPercent: 100},

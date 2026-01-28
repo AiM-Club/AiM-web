@@ -6,6 +6,10 @@ export const SearchIcon = styled.div`
     color: var(--text-secondary);
     flex-shrink: 0;
     transition: color 0.2s ease;
+
+    @media (max-width: 560px) {
+      width: 1.25rem;
+    }
 `;
 
 export const SearchInputWrapper = styled.form`
@@ -27,6 +31,10 @@ export const SearchInputWrapper = styled.form`
     // @media (max-width: 1340px) {
     //     max-width: 13rem;
     // }
+
+    @media (max-width: 560px) {
+      padding: 0 1rem;
+    }
 `;
 
 export const InputField = styled.input`
@@ -41,5 +49,10 @@ export const InputField = styled.input`
 
     &::placeholder {
         color: var(--text-secondary);
+    }
+
+    @media (max-width: 560px) {
+      padding: 0.75rem 0;
+      font: var(--body-r-m);
     }
 `;

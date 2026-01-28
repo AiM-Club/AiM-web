@@ -1,5 +1,6 @@
 import Button from "@/components/button/Button";
 import FileIcon from "@/assets/FileClip.svg";
+import Send from "@/assets/Send.svg";
 import Files from "@/components/button/Files";
 import Comment from "@/components/comment/Comment";
 import ChallengeInfoField from "@/components/content/ChallengeInfoField";
@@ -10,12 +11,14 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
 import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import useMedia from "@/hooks/useMedia";
 
 const ChallengeRecruitDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [commentFiles, setCommentFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const files: File[] = [];
+  const isMobile = useMedia(560);
   const content = `<h2>제목입니다</h2>
 <p>
   이건 <strong>굵은 글씨</strong>와
@@ -100,11 +103,13 @@ const ChallengeRecruitDetail = () => {
 
   return (
     <DefaultLayout variant="home">
-      <Banner writer="작성자 이름" image="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif" topic="제목 작성은 15글자 이하" />
+      <Banner />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
-          <Button $size="req">VS 요청</Button>
+          <S.BtnWrapper>
+            <Button $size="req">VS 요청</Button>
+          </S.BtnWrapper>
         </S.TopWrapper>
         <S.ContentWrapper>
           <Content content={content} />
@@ -132,10 +137,10 @@ const ChallengeRecruitDetail = () => {
             <S.FileInput ref={fileInputRef} type="file" onChange={handleFileAdd} multiple />
             <S.FileAddBtn onClick={handleFileAddClick}>
               <S.FileImg src={FileIcon} />
-              <p>파일</p>
+              {isMobile ? null : <p>파일</p>}
             </S.FileAddBtn>
             <S.InputField placeholder="댓글을 입력하세요" />
-            <S.SubmitBtn>완료</S.SubmitBtn>
+            <S.SubmitBtn>{isMobile ? <S.SendImg src={Send} /> : "완료"}</S.SubmitBtn>
           </S.InputWrapper>
           <Files files={commentFiles} setFiles={setCommentFiles} />
         </S.CommentFilesWrapper>

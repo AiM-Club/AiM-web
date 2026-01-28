@@ -6,6 +6,11 @@ export const JoinWrapper = styled.div`
   width: 29.126rem;
   margin: 6.25rem auto;
   gap: 3rem;
+  
+  @media (max-width: 560px){
+    width: 100%;
+    margin: 1.5rem auto 2.5rem auto;
+  }
 `;
 
 export const InputWrapper = styled.div`

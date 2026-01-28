@@ -5,13 +5,30 @@ export const RecruitWriteWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 3rem;
+  @media(max-width: 500px){
+    gap: 1.5rem;
+  }
+`;
+
+export const BannerWrapper = styled.div`
+  width: 100%;
+  margin: 4rem 0 3rem 0;
+  @media(max-width: 500px){
+    margin: 1.5rem 0;
+  }
 `;
 
 export const TopicWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 6.25rem 0 1rem 7.625rem;
+  padding: 6.25rem 0 1rem 10%;
+  @media(max-width: 1024px){
+    padding: 1.5rem 0 0 10%;
+  }
+  @media(max-width: 500px){
+    padding: 1.5rem 0 0 5%;
+  }
 `;
 
 export const WriteContentWrapper = styled.div`
@@ -19,7 +36,11 @@ export const WriteContentWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 3rem;
-  padding: 0 7.625rem;
+  padding: 0 10%;
+  @media(max-width: 500px){
+    gap: 1.5rem;
+    padding: 0 5%;
+  }
 `;
 
 export const Text = styled.p`
@@ -51,13 +72,17 @@ export const WriteFieldWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 1rem;
+  @media(max-width: 500px){
+    gap: 0.5rem;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  gap: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 export const RadioWrapper = styled.div`
@@ -76,4 +101,8 @@ export const Radio = styled.div`
     width: 1.5rem;
     height: 1.5rem;
   }
+`;
+
+export const SubmitBtnWrapper = styled.div`
+  margin-left: 1rem;
 `;

@@ -10,15 +10,16 @@ interface ProgressBarProps {
   progress: number;
   height: number;
   color: string;
+  background?: "black" | "gray";
 }
 
-export const ProgressBar = ({ text, barText="main", progress, height, color }: ProgressBarProps) => {
+export const ProgressBar = ({ text, barText = "main", progress, height, color, background = "gray" }: ProgressBarProps) => {
   return (
-    <S.ProgressBarWrapper $height={height}>
+    <S.ProgressBarWrapper $barText={barText} $height={height}>
       {text && <S.ProgressBarTextWrapper>
-        <S.ProgressBarText $height={height}>{text}: {progress}%</S.ProgressBarText>
+        <S.ProgressBarText $barText={barText} $height={height}>{text}: {progress}%</S.ProgressBarText>
       </S.ProgressBarTextWrapper>}
-      <S.ProgressBar $barText={barText} $height={height}>
+      <S.ProgressBar $height={height} $background={background}>
         {color == "pink" ? <S.ProgressBarIcon src={height <= 32 ? ProgressBarIconPinkSmall : ProgressBarIconPink} $height={height} $progress={progress} />
           : <S.ProgressBarIcon src={ProgressBarIconGreen} $height={height} $progress={progress} />}
         <S.ProgressBarFill $progress={progress} $color={color} />

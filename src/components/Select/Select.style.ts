@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import * as SelectMenu from "@radix-ui/react-select";
 
-export const Trigger = styled(SelectMenu.Trigger)<{ $width?: number }>`
+export const Trigger = styled(SelectMenu.Trigger)<{ $width?: number | string }>`
   display: flex;
   align-items: center;
-  justify-content: ${({ $width }) => ($width && $width > 0 ? "space-between" : "center")};
+  justify-content: ${({ $width }) => ($width && ((typeof $width === "number"&& $width>0) || typeof $width === "string") ? "space-between" : "center")};
   word-break: keep-all;
   gap: 0.5rem;
-  width: ${({ $width }) => ($width && $width > 0 ? `${$width}rem` : "")};
-  padding: ${({ $width }) => ($width && $width > 0 ? "0.625rem 1rem" : "0.5rem 1.5rem")};
+  width: ${({ $width }) => ($width && typeof $width === "number" ? `${$width}rem` : $width || "")};
+  padding: ${({ $width }) => ($width && typeof $width === "number" ? "0.625rem 1rem" : "0.5rem 1.5rem")};
   background-color: var(--surpace-primary);
   border: none;
   border-radius: 0.25rem;
-  font: ${(props) => (props.$width && props.$width > 0 ? "var(--subtitle-m-l)" : "var(--body-r-m)")};
+  font: ${(props) => (props.$width && typeof props.$width === "number" ? "var(--subtitle-m-l)" : "var(--body-r-m)")};
   cursor: pointer;
   color: var(--text-primary-default);
 
@@ -30,8 +30,13 @@ export const Trigger = styled(SelectMenu.Trigger)<{ $width?: number }>`
   }
 
   &[data-placeholder] {
-    color: ${(props) => (props.$width && props.$width > 0 ? "var(--text-secondary)" : "var(--text-primary-default)")};
+    color: ${(props) => (props.$width && typeof props.$width === "number" ? "var(--text-secondary)" : "var(--text-primary-default)")};
   }
+
+    @media (max-width: 560px) {
+      padding: ${({ $width }) => ($width && typeof $width === "number" ? "0.625rem 1rem" : "0.75rem 1rem")};
+      font: var(--body-r-m);
+    }
 `;
 
 export const IconWrapper = styled.div`
@@ -51,13 +56,13 @@ export const ArrowBtn = styled.img`
   height: 1rem;
 `;
 
-export const Content = styled(SelectMenu.Content)<{ $width?: number }>`
+export const Content = styled(SelectMenu.Content)<{ $width?: number | string }>`
   overflow: hidden;
-  background-color: var(--surpace-tertiary);
+  background-color: var(--surpace-primary);
   border-radius: 0.25rem;
   z-index: 1000;
-  width: ${({ $width }) => ($width && $width > 0 ? `${$width}rem` : "6.2rem")};
-  max-width: ${({ $width }) => ($width && $width > 0 ? `${$width}rem` : "6.2rem")};
+  width: ${({ $width }) => ($width && (typeof $width === "number"&& $width>0) ? `${$width}rem` : (typeof $width === "string")?"calc(100vw - 7.8rem)":"6.2rem")};
+  max-width: ${({ $width }) => ($width && (typeof $width === "number"&& $width>0) ? `${$width}rem` : (typeof $width === "string")?"calc(100vw - 7.8rem)":"6.2rem")};
   max-height: var(--radix-select-content-available-height);
   transform-origin: top left;
   contain: layout;
@@ -67,14 +72,14 @@ export const Viewport = styled(SelectMenu.Viewport)`
   padding: 0.25rem;
 `;
 
-export const Item = styled(SelectMenu.Item)<{ $width?: number }>`
+export const Item = styled(SelectMenu.Item)<{ $width?: number | string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   color: var(--text-secondary);
-  font: ${(props) => (props.$width && props.$width > 0 ? "var(--subtitle-m-l)" : "var(--body-r-m)")};
+  font: ${(props) => (props.$width && (typeof props.$width === "number"&& props.$width>0) ? "var(--subtitle-m-l)" : "var(--body-r-m)")};
   cursor: pointer;
   outline: none;
 

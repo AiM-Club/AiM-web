@@ -7,11 +7,13 @@ export const InviteContentWrapper = styled.div<{ $wrap: boolean }>`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-width: 30rem;
   border-radius: 0 0.25rem 0.25rem 0.25rem;
   clip-path: ${({ $wrap }) =>
     $wrap ? "polygon(0.6rem 0, 100% 0, 100% 100%, -7rem 100%)" : "polygon(0.6rem 0, 100% 0, 100% 100%, -3.5rem 100%)"};
   background-color: var(--surpace-primary);
+  @media(max-width: 580px){
+   clip-path: polygon(0.4rem 0, 100% 0, 100% 100%, -6.5rem 100%);
+  }
 `;
 
 export const LeftWrapper = styled.div`
@@ -24,6 +26,10 @@ export const LeftWrapper = styled.div`
   height: 4rem;
   white-space: nowrap;
   margin-right: 9rem;
+  @media(max-width: 580px){
+    font: var(--body-r-s);
+    height: 3rem;
+  }
 `;
 
 export const RightWrapper = styled.div<{ $wrap: boolean }>`
@@ -34,6 +40,10 @@ export const RightWrapper = styled.div<{ $wrap: boolean }>`
   height: 4rem;
   width: ${({ $wrap }) => ($wrap ? "100%" : "auto")};
   margin-left: 1rem;
+  @media(max-width: 580px){
+    height: 3rem;
+    gap: 0;
+  }
 `;
 
 export const LevelWrapper = styled.div`
@@ -41,20 +51,35 @@ export const LevelWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.75rem;
+  @media(max-width: 580px){
+    font: var(--body-r-s);
+  }
 `;
 
 export const Title = styled.span`
   font: var(--body-s-l);
+  @media(max-width: 580px){
+  width: 11rem;
+    font: var(--body-s-m) !important;
+  }
+  @media(max-width: 360px){
+    width: 9rem;
+  }
 `;
 
 export const LevelImage = styled.img`
   width: 2rem;
   height: 2rem;
+  @media(max-width: 580px){
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 `;
 
 export const CategoryBtnWrapper = styled.div`
   display: flex;
   gap: 1rem;
+  background-color: var(--surpace-primary);
 `;
 
 export const CategoryWrapper = styled.div`
@@ -89,6 +114,17 @@ export const ApproveBtn = styled.div`
   &:hover {
     background-color: var(--button-primary-default);
   }
+
+  @media(max-width: 580px){
+    width: 5rem;
+    clip-path: polygon(1.5rem 0, 100% 0, calc(100% - 1.5rem) 100%, 0 100%);
+    background-color: var(--pink-300);
+    font: var(--body-s-m);
+
+    &:hover {
+      background-color: var(--pink-300);
+    }
+  }
 `;
 
 export const RejectBtn = styled.div`
@@ -106,5 +142,17 @@ export const RejectBtn = styled.div`
 
   &:hover {
     background-color: var(--button-secondary-default);
+  }
+  
+  @media(max-width: 580px){
+    width: 5rem;
+    clip-path: polygon(1.5rem 0, 100% 0, calc(100% - 1.5rem) 100%, 0 100%);
+    background-color: var(--green-300);
+    margin-left: -1.1rem;
+    font: var(--body-s-m);
+
+    &:hover {
+      background-color: var(--green-300);
+    }
   }
 `;

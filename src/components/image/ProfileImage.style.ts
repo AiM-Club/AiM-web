@@ -16,5 +16,6 @@ export const ProfileImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: var(--surpace-secondary);
   clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
 `;

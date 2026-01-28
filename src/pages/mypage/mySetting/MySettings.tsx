@@ -23,7 +23,7 @@ const MySettings = () => {
     resolver: zodResolver(joinSchema),
     mode: "onChange",
     defaultValues: {
-      birth: "",
+      birthday: "",
       gender: "",
     },
   })
@@ -49,9 +49,9 @@ const MySettings = () => {
               label="아이디"
               placeholder="아이디를 입력해 주세요"
               checkDuplicate={true}
-              register={register("id")}
+              register={register("loginId")}
             />
-            <FieldError error={errors.id?.message} />
+            <FieldError error={errors.loginId?.message} />
             {/* error state 만들어서 api 연결 후 error?FieldError 한번 더 호출 */}
           </div>
           <div>
@@ -81,13 +81,13 @@ const MySettings = () => {
           </div>
           <div>
             <Controller
-              name="birth"
+              name="birthday"
               control={control}
               render={({ field }) => (
                 <BirthSelect onChange={field.onChange} />
               )}
             />
-            <FieldError error={errors.birth?.message} />
+            <FieldError error={errors.birthday?.message} />
           </div>
           <div>
             <Controller
@@ -101,17 +101,17 @@ const MySettings = () => {
           </div>
           <div>
             <Controller
-              name="image"
+              name="profileImage"
               control={control}
               render={({ field }) => (
                 <ImageInput onChange={field.onChange} />
               )}
             />
-            <FieldError error={errors.image?.message} />
+            <FieldError error={errors.profileImage?.message} />
           </div>
         </S.InputWrapper>
         <div>
-          <SubmitBtn text="가입" fill={true} active={true} onSubmit={handleSubmit(handleJoinClick, handleSubmitError)} />
+          <SubmitBtn text="변경" fill={true} active={true} onSubmit={handleSubmit(handleJoinClick, handleSubmitError)} />
           {hasSubmitError && <FieldError error="*기입 하지 않은 정보가 있습니다" />}
         </div>
       </S.JoinWrapper>
