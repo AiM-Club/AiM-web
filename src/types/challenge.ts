@@ -51,7 +51,7 @@ export interface ChallengeRequestListResponse {
 
 export interface ChallengeRequestContent {
     id: number;
-    requestId: number;
+    requesterId: number;
     requester: Requester;
     challenge: RequestChallenge;
 }

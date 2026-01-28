@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import SearchFrame from "@/assets/SearchFrame.svg";
 
 export const ChallengeVSInviteWrapper = styled.div`
   display: flex;
@@ -27,4 +28,18 @@ export const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+`;
+
+export const EmptyState = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    flex-shrink: 0;
+    background-image: url(${SearchFrame});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: 1196 / 312;
+    position: relative;
 `;

@@ -40,13 +40,20 @@ const ChallengeVSInvite = () => {
             {challengeRequestData?.data.content.map((item) => (
               <InviteContent key={item.id} item={item} />
             ))}
+            {challengeRequestData?.data.content.length === 0 &&
+              <S.EmptyState>
+                검색 결과가 없습니다
+              </S.EmptyState>
+            }
           </S.InviteContentWrapper>
         </S.ContentWrapper>
-        <Pagination
-          currentPage={currentPage}
-          totalPage={totalPage}
-          callback={handlePageChange}
-        />
+        {challengeRequestData?.data.content?.length && challengeRequestData?.data.content?.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPage={totalPage}
+            callback={handlePageChange}
+          />
+        )}
       </S.ChallengeVSInviteWrapper>
     </DefaultLayout>
   )

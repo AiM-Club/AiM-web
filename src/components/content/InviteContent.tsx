@@ -6,11 +6,21 @@ import { getRankImg } from "@/utils/userRank";
 import { useGetPhoto } from "@/api/photo";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
+import { usePostRequestAccept, useDeleteRequestReject } from "@/api/challengeDetail";
+import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
+import { buildPath } from "@/utils/buildPath";
+import { useQueryClient } from "@tanstack/react-query";
+import { ApiEndpoints } from "@/constants/endpoints";
 
 const InviteContent = ({ item }: { item: ChallengeRequestContent }) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data: userPhoto, mutate: getUserPhoto } = useGetPhoto();
   const [wrapperWidth, setWrapperWidth] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
+  const { mutate: postRequestAccept } = usePostRequestAccept(String(item.id));
+  const { mutate: deleteRequestReject } = useDeleteRequestReject(String(item.id));
 
   useEffect(() => {
     if (!contentElement) return;
@@ -36,6 +46,22 @@ const InviteContent = ({ item }: { item: ChallengeRequestContent }) => {
     }
   }, [item.requester.profileImage.uuid, getUserPhoto]);
 
+
+  const requestHandle = (type: "approve" | "reject") => {
+    if (type === "approve") {
+      postRequestAccept(undefined, {
+        onSuccess: (response) => {
+          navigate(buildPath(PageEndPoints.CHALLENGE_VS_DETAIL, { id: response.data.challengeId }));
+        },
+      });
+    } else {
+      deleteRequestReject(undefined, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [ApiEndpoints.VS_REQUEST_LIST] });
+        },
+      });
+    }
+  }
 
   return (
     <S.InviteContentWrapper $wrap={wrapperWidth <= 865} ref={setContentElement}>
@@ -64,8 +90,8 @@ const InviteContent = ({ item }: { item: ChallengeRequestContent }) => {
             ))}
           </S.CategoryWrapper>}
           <S.BtnWrapper>
-            <S.ApproveBtn>승인</S.ApproveBtn>
-            <S.RejectBtn>거절</S.RejectBtn>
+            <S.ApproveBtn onClick={() => requestHandle("approve")}>승인</S.ApproveBtn>
+            <S.RejectBtn onClick={() => requestHandle("reject")}>거절</S.RejectBtn>
           </S.BtnWrapper>
         </S.CategoryBtnWrapper>
       </S.RightWrapper>
