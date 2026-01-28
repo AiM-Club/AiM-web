@@ -1,6 +1,7 @@
 import { ApiEndpoints } from "@/constants/endpoints";
-import { useFetch, usePost } from "./hooks";
-import type { ChallengeVSListResponse } from "@/types/challenge";
+import { useFetch, useFetchMutation, usePost } from "./hooks";
+import { api } from "./utils";
+import type { ChallengeRequestListResponse, ChallengeVSListResponse } from "@/types/challenge";
 import type { ApiResponse } from "./types";
 
 
@@ -43,4 +44,18 @@ export const useGetChallengeSolo = ({ filterType, sort, page = 0, size = 16, key
     }
 
     return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_SOLO, params);
+}
+
+//챌린지 모집 요청 조회
+export const useGetChallengeRequest = ({ sort, page = 0, size = 16, keyword }: { sort?: string, page?: number, size?: number, keyword?: string }) => {
+    const params: Record<string, string | number> = { page, size };
+
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+
+    return useFetch<ApiResponse<ChallengeRequestListResponse>>(ApiEndpoints.VS_REQUEST_LIST, params);
 }

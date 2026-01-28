@@ -1,4 +1,4 @@
-import type { ProfileImage } from "./auth";
+import type { ProfileImage, User } from "./auth";
 import type { ImageResponse, PageResponse } from "./common";
 // 챌린지 생성/수정 요청 타입
 export interface ChallengeRequest {
@@ -42,4 +42,24 @@ export interface ChallengeUser {
     nickname: string;
     badge: string;
     profileImage: ProfileImage;
+}
+
+export interface ChallengeRequestListResponse {
+    content: ChallengeRequestContent[];
+    page: PageResponse;
+}
+
+export interface ChallengeRequestContent {
+    id: number;
+    requestId: number;
+    requester: User;
+    challenge: RequestChallenge;
+}
+
+export interface RequestChallenge {
+    name: string;
+    fields: {
+        id: number;
+        name: string;
+    }[];
 }
