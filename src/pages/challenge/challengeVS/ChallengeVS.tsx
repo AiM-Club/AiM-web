@@ -20,7 +20,20 @@ const ChallengeVS = () => {
   const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
     onSearchChange: () => handlePageChange(1),
   });
-  const { data: challengeVSList, isLoading } = useGetChallengeVS({ filterType: category, sort: sort, page: currentPage - 1, size: 16, keyword });
+
+  useEffect(() => {
+    if (category === "INVITATION") {
+      navigate(PageEndPoints.CHALLENGE_VS_INVITE);
+    }
+  }, [category, navigate]);
+
+  const { data: challengeVSList, isLoading } = useGetChallengeVS({
+    filterType: category === "INVITATION" ? "ALL" : category,
+    sort: sort,
+    page: currentPage - 1,
+    size: 16,
+    keyword
+  });
 
   useEffect(() => {
     setTotalPage(challengeVSList?.data.page.totalPages || 1);

@@ -52,10 +52,13 @@ export interface ChallengeRequestListResponse {
 export interface ChallengeRequestContent {
     id: number;
     requestId: number;
-    requester: User;
+    requester: Requester;
     challenge: RequestChallenge;
 }
 
+export interface Requester extends User {
+    level: number;
+}
 export interface RequestChallenge {
     name: string;
     fields: {

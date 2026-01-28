@@ -115,7 +115,7 @@ const ChallengeVSMatch = () => {
 
   const handleViewCard = (view: "left" | "right") => {
     if (isMobile && !opponentUserId && view === "left") {
-      navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`);
+      navigate(PageEndPoints.CHALLENGE_VS_INVITE);
       return;
     }
     if (isMobile) { setViewCard(view); return; }

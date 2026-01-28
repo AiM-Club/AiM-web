@@ -4,31 +4,48 @@ import Pagination from "@/components/pagination/Pagination";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/challengeVS/ChallengeVSInvite.style";
+import { useGetChallengeRequest } from "@/api/challenge";
+import usePagination from "@/hooks/usePagination";
+import useSearch from "@/hooks/useSearch";
+import { useEffect } from "react";
+import SubLoading from "@/components/loading/SubLoading";
 
 const ChallengeVSInvite = () => {
+  const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
+  const { keyword, sort, handleKeywordChange, handleSortChange } = useSearch({
+    onSearchChange: () => handlePageChange(1),
+  });
+  const { data: challengeRequestData, isLoading } = useGetChallengeRequest({ sort: sort, page: currentPage - 1, size: 16, keyword });
+
+  useEffect(() => {
+    setTotalPage(challengeRequestData?.data.page.totalPages || 1);
+  }, [challengeRequestData?.data.page.totalPages, setTotalPage]);
+
   return (
     <DefaultLayout>
       <S.ChallengeVSInviteWrapper>
         <PageTopic text="VS 챌린지" size="l" />
         <S.ContentWrapper>
           <SearchField
-            categories={[
-              { value: "inProgress", label: "진행 중" },
-              { value: "completed", label: "진행 완료" },
-              { value: "invitation", label: "VS 초대" }
+            sorts={[
+              { value: "LATEST", label: "최신순" },
+              { value: "OLDEST", label: "오래된순" },
+              { value: "TITLE", label: "가나다순" },
             ]}
+            onKeywordChange={handleKeywordChange}
+            onSortChange={handleSortChange}
           />
           <S.InviteContentWrapper>
-            <InviteContent />
-            <InviteContent />
-            <InviteContent />
-            <InviteContent />
+            {isLoading && <SubLoading />}
+            {challengeRequestData?.data.content.map((item) => (
+              <InviteContent key={item.id} item={item} />
+            ))}
           </S.InviteContentWrapper>
         </S.ContentWrapper>
         <Pagination
-          currentPage={1}
-          totalPage={1}
-          callback={() => { }}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          callback={handlePageChange}
         />
       </S.ChallengeVSInviteWrapper>
     </DefaultLayout>
