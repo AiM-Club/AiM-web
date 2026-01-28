@@ -1,6 +1,6 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import Check from "@/assets/Check.svg";
 import { z } from "zod";
 import useMedia from "@/hooks/useMedia";
@@ -36,7 +36,7 @@ interface WriteElementsSelectProps {
 }
 
 const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSelectProps>(
-  ({ mode = false, challenge = true, inputtable = true }) => {
+  ({ mode = false, challenge = true, inputtable = true }, ref) => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const currentDay = new Date().getDate();
@@ -110,7 +110,50 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
     const challengeOptions: SelectOption[] = [];
 
     //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기), [] to null로 고치기
-    const [challengeInfo, setChallengeInfo] = useState<string[] | null>([]);
+    const [challengeInfo] = useState<string[] | null>([]);
+
+    useImperativeHandle(ref, () => ({
+      validate: async () => {
+        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+
+        const data: Partial<WriteElementsForm> = {
+          field: selectedField,
+          tags: filteredTags,
+          job,
+          startDate,
+          weeks: selectedWeek,
+          // mode가 true인 화면에서만 강제 검증되도록: mode prop이 false면 빈 문자열 허용 처리
+          mode: mode ? (currentMode ?? "") : (currentMode ?? ""),
+        };
+
+        const result = writeElementsSchema.safeParse(data);
+        if (!result.success) {
+          const newErrors: Record<string, string> = {};
+          result.error.issues.forEach((err) => {
+            if (err.path[0]) newErrors[err.path[0] as string] = err.message;
+          });
+          setErrors(newErrors);
+          const firstError = result.error.issues[0]?.message || "유효성 검사 실패";
+          return { isValid: false, error: firstError };
+        }
+
+        setErrors({});
+        return { isValid: true, data: result.data };
+      },
+      getData: () => {
+        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+        return {
+          field: selectedField,
+          tags: filteredTags,
+          job,
+          startDate,
+          weeks: selectedWeek,
+          mode: currentMode ?? undefined,
+        };
+      },
+    }));
 
     const handleModeClick = (mode: string) => {
       setCurrentMode(mode);
