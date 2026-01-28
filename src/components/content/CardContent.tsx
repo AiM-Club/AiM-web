@@ -93,11 +93,13 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const { downloadFile } = useFileDownload();
   const { openImage } = useImageOpen();
+  const progressListMap = kind === "opponent" ? progressOpponentListMap : progressMyListMap;
+  const setChallengeDetailWeeks = kind === "opponent" ? setChallengeOpponentDetailWeeks : setChallengeMyDetailWeeks;
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
   const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
   const currentWeek = challengeDetailWeeks?.currentWeek;
@@ -378,7 +380,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                       {progressListMap[selectedWeek]?.proofImages.length > 0 &&
                         <S.FileIconContentWrapper>
                           <S.ProofFileNameWrapper>
-                            {progressListMap[selectedWeek]?.proofImages.map((image) => (
+                            {progressListMap[selectedWeek]?.proofImages.map((image: any) => (
                               <S.ProofFileName key={image.uuid} onClick={() => openImage(image)}>{image.fileName}</S.ProofFileName>
                             ))}
                           </S.ProofFileNameWrapper>
@@ -387,7 +389,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                       {progressListMap[selectedWeek]?.proofFiles.length > 0 &&
                         <S.FileIconContentWrapper>
                           <S.ProofFileNameWrapper>
-                            {progressListMap[selectedWeek]?.proofFiles.map((file) => (
+                            {progressListMap[selectedWeek]?.proofFiles.map((file: any) => (
                               <S.ProofFileName key={file.uuid} onClick={() => downloadFile(file)}>{file.fileName}</S.ProofFileName>
                             ))}
                           </S.ProofFileNameWrapper>
