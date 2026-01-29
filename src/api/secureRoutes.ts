@@ -23,4 +23,5 @@ export const secureRoutes = [
     { method: Method.POST, url: ApiEndpoints.VS_RECRUIT },
     { method: Method.POST, url: ApiEndpoints.VS_REQUEST },
     { method: Method.GET, url: ApiEndpoints.VS_REQUEST_LIST },
+    { method: Method.GET, url: ApiEndpoints.MY_CHALLENGE_LIST },
 ];

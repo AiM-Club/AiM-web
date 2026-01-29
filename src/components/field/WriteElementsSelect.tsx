@@ -1,9 +1,11 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
-import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
 import Check from "@/assets/Check.svg";
 import { z } from "zod";
 import useMedia from "@/hooks/useMedia";
+import { useGetMyChallengeList } from "@/api/challenge";
+import type { ChallengeMyListResponse } from "@/types/challenge";
 
 interface SelectOption {
   value: string;
@@ -106,11 +108,60 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
       { value: "체육", label: "체육" },
     ];
 
-    //모드 선택 시 챌린지 로드 (서버에서 받아오기)
-    const challengeOptions: SelectOption[] = [];
+    //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기)
+    const [challengeInfo, setChallengeInfo] = useState<ChallengeMyListResponse | null>(null);
+    const [selectedChallengeId, setSelectedChallengeId] = useState<string>("");
 
-    //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기), [] to null로 고치기
-    const [challengeInfo] = useState<string[] | null>([]);
+    // 모드 선택 시 챌린지 리스트 가져오기
+    const { data: myChallengeListData } = useGetMyChallengeList({
+      mode: currentMode || "",
+    }, {
+      enabled: !!(mode && currentMode && !inputtable && challenge),
+    });
+
+    // 챌린지 옵션 생성
+    const challengeOptions: SelectOption[] = useMemo(() => {
+      if (!myChallengeListData?.data) return [];
+      return myChallengeListData.data.map((challenge) => ({
+        value: String(challenge.challengeId),
+        label: challenge.name,
+      }));
+    }, [myChallengeListData]);
+
+    // 챌린지 선택 핸들러
+    const handleChallengeChange = (value: string) => {
+      setSelectedChallengeId(value);
+      if (!myChallengeListData?.data) return;
+
+      const selectedChallenge = myChallengeListData.data.find(
+        (challenge) => String(challenge.challengeId) === value
+      );
+
+      if (selectedChallenge) {
+        setChallengeInfo(selectedChallenge);
+
+        // 챌린지 정보로 필드 채우기
+        if (selectedChallenge.fields.length > 0) {
+          setSelectedField(selectedChallenge.fields[0].name);
+        }
+
+        // 태그 채우기
+        const tags = selectedChallenge.tags.map((tag) => tag.name);
+        setTagValues([...tags, ...Array(3 - tags.length).fill("")].slice(0, 3));
+
+        // 직무 채우기
+        setJob(selectedChallenge.job);
+
+        // 시작일 파싱하여 설정
+        const startDate = new Date(selectedChallenge.startedAt);
+        setSelectedYear(startDate.getFullYear());
+        setSelectedMonth(startDate.getMonth() + 1);
+        setSelectedDay(startDate.getDate());
+
+        // 기간 설정
+        setSelectedWeek(selectedChallenge.durationWeek);
+      }
+    };
 
     useImperativeHandle(ref, () => ({
       validate: async () => {
@@ -151,6 +202,7 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
           startDate,
           weeks: selectedWeek,
           mode: currentMode ?? undefined,
+          challengeSelect: selectedChallengeId || undefined,
         };
       },
     }));
@@ -158,6 +210,9 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
     const handleModeClick = (mode: string) => {
       setCurrentMode(mode);
       setErrors((prev) => ({ ...prev, mode: "" }));
+      // mode 변경 시 챌린지 선택 초기화
+      setSelectedChallengeId("");
+      setChallengeInfo(null);
     }
 
     const handleFieldChange = (value: string) => {
@@ -353,7 +408,13 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
         {challenge && (
           <S.EachContentWrapper>
             <S.ContentTitle>챌린지</S.ContentTitle>
-            <Select placeholder="선택" options={challengeOptions} width={isMobile ? "calc(100% - 4rem)" : 18} />
+            <Select
+              placeholder="선택"
+              options={challengeOptions}
+              width={isMobile ? "calc(100% - 4rem)" : 18}
+              value={selectedChallengeId}
+              onValueChange={handleChallengeChange}
+            />
           </S.EachContentWrapper>
         )}
         {!inputtable && challengeInfo && (
@@ -369,7 +430,7 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
             <S.EachContentWrapper>
               <S.ContentTitle>분야</S.ContentTitle>
               <S.InputField
-                value={"ㅇㅇㅇ"}
+                value={challengeInfo.fields.map((f) => f.name).join(", ") || ""}
                 disabled={true}
                 $nonInputtable={true}
               />

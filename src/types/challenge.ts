@@ -66,3 +66,20 @@ export interface RequestChallenge {
         name: string;
     }[];
 }
+
+export interface ChallengeMyListResponse {
+    challengeId: number;
+    name: string;
+    job: string;
+    fields: {
+        id: number;
+        name: string;
+    }[];
+    tags: {
+        id: number;
+        name: string;
+    }[];
+    startedAt: string;
+    durationWeek: number;
+    mode: string;
+}

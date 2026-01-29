@@ -1,8 +1,9 @@
 import { ApiEndpoints } from "@/constants/endpoints";
 import { useFetch, useFetchMutation, usePost } from "./hooks";
 import { api } from "./utils";
-import type { ChallengeRequestListResponse, ChallengeVSListResponse } from "@/types/challenge";
+import type { ChallengeMyListResponse, ChallengeRequestListResponse, ChallengeVSListResponse } from "@/types/challenge";
 import type { ApiResponse } from "./types";
+import type { QueryOptions } from "./types";
 
 
 export const usePostChallenge = () => {
@@ -58,4 +59,9 @@ export const useGetChallengeRequest = ({ sort, page = 0, size = 16, keyword }: {
     }
 
     return useFetch<ApiResponse<ChallengeRequestListResponse>>(ApiEndpoints.VS_REQUEST_LIST, params);
+}
+
+//내 챌린지 리스트 조회(게시글 작성용)
+export const useGetMyChallengeList = ({ mode }: { mode: string }, options?: QueryOptions<ApiResponse<ChallengeMyListResponse[]>>) => {
+    return useFetch<ApiResponse<ChallengeMyListResponse[]>>(ApiEndpoints.MY_CHALLENGE_LIST, { mode }, options);
 }

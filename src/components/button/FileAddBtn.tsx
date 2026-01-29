@@ -1,11 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef, useState, forwardRef, useImperativeHandle } from "react";
 import * as S from "./FileAddBtn.style";
 import Clip from "@/assets/FileClip.svg";
 import Files from "./Files";
 
-const FileAddBtn = () => {
+export interface FileAddBtnRef {
+  getFiles: () => File[];
+}
+
+const FileAddBtn = forwardRef<FileAddBtnRef>((_, ref) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    getFiles: () => files,
+  }));
 
   const handleFileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -30,6 +38,8 @@ const FileAddBtn = () => {
       <Files files={files} setFiles={setFiles} />
     </S.FileAddWrapper>
   )
-}
+});
+
+FileAddBtn.displayName = "FileAddBtn";
 
 export default FileAddBtn;

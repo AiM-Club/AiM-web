@@ -58,4 +58,5 @@ export enum ApiEndpoints {
   VS_REQUEST_LIST = "/challenges/vs/request",
   VS_REQUEST_ACCEPT = "/challenges/vs/request/:requestId/approve",
   VS_REQUEST_REJECT = "/challenges/vs/request/:requestId/reject",
+  MY_CHALLENGE_LIST = "/challenges/my-list",
 }
