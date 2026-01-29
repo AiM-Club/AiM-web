@@ -7,6 +7,7 @@ export interface ChallengeVSDetailResponse {
 }
 
 export interface ChallengeInfo {
+    writerId: number;
     thumbnail: ImageResponse;
     name: string;
     isLiked: boolean;
