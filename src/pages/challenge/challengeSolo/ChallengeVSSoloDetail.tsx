@@ -47,7 +47,7 @@ const ChallengeVSSoloDetail = () => {
           }
         );
       }
-      if (challengeDetail?.data.participant.profileImage.uuid) {
+      if (challengeDetail?.data.participant?.profileImage?.uuid) {
         getPhoto(
           { file_uuid: challengeDetail.data.participant.profileImage.uuid },
           {
