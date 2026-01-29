@@ -12,6 +12,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { useGetChallengeRecruitDetail, useGetPostComments, usePostPostComment } from "@/api/posts";
+import { usePostChallengeRecruit } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
 import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
 import Loading from "@/components/loading/Loading";
@@ -36,6 +37,7 @@ const ChallengeRecruitDetail = () => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const queryClient = useQueryClient();
   const { data: postComments, isLoading: isLoadingPostComments } = useGetPostComments(id || "", currentPage);
+  const { mutate: postChallengeRecruit } = usePostChallengeRecruit(String(challengeRecruitDetail?.data?.challengeId ?? "0"));
   const { mutate: postComment } = usePostPostComment(id || "");
 
   // 답글 관련 state
@@ -164,6 +166,20 @@ const ChallengeRecruitDetail = () => {
     });
   };
 
+  // VS 요청 핸들러
+  const handleVSRequest = () => {
+
+    postChallengeRecruit(undefined, {
+      onSuccess: () => {
+        alert("VS 요청이 완료되었습니다.");
+      },
+      onError: (error: unknown) => {
+        console.error("VS 요청 실패:", error);
+        alert("VS 요청에 실패했습니다. 다시 시도해주세요.");
+      },
+    });
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -173,7 +189,9 @@ const ChallengeRecruitDetail = () => {
         <S.TopWrapper>
           <ChallengeInfoField />
           <S.BtnWrapper>
-            <Button $size="req">VS 요청</Button>
+            {!isMine && (
+              <Button $size="req" onClick={handleVSRequest}>VS 요청</Button>
+            )}
           </S.BtnWrapper>
         </S.TopWrapper>
         <S.ContentWrapper>
