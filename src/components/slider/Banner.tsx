@@ -40,7 +40,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
 
   return (
     <S.BannerWrapper>
-      <S.BannerImage src={useUserPhotoUrl(thumbnail) || image} />
+      <S.BannerImage src={thumbnailUrl} />
       <S.BannerOverlay />
       <S.BannerContentWrapper>
         <S.BannerContent>{type === "challenge" ? challengeInfo?.name : recruitInfo?.title}</S.BannerContent>
