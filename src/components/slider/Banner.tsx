@@ -5,17 +5,21 @@ import { useState, useEffect } from "react";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import { useChallengeLike } from "@/api/challengeDetail";
+import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
 
 interface BannerProps {
   isMine?: boolean;
+  type?: "challenge" | "recruit";
 }
 
-const Banner = ({ isMine }: BannerProps) => {
+const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
   const { challengeInfo, thumbnail, myInfo, challengeId, updateChallengeLike } = useChallengeDetailStore();
+  const { recruitInfo, thumbnail: recruitThumbnail } = useRecruitDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(challengeInfo?.isLiked ?? false);
   const logined = true;
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
+  const thumbnailUrl = type === "challenge" ? useUserPhotoUrl(thumbnail) || image : useUserPhotoUrl(recruitThumbnail) || image;
 
   useEffect(() => {
     if (challengeInfo?.isLiked !== undefined) {
@@ -39,13 +43,13 @@ const Banner = ({ isMine }: BannerProps) => {
       <S.BannerImage src={useUserPhotoUrl(thumbnail) || image} />
       <S.BannerOverlay />
       <S.BannerContentWrapper>
-        <S.BannerContent>{challengeInfo?.name}</S.BannerContent>
-        {!isMine &&
+        <S.BannerContent>{type === "challenge" ? challengeInfo?.name : recruitInfo?.title}</S.BannerContent>
+        {isMine &&
           <S.WriterWrapper>
             <p>{myInfo?.nickname}</p>
             {logined && <S.HeartWrapper>
               <img src={isHeartClicked ? HeartFill : Heart} onClick={handleChallengeLike} />
-              <p>{challengeInfo?.likedCount}</p>
+              <p>{type === "challenge" ? challengeInfo?.likedCount : recruitInfo?.likeCount}</p>
             </S.HeartWrapper>}
           </S.WriterWrapper>
         }

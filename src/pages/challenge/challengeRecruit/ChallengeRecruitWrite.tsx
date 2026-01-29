@@ -8,7 +8,7 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 import { useRef } from "react";
 import { z } from "zod";
-import { usePostChallengeRecruit } from "@/api/challengeRecruit";
+import { usePostChallengeRecruit } from "@/api/posts";
 import { buildPath } from "@/utils/buildPath";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useNavigate } from "react-router-dom";

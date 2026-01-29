@@ -9,101 +9,53 @@ import Banner from "@/components/slider/Banner";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useMedia from "@/hooks/useMedia";
+import { useAuthStore } from "@/stores/authStore";
+import { useGetChallengeRecruitDetail, useGetPostComments } from "@/api/posts";
+import { useGetPhoto } from "@/api/photo";
+import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
+import Loading from "@/components/loading/Loading";
 
 const ChallengeRecruitDetail = () => {
+  const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
-  const [commentFiles, setCommentFiles] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const files: File[] = [];
+  const { data: challengeRecruitDetail, isLoading } = useGetChallengeRecruitDetail(id || "");
+  const { setThumbnail, setRecruitInfo, setPostComments } = useRecruitDetailStore();
+  const { mutate: getThumbnail } = useGetPhoto();
+  const [isMine, setIsMine] = useState(false);
   const isMobile = useMedia(560);
-  const content = `<h2>제목입니다</h2>
-<p>
-  이건 <strong>굵은 글씨</strong>와
-  <em>기울임</em>,
-  <u>밑줄</u>이 포함된 문단입니다.
-</p>
+  const { data: postComments, isLoading: isLoadingPostComments } = useGetPostComments(id || "");
+  console.log(challengeRecruitDetail);
 
-<p style="font-size: 22px;">
-  폰트 크기가 <strong>18px</strong>로 설정된 문장입니다.
-</p>
-
-<ul>
-  <li>리스트 아이템 1</li>
-  <li><strong>리스트 아이템dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd 2</strong></li>
-  <li><em>리스트 아이템 3</em></li>
-</ul>
-
-<blockquote>
-  인용문입니다. 중요한 문장을 강조할 때 사용합니다.
-</blockquote>
-
-<p>
-  <a href="https://example.com" target="_blank">
-    링크 예시
-  </a>
-</p>
-`;
-
-  const weekCommentData = [
-    {
-      commentId: 1,
-      comment: "댓글 ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd용",
-      userName: "작성자",
-      userGrade: "A",
-      userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-      time: "2026.01.01",
-      reply: [
-        {
-          commentId: 1,
-          comment: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          userName: "작성자1",
-          userGrade: "A",
-          userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-          time: "2026.01.01",
-        },
-        {
-          commentId: 2,
-          comment: "Ldffffffffffdddddddddddddddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          userName: "작성자1",
-          userGrade: "A",
-          userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-          time: "2026.01.01",
-        }
-      ]
-    },
-    {
-      commentId: 2,
-      comment: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
-      userName: "작성자",
-      userGrade: "A",
-      userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-      time: "2026.01.01",
-      reply: [],
+  useEffect(() => {
+    if (challengeRecruitDetail && postComments) {
+      setRecruitInfo(challengeRecruitDetail.data);
+      setIsMine(challengeRecruitDetail.data.writerId === user?.id);
+      setPostComments(postComments.data);
+      if (challengeRecruitDetail.data.thumbnail?.uuid) {
+        getThumbnail(
+          { file_uuid: challengeRecruitDetail.data.thumbnail.uuid },
+          {
+            onSuccess: (photo) => {
+              setThumbnail(photo);
+            },
+            onError: (error) => {
+              console.log(error);
+              setThumbnail(null);
+            },
+          }
+        );
+      }
     }
-  ]
+  }, [challengeRecruitDetail, getThumbnail, setThumbnail, setRecruitInfo, setPostComments]);
 
-  const handleFileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles) {
-      const newFiles = Array.from(selectedFiles);
-      setCommentFiles([...commentFiles, ...newFiles]);
-    }
-    // 같은 파일을 다시 선택할 수 있도록 input 값 초기화
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }
-
-  const handleFileAddClick = () => {
-    fileInputRef.current?.click();
-  }
+  if (isLoading || isLoadingPostComments) return <Loading />;
 
   return (
-    <DefaultLayout variant="home">
-      <Banner />
+    <DefaultLayout >
+      <Banner type="recruit" isMine={isMine} />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
@@ -112,13 +64,24 @@ const ChallengeRecruitDetail = () => {
           </S.BtnWrapper>
         </S.TopWrapper>
         <S.ContentWrapper>
-          <Content content={content} />
-          <Files files={files} />
+          <Content content={challengeRecruitDetail?.data.content || ""} />
+          <S.FileNameWrapper>
+            {challengeRecruitDetail?.data.attachedImages && challengeRecruitDetail?.data.attachedImages.length > 0 &&
+              challengeRecruitDetail?.data.attachedImages.map((data, index) => (
+                <S.FileName key={index}>{data.fileName}</S.FileName>
+              ))
+            }
+            {challengeRecruitDetail?.data.attachedFiles && challengeRecruitDetail?.data.attachedFiles.length > 0 &&
+              challengeRecruitDetail?.data.attachedFiles.map((data, index) => (
+                <S.FileName key={index}>{data.fileName}</S.FileName>
+              ))
+            }
+          </S.FileNameWrapper>
         </S.ContentWrapper>
         <S.CommentWholeWrapper>
-          <PageTopic text={`댓글 (${10})`} size="l" />
+          <PageTopic text={`댓글 (${postComments?.data.pageInfo.totalElements})`} size="l" />
           <S.CommentWrapper>
-            {weekCommentData.map((data, index: number) => (
+            {/* {weekCommentData.map((data, index: number) => (
               <S.CommentWrapper key={index}>
                 <Comment data={data} />
                 {data.reply.length > 0 && <S.ReplyWrapper>
@@ -129,10 +92,10 @@ const ChallengeRecruitDetail = () => {
                   ))}
                 </S.ReplyWrapper>}
               </S.CommentWrapper>
-            ))}
+            ))} */}
           </S.CommentWrapper>
         </S.CommentWholeWrapper>
-        <S.CommentFilesWrapper>
+        {/* <S.CommentFilesWrapper>
           <S.InputWrapper>
             <S.FileInput ref={fileInputRef} type="file" onChange={handleFileAdd} multiple />
             <S.FileAddBtn onClick={handleFileAddClick}>
@@ -143,7 +106,7 @@ const ChallengeRecruitDetail = () => {
             <S.SubmitBtn>{isMobile ? <S.SendImg src={Send} /> : "완료"}</S.SubmitBtn>
           </S.InputWrapper>
           <Files files={commentFiles} setFiles={setCommentFiles} />
-        </S.CommentFilesWrapper>
+        </S.CommentFilesWrapper> */}
       </S.RecruitDetailWrapper>
     </DefaultLayout>
   );

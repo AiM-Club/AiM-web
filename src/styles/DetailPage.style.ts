@@ -39,6 +39,20 @@ export const ContentWrapper = styled.div`
   }
 `;
 
+export const FileNameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+export const FileName = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--surpace-tertiary);
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+`;
+
 export const CommentWholeWrapper = styled.div`
   display: flex;
   flex-direction: column;

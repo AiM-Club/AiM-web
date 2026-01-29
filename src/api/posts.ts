@@ -1,0 +1,20 @@
+import { buildPath } from "@/utils/buildPath";
+import { useFetch, usePost } from "./hooks";
+import { ApiEndpoints } from "@/constants/endpoints";
+import type { ChallengeRecruitDetailResponse, PostCommentResponse } from "@/types/posts";
+import type { ApiResponse } from "./types";
+
+//챌린지 모집글 생성
+export const usePostChallengeRecruit = () => {
+    return usePost<FormData, { challengeId: number }>(ApiEndpoints.VS_RECRUIT);
+}
+
+//챌린지 모집글 상세조회
+export const useGetChallengeRecruitDetail = (postId: string) => {
+    return useFetch<ApiResponse<ChallengeRecruitDetailResponse>>(buildPath(ApiEndpoints.VS_RECRUIT_DETAIL, { postId }));
+}
+
+//게시글 댓글 목록 조회
+export const useGetPostComments = (postId: string) => {
+    return useFetch<ApiResponse<PostCommentResponse>>(buildPath(ApiEndpoints.POST_COMMENTS, { postId }));
+}
