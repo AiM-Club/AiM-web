@@ -13,8 +13,6 @@ interface ChallengeInfoFieldProps {
 const ChallengeInfoField = ({ mode }: ChallengeInfoFieldProps) => {
   const { recruitInfo } = useRecruitDetailStore();
   const navigate = useNavigate();
-  const categories = ["분야", "분야1", "분야2"];
-  const { id } = useParams<{ id: string }>();
 
   return (
     <S.ChallengeInfoFieldWrapper>

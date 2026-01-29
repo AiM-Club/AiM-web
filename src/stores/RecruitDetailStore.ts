@@ -9,6 +9,7 @@ interface RecruitDetailStore {
     setThumbnail: (thumbnail: Blob | null) => void;
     setRecruitInfo: (recruitInfo: ChallengeRecruitDetailResponse | null) => void;
     setPostComments: (postComments: PostCommentResponse | null) => void;
+    resetRecruitDetail: () => void;
 }
 
 export const useRecruitDetailStore = create<RecruitDetailStore>((set) => ({
@@ -18,4 +19,9 @@ export const useRecruitDetailStore = create<RecruitDetailStore>((set) => ({
     setThumbnail: (thumbnail) => set({ thumbnail: thumbnail }),
     setRecruitInfo: (recruitInfo) => set({ recruitInfo: recruitInfo }),
     setPostComments: (postComments) => set({ postComments: postComments }),
+    resetRecruitDetail: () => set({
+        thumbnail: null,
+        recruitInfo: null,
+        postComments: null,
+    }),
 }));

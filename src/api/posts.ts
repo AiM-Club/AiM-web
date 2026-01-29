@@ -15,6 +15,11 @@ export const useGetChallengeRecruitDetail = (postId: string) => {
 }
 
 //게시글 댓글 목록 조회
-export const useGetPostComments = (postId: string) => {
-    return useFetch<ApiResponse<PostCommentResponse>>(buildPath(ApiEndpoints.POST_COMMENTS, { postId }));
+export const useGetPostComments = (postId: string, page: number = 0, size: number = 10) => {
+    return useFetch<ApiResponse<PostCommentResponse>>(buildPath(ApiEndpoints.POST_COMMENTS, { postId }), { page, size });
+}
+
+//게시글 댓글 작성
+export const usePostPostComment = (postId: string) => {
+    return usePost<FormData, ApiResponse<{ commentId: number }>>(buildPath(ApiEndpoints.POST_COMMENTS, { postId }));
 }
