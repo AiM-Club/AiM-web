@@ -10,6 +10,7 @@ interface RecruitDetailStore {
     setRecruitInfo: (recruitInfo: ChallengeRecruitDetailResponse | null) => void;
     setPostComments: (postComments: PostCommentResponse | null) => void;
     resetRecruitDetail: () => void;
+    updateRecruitLike: (isLiked: boolean) => void;
 }
 
 export const useRecruitDetailStore = create<RecruitDetailStore>((set) => ({
@@ -23,5 +24,15 @@ export const useRecruitDetailStore = create<RecruitDetailStore>((set) => ({
         thumbnail: null,
         recruitInfo: null,
         postComments: null,
+    }),
+    updateRecruitLike: (isLiked) => set((state) => {
+        if (!state.recruitInfo) return state;
+        return {
+            recruitInfo: {
+                ...state.recruitInfo,
+                isLiked,
+                likeCount: isLiked ? state.recruitInfo.likeCount + 1 : Math.max(0, state.recruitInfo.likeCount - 1),
+            },
+        };
     }),
 }));

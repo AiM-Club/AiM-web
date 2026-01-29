@@ -24,3 +24,8 @@ export interface PostCommentResponse {
     comments: CommentType[];
     pageInfo: PageResponse;
 }
+
+export interface PostLikeResponse {
+    id: number;
+    isLiked: boolean;
+}

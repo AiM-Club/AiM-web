@@ -6,6 +6,7 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import { useChallengeLike } from "@/api/challengeDetail";
 import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
+import { usePostPostLike } from "@/api/posts";
 
 interface BannerProps {
   isMine?: boolean;
@@ -14,8 +15,9 @@ interface BannerProps {
 
 const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
   const { challengeInfo, thumbnail, myInfo, challengeId, updateChallengeLike } = useChallengeDetailStore();
-  const { recruitInfo, thumbnail: recruitThumbnail } = useRecruitDetailStore();
+  const { recruitInfo, thumbnail: recruitThumbnail, updateRecruitLike } = useRecruitDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
+  const { mutate: recruitLike } = usePostPostLike(String(recruitInfo?.challengeId ?? "0"));
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(challengeInfo?.isLiked ?? false);
   const logined = true;
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
@@ -25,7 +27,10 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
     if (challengeInfo?.isLiked !== undefined) {
       setIsHeartClicked(challengeInfo.isLiked);
     }
-  }, [challengeInfo?.isLiked]);
+    if (recruitInfo?.isLiked !== undefined) {
+      setIsHeartClicked(recruitInfo.isLiked);
+    }
+  }, [challengeInfo?.isLiked, recruitInfo?.isLiked]);
 
   const handleChallengeLike = () => {
     challengeLike(undefined, {
@@ -38,6 +43,16 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
     });
   }
 
+  const handleRecruitLike = () => {
+    recruitLike(undefined, {
+      onSuccess: (response) => {
+        console.log(response);
+        const isLiked = response.data.isLiked;
+        setIsHeartClicked(isLiked);
+        updateRecruitLike(isLiked);
+      }
+    });
+  }
   return (
     <S.BannerWrapper>
       <S.BannerImage src={thumbnailUrl} />
@@ -48,7 +63,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
           <S.WriterWrapper>
             <p>{myInfo?.nickname}</p>
             {logined && <S.HeartWrapper>
-              <img src={isHeartClicked ? HeartFill : Heart} onClick={handleChallengeLike} />
+              <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handleRecruitLike} />
               <p>{type === "challenge" ? challengeInfo?.likedCount : recruitInfo?.likeCount}</p>
             </S.HeartWrapper>}
           </S.WriterWrapper>

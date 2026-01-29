@@ -26,4 +26,5 @@ export const secureRoutes = [
     { method: Method.GET, url: ApiEndpoints.MY_CHALLENGE_LIST },
     { method: Method.GET, url: ApiEndpoints.POST_COMMENTS },
     { method: Method.POST, url: ApiEndpoints.POST_COMMENTS },
+    { method: Method.POST, url: ApiEndpoints.POST_LIKE },
 ];

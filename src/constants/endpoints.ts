@@ -61,4 +61,5 @@ export enum ApiEndpoints {
   VS_REQUEST_REJECT = "/challenges/vs/request/:requestId/reject",
   MY_CHALLENGE_LIST = "/challenges/my-list",
   POST_COMMENTS = "/posts/:postId/comments",
+  POST_LIKE = "/posts/:postId/likes",
 }

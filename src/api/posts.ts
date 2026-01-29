@@ -1,7 +1,7 @@
 import { buildPath } from "@/utils/buildPath";
 import { useFetch, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { ChallengeRecruitDetailResponse, PostCommentResponse } from "@/types/posts";
+import type { ChallengeRecruitDetailResponse, PostCommentResponse, PostLikeResponse } from "@/types/posts";
 import type { ApiResponse } from "./types";
 
 //챌린지 모집글 생성
@@ -22,4 +22,9 @@ export const useGetPostComments = (postId: string, page: number = 0, size: numbe
 //게시글 댓글 작성
 export const usePostPostComment = (postId: string) => {
     return usePost<FormData, ApiResponse<{ commentId: number }>>(buildPath(ApiEndpoints.POST_COMMENTS, { postId }));
+}
+
+//게시글 좋아요 토글
+export const usePostPostLike = (postId: string) => {
+    return usePost<void, PostLikeResponse>(buildPath(ApiEndpoints.POST_LIKE, { postId }));
 }
