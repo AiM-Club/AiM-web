@@ -11,7 +11,8 @@ interface ChallengeDetailStore {
   myPhoto: Blob | null;
   opponentPhoto: Blob | null;
   challengeDetailWeeks: ChallengeDetailWeeksResponse | null;
-  progressListMap: Record<number, ProgressList>;
+  progressMyListMap: Record<number, ProgressList>;
+  progressOpponentListMap: Record<number, ProgressList>;
   setChallengeInfo: (challengeInfo: ChallengeInfo) => void;
   setChallengeId: (challengeId: number | null) => void;
   setDominance: (dominance: Dominance) => void;
@@ -20,7 +21,8 @@ interface ChallengeDetailStore {
   setThumbnail: (thumbnail: Blob | null) => void;
   setMyPhoto: (myPhoto: Blob | null) => void;
   setOpponentPhoto: (opponentPhoto: Blob | null) => void;
-  setChallengeDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
+  setChallengeMyDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
+  setChallengeOpponentDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
   resetChallengeDetail: () => void;
   updateChallengeLike: (isLiked: boolean) => void;
 }
@@ -35,7 +37,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   myPhoto: null,
   opponentPhoto: null,
   challengeDetailWeeks: null,
-  progressListMap: {},
+  progressMyListMap: {},
+  progressOpponentListMap: {},
   setChallengeId: (challengeId) => set({ challengeId: challengeId }),
   setChallengeInfo: (challengeInfo) => set({ challengeInfo: challengeInfo }),
   setDominance: (dominance) => set({ dominance: dominance }),
@@ -44,12 +47,19 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   setThumbnail: (thumbnail) => set({ thumbnail: thumbnail }),
   setMyPhoto: (myPhoto) => set({ myPhoto: myPhoto }),
   setOpponentPhoto: (opponentPhoto) => set({ opponentPhoto: opponentPhoto }),
-  setChallengeDetailWeeks: (weeks) => {
-    const progressListMap: Record<number, ProgressList> = {};
+  setChallengeMyDetailWeeks: (weeks) => {
+    const progressMyListMap: Record<number, ProgressList> = {};
     weeks.progressList.forEach((progress) => {
-      progressListMap[progress.weekNumber] = progress;
+      progressMyListMap[progress.weekNumber] = progress;
     });
-    set({ challengeDetailWeeks: weeks, progressListMap });
+    set({ challengeDetailWeeks: weeks, progressMyListMap });
+  },
+  setChallengeOpponentDetailWeeks: (weeks) => {
+    const progressOpponentListMap: Record<number, ProgressList> = {};
+    weeks.progressList.forEach((progress) => {
+      progressOpponentListMap[progress.weekNumber] = progress;
+    });
+    set({ challengeDetailWeeks: weeks, progressOpponentListMap });
   },
   resetChallengeDetail: () => set({
     challengeId: null,
@@ -61,7 +71,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
     myPhoto: null,
     opponentPhoto: null,
     challengeDetailWeeks: null,
-    progressListMap: {},
+    progressMyListMap: {},
+    progressOpponentListMap: {},
   }),
   updateChallengeLike: (isLiked) => set((state) => {
     if (!state.challengeInfo) return state;

@@ -18,7 +18,7 @@ const ChallengeVSSoloDetail = () => {
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeDetailWeeks, resetChallengeDetail } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeMyDetailWeeks, resetChallengeDetail } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data.participant.id ? String(challengeDetail.data.participant.id) : "";
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
     enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
@@ -35,7 +35,7 @@ const ChallengeVSSoloDetail = () => {
       setChallengeId(Number(id));
       setChallengeInfo(challengeDetail.data.challengeInfo);
       setMyInfo(challengeDetail.data.participant);
-      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setChallengeMyDetailWeeks(challengeDetailWeeks.data);
       setIsMine(challengeDetail.data.participant.id === user?.id);
       if (challengeDetail?.data.challengeInfo.thumbnail) {
         getThumbnail(
@@ -58,7 +58,7 @@ const ChallengeVSSoloDetail = () => {
         );
       }
     }
-  }, [challengeDetail, challengeDetailWeeks, id, setChallengeId, setChallengeInfo, setMyInfo, setChallengeDetailWeeks, setThumbnail, setMyPhoto, getThumbnail, getPhoto, user?.id]);
+  }, [challengeDetail, challengeDetailWeeks, id, setChallengeId, setChallengeInfo, setMyInfo, setChallengeMyDetailWeeks, setThumbnail, setMyPhoto, getThumbnail, getPhoto, user?.id]);
 
   if (isLoading || isLoadingWeeks) return <Loading />;
 

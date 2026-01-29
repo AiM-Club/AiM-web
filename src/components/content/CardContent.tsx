@@ -10,7 +10,7 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { formatDateKR, formatStopwatchTime } from "@/utils/useTime";
-import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks } from "@/api/challengeDetail";
+import { useGetWeeklyComments, usePostWeeklyComment, usePostWeeklyProof, useGetChallengeDetailWeeks, usePostChallengeRecruit } from "@/api/challengeDetail";
 import SubLoading from "../loading/SubLoading";
 import Comment from "@/components/comment/Comment.tsx";
 import { useFileDownload } from "@/hooks/useFileDownload";
@@ -39,6 +39,7 @@ interface ChallengeVSMatchProps {
   viewCard?: "left" | "right" | "both";
   commentView?: boolean;
   isMobile?: boolean;
+  isMine?: boolean;
 }
 
 interface WeekProps {
@@ -91,12 +92,14 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressListMap, setChallengeDetailWeeks, myInfo } = useChallengeDetailStore();
+const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false }: ChallengeVSMatchProps) => {
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const { downloadFile } = useFileDownload();
   const { openImage } = useImageOpen();
+  const progressListMap = kind === "opponent" ? progressOpponentListMap : progressMyListMap;
+  const setChallengeDetailWeeks = kind === "opponent" ? setChallengeOpponentDetailWeeks : setChallengeMyDetailWeeks;
   const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
   const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
   const currentWeek = challengeDetailWeeks?.currentWeek;
@@ -377,7 +380,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                       {progressListMap[selectedWeek]?.proofImages.length > 0 &&
                         <S.FileIconContentWrapper>
                           <S.ProofFileNameWrapper>
-                            {progressListMap[selectedWeek]?.proofImages.map((image) => (
+                            {progressListMap[selectedWeek]?.proofImages.map((image: any) => (
                               <S.ProofFileName key={image.uuid} onClick={() => openImage(image)}>{image.fileName}</S.ProofFileName>
                             ))}
                           </S.ProofFileNameWrapper>
@@ -386,13 +389,13 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                       {progressListMap[selectedWeek]?.proofFiles.length > 0 &&
                         <S.FileIconContentWrapper>
                           <S.ProofFileNameWrapper>
-                            {progressListMap[selectedWeek]?.proofFiles.map((file) => (
+                            {progressListMap[selectedWeek]?.proofFiles.map((file: any) => (
                               <S.ProofFileName key={file.uuid} onClick={() => downloadFile(file)}>{file.fileName}</S.ProofFileName>
                             ))}
                           </S.ProofFileNameWrapper>
                         </S.FileIconContentWrapper>
                       }
-                      {kind === "my" &&
+                      {kind === "my" && isMine &&
                         <S.ProofFileIconLabel>
                           <S.FileIconInput
                             ref={proofFileInputRef}
@@ -497,12 +500,20 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   )
 }
 
-const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
+const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | null, isMine?: boolean }) => {
+  const { challengeId } = useChallengeDetailStore();
+  const { mutate: postChallengeRecruit } = usePostChallengeRecruit(String(challengeId ?? "0"));
   const navigate = useNavigate();
   return (
-    <S.PlusIconWrapper $height={height} onClick={() => navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`)}>
+    <S.PlusIconWrapper $height={height} onClick={() => {
+      if (isMine) {
+        navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`);
+      } else {
+        postChallengeRecruit();
+      }
+    }}>
       <S.PlusIcon src={Plus} />
-      초대
+      {isMine ? "초대" : "대결 요청"}
     </S.PlusIconWrapper>
   )
 }

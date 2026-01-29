@@ -26,11 +26,14 @@ const ChallengeVSMatch = () => {
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getMyPhoto } = useGetPhoto();
   const { mutate: getOpponentPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
   const opponentUserId = challengeDetail?.data?.participants?.opponent ? String(challengeDetail.data.participants.opponent.id) : null;
-  const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
+  const { data: challengeMyDetailWeeks, isLoading: isLoadingMyWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
     enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
+  });
+  const { data: challengeOpponentDetailWeeks, isLoading: isLoadingOpponentWeeks } = useGetChallengeDetailWeeks(id || "", opponentUserId || "", {
+    enabled: !!(id && id !== "0") && !!opponentUserId && !!challengeDetail?.data,
   });
   const [isMine, setIsMine] = useState(false);
 
@@ -40,14 +43,18 @@ const ChallengeVSMatch = () => {
   }, [id, resetChallengeDetail]);
 
   useEffect(() => {
-    if (challengeDetail && challengeDetailWeeks) {
+    if (challengeDetail && challengeMyDetailWeeks) {
       setChallengeId(Number(id));
       setChallengeInfo(challengeDetail.data.challengeInfo);
       setDominance(challengeDetail.data.dominance);
       setMyInfo(challengeDetail.data.participants.me);
       setOpponentInfo(challengeDetail.data.participants.opponent);
-      setChallengeDetailWeeks(challengeDetailWeeks.data);
+      setChallengeMyDetailWeeks(challengeMyDetailWeeks.data);
       setIsMine(challengeDetail.data.participants.me.id === user?.id);
+
+      if (challengeOpponentDetailWeeks) {
+        setChallengeOpponentDetailWeeks(challengeOpponentDetailWeeks.data);
+      }
 
       if (challengeDetail?.data.challengeInfo.thumbnail?.uuid) {
         getThumbnail(
@@ -86,7 +93,7 @@ const ChallengeVSMatch = () => {
         );
       }
     }
-  }, [challengeDetail, challengeDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeDetailWeeks]);
+  }, [challengeDetail, challengeMyDetailWeeks, challengeOpponentDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks]);
 
   const isMobile = useMedia(770);
   const navigate = useNavigate();
@@ -115,14 +122,14 @@ const ChallengeVSMatch = () => {
 
   const handleViewCard = (view: "left" | "right") => {
     if (isMobile && !opponentUserId && view === "left") {
-      navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`);
+      navigate(PageEndPoints.CHALLENGE_VS_INVITE);
       return;
     }
     if (isMobile) { setViewCard(view); return; }
     return;
   }
 
-  if (isLoading || isLoadingWeeks) return <Loading />;
+  if (isLoading || isLoadingMyWeeks || isLoadingOpponentWeeks) return <Loading />;
 
   return (
     <DefaultLayout variant="home">
@@ -142,12 +149,12 @@ const ChallengeVSMatch = () => {
             {(viewCard !== "right" && !isMobile) || (isMobile && viewCard === "left") ?
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 {opponentUserId ?
-                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="my" viewCard={viewCard} value="VS" />
-                  : <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} />}
+                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" />
+                  : <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} isMine={isMine} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
-              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
-                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" />
+              <CardChallenge isMine={isMine} mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" isMine={isMine} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>

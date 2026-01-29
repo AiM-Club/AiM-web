@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePostChallenge } from "@/api/challenge";
+import { PageEndPoints } from "@/constants/endpoints";
+import { useNavigate } from "react-router-dom";
+import { buildPath } from "@/utils/buildPath";
 
 const createChallengeSchema = z.object({
   aiRequest: z.string().min(1, "요청사항을 입력해 주세요"),
@@ -20,6 +23,7 @@ const createChallengeSchema = z.object({
 type CreateChallengeForm = z.infer<typeof createChallengeSchema>;
 
 const CreateChallenge = () => {
+  const navigate = useNavigate();
   const [isPublic, setIsPublic] = useState<boolean>(true);
   const { mutate: createChallengeMutate } = usePostChallenge();
   const bannerTitleRef = useRef<BannerTitleFieldRef>(null);
@@ -72,15 +76,15 @@ const CreateChallenge = () => {
       if (imageFile) {
         fromData.append("thumbnail", imageFile);
       }
-
-      // FormData 내용 콘솔 출력
-      for (const [key, value] of fromData.entries()) {
-        console.log(`FormData -> ${key}:`, value);
-      }
       // TODO: API 연동
       createChallengeMutate(fromData, {
         onSuccess: (data) => {
           console.log("create challenge success:", data);
+          if (elementsData?.mode == "VS") {
+            navigate(buildPath(PageEndPoints.CHALLENGE_VS_DETAIL, { id: data.data.challengeId }));
+          } else {
+            navigate(buildPath(PageEndPoints.CHALLENGE_SOLO_DETAIL, { id: data.data.challengeId }));
+          }
         },
         onError: (error) => {
           console.log("create challenge error:", error);

@@ -218,14 +218,14 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   @media (max-width: 770px) {
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0 && props.$width <= 129*props.$rowcount+8*(props.$rowcount-1))
-        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
-      if (props.$direction === 0 && props.$width > 129*props.$rowcount+8*(props.$rowcount-1))
-        return `calc(-8.5rem * (${props.$rowcount} - 1))`;
-      if(props.$width > 122*props.$rowcount+8*(props.$rowcount-1))
-        return `calc(-8.5rem * (${props.$direction - 1}))`;
-      return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
-    }}
+    if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+    if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-8.5rem * (${props.$rowcount} - 1))`;
+    if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-8.5rem * (${props.$direction - 1}))`;
+    return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
+  }}
   );
   }
 `;
@@ -283,6 +283,7 @@ export const ProofWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 export const ProofFileNameWrapper = styled.div`

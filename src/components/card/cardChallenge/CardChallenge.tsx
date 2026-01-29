@@ -57,6 +57,7 @@ interface CardChallengeProps {
   setViewCard?: (view: "left" | "right" | "both") => void;
   isMobile?: boolean;
   mobileTopic?: "none" | "top" | "normal";
+  isMine?: boolean;
 }
 
 //해당 컴포넌트를 호출하는 페이지의 이 컴포넌트를 감싸는 레이아웃에 
@@ -66,7 +67,7 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal" }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", isMine = false }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
@@ -75,7 +76,7 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
   if (topic) {
     topic = topic;
   } else {
-    topic = kind === "opponent" ? opponentInfo?.nickname : `ME : ${myInfo?.nickname}`;
+    topic = kind === "opponent" ? opponentInfo?.nickname : isMine ? `ME : ${myInfo?.nickname}` : ` ${myInfo?.nickname}`;
   }
   const getCardImageTop = () => {
     if (isMobile) {

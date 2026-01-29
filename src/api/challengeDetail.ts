@@ -1,7 +1,7 @@
-import { useFetch, useFetchMutation, usePost } from "./hooks";
+import { useDelete, useFetch, useFetchMutation, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse, QueryOptions } from "./types";
-import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse, ChallengeLikeResponse } from "@/types/challengeDetail";
+import type { ChallengeDetailWeeksResponse, ChallengeSoloDetailResponse, ChallengeVSDetailResponse, CommentPostResponse, ChallengeLikeResponse, ChallengeRequestResponse } from "@/types/challengeDetail";
 import { buildPath } from "@/utils/buildPath";
 import { api } from "./utils";
 import type { CommentResponse } from "@/types/comment";
@@ -51,4 +51,20 @@ export const usePostWeeklyProof = (challengeId: string) => {
 //챌린지 좋아요
 export const useChallengeLike = (challengeId: string) => {
     return usePost<void, ChallengeLikeResponse>(buildPath(ApiEndpoints.CHALLENGE_LIKE, { challengeId }));
+}
+
+//챌린지 모집 요청
+export const usePostChallengeRecruit = (challengeId: string) => {
+    return usePost<void, ChallengeRequestResponse>(buildPath(ApiEndpoints.VS_REQUEST, { challengeId }));
+}
+
+//챌린지 요청 수락
+export const usePostRequestAccept = (requestId: string) => {
+    return usePost<void, { challengeId: number }>(buildPath(ApiEndpoints.VS_REQUEST_ACCEPT, { requestId }));
+}
+
+
+//챌린지 요청 거절
+export const useDeleteRequestReject = (requestId: string) => {
+    return useDelete<void>(buildPath(ApiEndpoints.VS_REQUEST_REJECT, { requestId }));
 }

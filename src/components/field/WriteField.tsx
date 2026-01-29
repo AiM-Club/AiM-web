@@ -1,11 +1,19 @@
 import * as S from "./WriteField.style";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const WriteField = () => {
+export interface WriteFieldRef {
+  getData: () => string;
+}
+
+const WriteField = forwardRef<WriteFieldRef>((_, ref) => {
   const [content, setContent] = useState<string>("");
   const quillRef = useRef<ReactQuill>(null);
+
+  useImperativeHandle(ref, () => ({
+    getData: () => content,
+  }));
   const sizes = ['12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px', '21px', '22px', '23px', '24px', '25px', '26px', '27px', '28px', '29px', '30px', '31px', '32px', '33px', '34px', '35px', '36px'];
 
   useEffect(() => {
@@ -139,6 +147,8 @@ const WriteField = () => {
       </S.QuillWrapper>
     </S.WriteFieldWrapper>
   );
-}
+});
+
+WriteField.displayName = "WriteField";
 
 export default WriteField;

@@ -1,9 +1,11 @@
 import Select from "@/components/Select/Select";
 import * as S from "./WriteElementsSelect.style";
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
 import Check from "@/assets/Check.svg";
 import { z } from "zod";
 import useMedia from "@/hooks/useMedia";
+import { useGetMyChallengeList } from "@/api/challenge";
+import type { ChallengeMyListResponse } from "@/types/challenge";
 
 interface SelectOption {
   value: string;
@@ -36,7 +38,7 @@ interface WriteElementsSelectProps {
 }
 
 const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSelectProps>(
-  ({ mode = false, challenge = true, inputtable = true }) => {
+  ({ mode = false, challenge = true, inputtable = true }, ref) => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const currentDay = new Date().getDate();
@@ -106,15 +108,111 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
       { value: "체육", label: "체육" },
     ];
 
-    //모드 선택 시 챌린지 로드 (서버에서 받아오기)
-    const challengeOptions: SelectOption[] = [];
+    //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기)
+    const [challengeInfo, setChallengeInfo] = useState<ChallengeMyListResponse | null>(null);
+    const [selectedChallengeId, setSelectedChallengeId] = useState<string>("");
 
-    //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기), [] to null로 고치기
-    const [challengeInfo, setChallengeInfo] = useState<string[] | null>([]);
+    // 모드 선택 시 챌린지 리스트 가져오기
+    const { data: myChallengeListData } = useGetMyChallengeList({
+      mode: currentMode || "",
+    }, {
+      enabled: !!(mode && currentMode && !inputtable && challenge),
+    });
+
+    // 챌린지 옵션 생성
+    const challengeOptions: SelectOption[] = useMemo(() => {
+      if (!myChallengeListData?.data) return [];
+      return myChallengeListData.data.map((challenge) => ({
+        value: String(challenge.challengeId),
+        label: challenge.name,
+      }));
+    }, [myChallengeListData]);
+
+    // 챌린지 선택 핸들러
+    const handleChallengeChange = (value: string) => {
+      setSelectedChallengeId(value);
+      if (!myChallengeListData?.data) return;
+
+      const selectedChallenge = myChallengeListData.data.find(
+        (challenge) => String(challenge.challengeId) === value
+      );
+
+      if (selectedChallenge) {
+        setChallengeInfo(selectedChallenge);
+
+        // 챌린지 정보로 필드 채우기
+        if (selectedChallenge.fields.length > 0) {
+          setSelectedField(selectedChallenge.fields[0].name);
+        }
+
+        // 태그 채우기
+        const tags = selectedChallenge.tags.map((tag) => tag.name);
+        setTagValues([...tags, ...Array(3 - tags.length).fill("")].slice(0, 3));
+
+        // 직무 채우기
+        setJob(selectedChallenge.job);
+
+        // 시작일 파싱하여 설정
+        const startDate = new Date(selectedChallenge.startedAt);
+        setSelectedYear(startDate.getFullYear());
+        setSelectedMonth(startDate.getMonth() + 1);
+        setSelectedDay(startDate.getDate());
+
+        // 기간 설정
+        setSelectedWeek(selectedChallenge.durationWeek);
+      }
+    };
+
+    useImperativeHandle(ref, () => ({
+      validate: async () => {
+        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+
+        const data: Partial<WriteElementsForm> = {
+          field: selectedField,
+          tags: filteredTags,
+          job,
+          startDate,
+          weeks: selectedWeek,
+          // mode가 true인 화면에서만 강제 검증되도록: mode prop이 false면 빈 문자열 허용 처리
+          mode: mode ? (currentMode ?? "") : (currentMode ?? ""),
+        };
+
+        const result = writeElementsSchema.safeParse(data);
+        if (!result.success) {
+          const newErrors: Record<string, string> = {};
+          result.error.issues.forEach((err) => {
+            if (err.path[0]) newErrors[err.path[0] as string] = err.message;
+          });
+          setErrors(newErrors);
+          const firstError = result.error.issues[0]?.message || "유효성 검사 실패";
+          return { isValid: false, error: firstError };
+        }
+
+        setErrors({});
+        return { isValid: true, data: result.data };
+      },
+      getData: () => {
+        const startDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+        const filteredTags = tagValues.filter((tag) => tag.trim() !== "");
+        return {
+          field: selectedField,
+          tags: filteredTags,
+          job,
+          startDate,
+          weeks: selectedWeek,
+          mode: currentMode ?? undefined,
+          challengeSelect: selectedChallengeId || undefined,
+        };
+      },
+    }));
 
     const handleModeClick = (mode: string) => {
       setCurrentMode(mode);
       setErrors((prev) => ({ ...prev, mode: "" }));
+      // mode 변경 시 챌린지 선택 초기화
+      setSelectedChallengeId("");
+      setChallengeInfo(null);
     }
 
     const handleFieldChange = (value: string) => {
@@ -310,7 +408,13 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
         {challenge && (
           <S.EachContentWrapper>
             <S.ContentTitle>챌린지</S.ContentTitle>
-            <Select placeholder="선택" options={challengeOptions} width={isMobile ? "calc(100% - 4rem)" : 18} />
+            <Select
+              placeholder="선택"
+              options={challengeOptions}
+              width={isMobile ? "calc(100% - 4rem)" : 18}
+              value={selectedChallengeId}
+              onValueChange={handleChallengeChange}
+            />
           </S.EachContentWrapper>
         )}
         {!inputtable && challengeInfo && (
@@ -326,7 +430,7 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
             <S.EachContentWrapper>
               <S.ContentTitle>분야</S.ContentTitle>
               <S.InputField
-                value={"ㅇㅇㅇ"}
+                value={challengeInfo.fields.map((f) => f.name).join(", ") || ""}
                 disabled={true}
                 $nonInputtable={true}
               />
