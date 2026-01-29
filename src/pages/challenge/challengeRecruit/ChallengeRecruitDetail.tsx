@@ -227,10 +227,10 @@ const ChallengeRecruitDetail = () => {
         </S.CommentWholeWrapper>
         <form onSubmit={handleSubmit(onSubmit)}>
           {selectedCommentId && (
-            <S.ReplyIndicator>
+            <CardS.ReplyIndicator>
               답글 작성 중...
-              <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
-            </S.ReplyIndicator>
+              <CardS.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</CardS.ReplyCancelBtn>
+            </CardS.ReplyIndicator>
           )}
           <CardS.WeekCommentInputWrapper>
             <CardS.WeekCommentInput
