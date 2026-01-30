@@ -62,14 +62,15 @@ export const TryNum = styled.p`
   font: var(--title-b-l);
 
   @media (max-width: 800px) {
-  font: var(--title-b-s);
+    font: var(--title-b-s);
   }
 `;
 
 export const TryText = styled.p`
   @media (max-width: 800px) {
     font: var(--body-s-l);
-  }`;
+  }
+`;
 
 // ChallengeVSMatchContent
 export const ChallengeVSMatchContentWrapper = styled.div`
@@ -102,7 +103,6 @@ export const ProfileTopWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1.25rem;
-  width: 100%;
 `;
 
 export const ProfileName = styled.div`
@@ -115,15 +115,14 @@ export const ProfileName = styled.div`
 
 export const RowProgressWrapper = styled.div`
   display: flex;
-  flex: 1;
   gap: 3%;
   flex-direction: row;
   padding: 0 0 1% 0;
+  width: 100%;
 
   @media (max-width: 770px) {
     flex-direction: column;
     gap: 1rem;
-    width: 100%;
   }
 `;
 
@@ -209,24 +208,24 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-    if (props.$direction === 0)
-      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
-    return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
-  }}
+      if (props.$direction === 0)
+        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+      return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
+    }}
   );
 
   @media (max-width: 770px) {
-  transform: translateX(
-    ${(props) => {
-    if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
-    if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-8.5rem * (${props.$rowcount} - 1))`;
-    if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-8.5rem * (${props.$direction - 1}))`;
-    return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
-  }}
-  );
+    transform: translateX(
+      ${(props) => {
+        if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+        if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-8.5rem * (${props.$rowcount} - 1))`;
+        if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-8.5rem * (${props.$direction - 1}))`;
+        return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
+      }}
+    );
   }
 `;
 
@@ -520,7 +519,6 @@ export const FileNameDeleteBtn = styled.button`
     object-fit: contain;
   }
 `;
-
 
 // ChallengeVSMatchContentInvite
 export const PlusIconWrapper = styled.div<{ $height: number | null }>`

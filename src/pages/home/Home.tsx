@@ -10,22 +10,36 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import MoreBtn from "@/components/button/MoreBtn";
 import { useGetChallengeVS } from "@/api/challenge";
-import { useGetChallengeRecruit } from "@/api/vsRecruit";
+import { useGetChallengeRecruit, useGetHotChallengeRecruit, useGetHotChallengeReview } from "@/api/vsRecruit";
+import CardSlider from "@/components/slider/CardSlider";
+import useMedia from "@/hooks/useMedia";
 
 const Home = () => {
   const navigate = useNavigate();
+  const isMobile = useMedia(560);
   const { data: challengeVSList, isLoading } = useGetChallengeVS({ page: 0, size: 8 });
   const { data: challengeRecruitList, isLoading: isLoadingRecruit } = useGetChallengeRecruit({ page: 0, size: 8 });
+  const { data: hotChallengeRecruitList } = useGetHotChallengeRecruit();
+  const { data: hotChallengeReviewList } = useGetHotChallengeReview();
 
   return (
     <DefaultLayout variant="home">
       <MainSlider />
       <S.HomeWrapper>
-        <S.CardWrapper>
-          <CardList title="HOT 모집글" color="green" />
-          <CardList title="HOT 후기글" color="green" />
-          <CardList title="TOP 10" color="pink" />
-        </S.CardWrapper>
+        {isMobile ?
+          <S.CardWrapper><CardSlider>
+            <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" />
+            <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" />
+            <CardList data={hotChallengeRecruitList?.data || []} title="TOP 10" color="pink" />
+          </CardSlider>
+          </S.CardWrapper> :
+          <S.CardWrapper>
+            <S.TopWrapper>
+              <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" />
+              <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" />
+            </S.TopWrapper>
+            <CardList data={hotChallengeRecruitList?.data || []} title="TOP 10" color="pink" />
+          </S.CardWrapper>}
         <S.FieldWrapper>
           <SearchField />
           <PageTopic text="VS 분야" size="l" />
