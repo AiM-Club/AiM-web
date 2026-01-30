@@ -31,5 +31,10 @@ export const usePostPostLike = (postId: string) => {
 
 //후기 작성
 export const usePostReview = () => {
-    return usePost<FormData, { reviewId: number }>(ApiEndpoints.REVIEW);
+    return usePost<FormData, { postId: number }>(ApiEndpoints.REVIEW);
+}
+
+//qna 작성
+export const usePostQna = () => {
+    return usePost<FormData, { postId: number }>(ApiEndpoints.QNA);
 }

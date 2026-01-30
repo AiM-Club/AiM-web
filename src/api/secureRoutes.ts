@@ -29,4 +29,5 @@ export const secureRoutes = [
     { method: Method.POST, url: ApiEndpoints.POST_LIKE },
     { method: Method.POST, url: ApiEndpoints.LOGOUT },
     { method: Method.POST, url: ApiEndpoints.REVIEW },
+    { method: Method.POST, url: ApiEndpoints.QNA },
 ];
