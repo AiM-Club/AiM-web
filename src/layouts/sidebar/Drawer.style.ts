@@ -29,6 +29,7 @@ export const DrawerContainer = styled.div<{ $isOpen: boolean }>`
     transition: transform 0.3s ease;
     overflow-y: auto;
     padding-top: 4rem;
+    padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -112,3 +113,17 @@ export const DrawerSubMenuItem = styled.div`
     }
 `;
 
+export const LogOutItem = styled.div`
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.375rem;
+    cursor: pointer;
+    color: var(--pink-400);
+    font: var(--body-r-l);
+    
+    &:hover {
+        background-color: var(--surpace-tertiary);
+    }
+`;
