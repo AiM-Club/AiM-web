@@ -63,4 +63,5 @@ export enum ApiEndpoints {
   MY_CHALLENGE_LIST = "/challenges/my-list",
   POST_COMMENTS = "/posts/:postId/comments",
   POST_LIKE = "/posts/:postId/likes",
+  REVIEW = "/posts/review",
 }
