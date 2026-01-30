@@ -9,6 +9,7 @@ import { PageEndPoints } from "@/constants/endpoints";
 import hamburgerBar from "@/assets/icons/hamburgerBar.svg";
 import { useAuthStore } from "@/stores/authStore";
 import LogInBtn from "@/components/button/LogInBtn";
+import { LoginDropdown } from "@/components/dropdown/LoginDropdown";
 
 interface HeaderProps {
   variant?: "default" | "login" | "home";
@@ -79,7 +80,13 @@ const Header = ({ variant = "default", onMenuClick }: HeaderProps) => {
       )}
       {variant === "login" ? <></> : (
         <>
-          {user ? <div className="login-button"><LogInBtn user={user} /></div> : <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>}  
+          {user ? (
+            <div className="login-button">
+              <LoginDropdown trigger={<LogInBtn user={user} />} />
+            </div>
+          ) : (
+            <Button className="login-button" onClick={() => navigate(PageEndPoints.LOGIN)}>로그인</Button>
+          )}  
           <S.HamburgerButton className="hamburger-button" onClick={onMenuClick}>
             <img src={hamburgerBar} alt="메뉴" />
           </S.HamburgerButton>

@@ -37,3 +37,8 @@ export const useExistId = () => {
 export const useGetMe = (options?: QueryOptions<ApiResponse<User>>) => {
     return useFetch<ApiResponse<User>>(ApiEndpoints.MY_PROFILE, undefined, options);
 }
+
+//로그아웃
+export const useLogout = () => {
+    return usePost<void, string>(ApiEndpoints.LOGOUT);
+}

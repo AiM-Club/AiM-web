@@ -35,6 +35,7 @@ export enum PageEndPoints {
 
 export enum ApiEndpoints {
   LOGIN = "/auth/login",
+  LOGOUT = "/auth/logout",
   REFRESH_TOKEN = "/auth/token/refresh",
   JOIN = "/auth/register",
   EXIST_ID = "/auth/id-exist",
