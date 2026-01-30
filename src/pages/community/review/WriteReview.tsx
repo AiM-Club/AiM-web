@@ -8,7 +8,7 @@ import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
 import { useRef } from "react";
 import { z } from "zod";
-import { usePostReview } from "@/api/community";
+import { usePostReview } from "@/api/posts";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useNavigate } from "react-router-dom";
 import { buildPath } from "@/utils/buildPath";

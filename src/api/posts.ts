@@ -28,3 +28,8 @@ export const usePostPostComment = (postId: string) => {
 export const usePostPostLike = (postId: string) => {
     return usePost<void, PostLikeResponse>(buildPath(ApiEndpoints.POST_LIKE, { postId }));
 }
+
+//후기 작성
+export const usePostReview = () => {
+    return usePost<FormData, { reviewId: number }>(ApiEndpoints.REVIEW);
+}
