@@ -89,7 +89,7 @@ const WriteReview = () => {
       formData.append("job", result.data.job);
       formData.append("startedAt", result.data.startedAt);
       formData.append("durationWeek", String(result.data.durationWeek));
-      formData.append("contents", result.data.contents);
+      formData.append("content", result.data.contents);
       result.data.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
