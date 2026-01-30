@@ -1,39 +1,45 @@
+import type { ChallengeRecruitHotResponse, ChallengeReviewHotResponse } from "@/types/vsRecruit";
 import * as S from "./CardList.style";
-
-interface Item {
-  id: number;
-  title: string;
-  tag: string;
-}
-
-const mockData: Item[] = [
-  { id: 1, title: "제목", tag: "#분야" },
-  { id: 2, title: "제목", tag: "#분야" },
-  { id: 3, title: "제목", tag: "#분야" },
-  { id: 4, title: "제목", tag: "#분야" },
-  { id: 5, title: "제목", tag: "#분야" },
-  { id: 6, title: "제목", tag: "#분야" },
-  { id: 7, title: "제목", tag: "#분야" },
-  { id: 8, title: "제목", tag: "#분야" },
-  { id: 9, title: "제목", tag: "#분야" },
-  { id: 10, title: "제목", tag: "#분야" },
-];
+import Heart from "@/assets/GrayHeart.svg";
+import { useNavigate } from "react-router-dom";
 
 interface CardListProps {
   title: string;
   color: "green" | "pink";
+  data: ChallengeRecruitHotResponse[] | ChallengeReviewHotResponse[];
 }
 
-const CardList = ({title, color="green"}:CardListProps) => {
+const CardList = ({ title, color = "green", data }: CardListProps) => {
+  const navigate = useNavigate();
+
+  const navigateToDetail = (postId: number) => {
+    if (data as ChallengeRecruitHotResponse[]) {
+      navigate(`/challenge/recruit/detail/${postId}`);
+    } else if (data as ChallengeReviewHotResponse[]) {
+      navigate(`/community/review/detail/${postId}`);
+    } else {
+      return;
+    }
+  };
+
   return (
     <S.CardWrapper $color={color}>
       <S.Title>{title}</S.Title>
-
       <S.ListBox>
-        {mockData.map((item) => (
-          <S.ListItem key={item.id}>
+        {data?.map((item) => (
+          <S.ListItem key={item.postId} onClick={() => navigateToDetail(item.postId)}>
             <span>{item.title}</span>
-            <span className="tag">{item.tag}</span>
+            <S.TagWrapper>
+              {(item as ChallengeRecruitHotResponse).fields.map((field) => (
+                <span className="tag" key={field}>#{field}</span>
+              ))}
+            </S.TagWrapper>
+            {(item as ChallengeReviewHotResponse).likeCount
+              &&
+              <>
+                <S.HeartImg src={Heart} />
+                <span className="tag">{`${(item as ChallengeReviewHotResponse).likeCount}`}</span>
+              </>}
           </S.ListItem>
         ))}
       </S.ListBox>

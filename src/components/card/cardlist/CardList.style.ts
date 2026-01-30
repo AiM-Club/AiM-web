@@ -4,10 +4,10 @@ import CardBgHover from "@/assets/CardGreenHover.png";
 import CardPink from "@/assets/CardPink.png";
 import CardPinkHover from "@/assets/CardPinkHover.png";
 
-export const CardWrapper = styled.div<{ $color: string;}>`
+export const CardWrapper = styled.div<{ $color: string }>`
   flex: 1;
   height: 35.5rem;
-  background-image: ${(props)=>(props.$color === "pink" ? `url(${CardPink})` : `url(${CardBg})`)};
+  background-image: ${(props) => (props.$color === "pink" ? `url(${CardPink})` : `url(${CardBg})`)};
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -15,7 +15,7 @@ export const CardWrapper = styled.div<{ $color: string;}>`
   flex-direction: column;
 
   &:hover {
-     background-image: ${(props)=>(props.$color === "pink" ? `url(${CardPinkHover})` : `url(${CardBgHover})`)};
+    background-image: ${(props) => (props.$color === "pink" ? `url(${CardPinkHover})` : `url(${CardBgHover})`)};
   }
 
   @media (max-width: 1378px) {
@@ -62,6 +62,18 @@ export const ListItem = styled.div`
 
   .tag {
     font: var(--body-r-m);
-    color: var(--text-secondary)
+    color: var(--text-secondary);
   }
+`;
+
+export const TagWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+`;
+
+export const HeartImg = styled.img`
+  width: 1rem;
+  height: 1rem;
 `;

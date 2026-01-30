@@ -53,6 +53,8 @@ export enum ApiEndpoints {
   CHALLENGE_DETAIL_WEEKS_COMMENTS = "/challenges/:challengeId/weeks/:weeksId/comments",
   CHALLENGE_DETAIL_WEEKS_PROOF = "/challenges/:challengeId/weeks/proof",
   VS_RECRUIT = "/posts/vs",
+  VS_RECRUIT_HOT = "/posts/vs/top",
+  VS_RECRUIT_HOT_REVIEW = "/posts/review/top",
   VS_RECRUIT_DETAIL = "/posts/vs/:postId",
   CHALLENGE_LIKE = "/challenges/:challengeId/likes",
   VS_REQUEST = "/challenges/vs/request/send/:challengeId",
