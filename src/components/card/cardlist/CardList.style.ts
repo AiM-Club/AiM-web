@@ -1,43 +1,17 @@
 import styled from "styled-components";
-import CardBg from "@/assets/CardGreen.png";
-import CardBgHover from "@/assets/CardGreenHover.png";
-import CardPink from "@/assets/CardPink.png";
-import CardPinkHover from "@/assets/CardPinkHover.png";
-
 export const CardWrapper = styled.div<{ $color: string }>`
   flex: 1;
-  height: 35.5rem;
-  background-image: ${(props) => (props.$color === "pink" ? `url(${CardPink})` : `url(${CardBg})`)};
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: var(--text-tertiary);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-
-  &:hover {
-    background-image: ${(props) => (props.$color === "pink" ? `url(${CardPinkHover})` : `url(${CardBgHover})`)};
-  }
-
-  @media (max-width: 1378px) {
-    flex: 0 1 calc(50% - 0.5rem);
-  }
-`;
-
-export const Title = styled.div`
-  font: var(--title-h-l);
-  color: var(--text-tertiary);
-  box-sizing: border-box;
-  margin-top: 0.375rem;
-  height: 3.875rem;
-  display: flex;
-  align-items: center;
-  padding: 0 2rem;
 `;
 
 export const ListBox = styled.div`
   box-sizing: border-box;
   border-radius: 0.25rem;
-  margin: 1.5rem 1rem 0 1rem;
+  margin: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -46,6 +20,20 @@ export const ListBox = styled.div`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+export const EmptyState = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30rem;
+  font: var(--title-h-s);
+  color: var(--text-secondary);
+
+  @media (max-width: 560px) {
+    height: 16rem;
   }
 `;
 

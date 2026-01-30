@@ -26,13 +26,24 @@ export const CardWrapper = styled.div`
 
   @media (max-width: 1378px) {
     flex-wrap: wrap;
-    
+
     & > *:nth-child(3) {
       width: 100%;
       margin-top: 1rem;
       flex: 1 1 100%;
     }
   }
+
+  @media (max-width: 560px) {
+    width: 100%;
+    gap: 0rem;
+  }
+`;
+
+export const TopWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
 `;
 
 export const FieldWrapper = styled.div`
@@ -59,19 +70,19 @@ export const FieldItem = styled.div`
   min-width: 5.688rem;
   font: var(--test-primary-default);
   cursor: pointer;
-  
+
   @media (max-width: 1200px) {
     flex: 0 0 calc((100% - 8rem) / 9);
   }
-  
+
   @media (max-width: 1000px) {
     flex: 0 0 calc((100% - 7rem) / 8);
   }
-  
+
   @media (max-width: 800px) {
     flex: 0 0 calc((100% - 6rem) / 7);
   }
-  
+
   @media (max-width: 600px) {
     flex: 0 0 calc((100% - 5rem) / 6);
   }
@@ -87,7 +98,7 @@ export const BattleWrapper = styled.div`
 
 export const BattleTitle = styled.div`
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
 `;

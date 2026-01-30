@@ -58,6 +58,7 @@ interface CardChallengeProps {
   isMobile?: boolean;
   mobileTopic?: "none" | "top" | "normal";
   isMine?: boolean;
+  variant?: string;
 }
 
 //해당 컴포넌트를 호출하는 페이지의 이 컴포넌트를 감싸는 레이아웃에 
@@ -67,7 +68,7 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", isMine = false }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", isMine = false, variant }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
@@ -157,7 +158,7 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
             <S.OpenBtn $color={color} onClick={handleOpenBtn}><S.OpenBtnIcon src={LeftArrow} />{viewCard === "both" ? "펼치기" : "나가기"}</S.OpenBtn>
           </S.OpenBtnWrapper>
       )}
-      <S.CardContentWrapper ref={setContentElement} $ismobile={isMobile} $mobileTopic={mobileTopic} $color={color}>
+      <S.CardContentWrapper ref={setContentElement} $variant={variant} $ismobile={isMobile} $mobileTopic={mobileTopic} $color={color}>
         {isMobile && mobileTopic === "normal" && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}>{topic}</S.CardTopic>}
         {children}
       </S.CardContentWrapper>
