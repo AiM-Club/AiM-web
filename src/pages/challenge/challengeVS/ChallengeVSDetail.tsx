@@ -18,6 +18,7 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useWebSocketTimer } from "@/api/timer";
 
 const ChallengeVSMatch = () => {
   const { user } = useAuthStore();
@@ -36,6 +37,9 @@ const ChallengeVSMatch = () => {
     enabled: !!(id && id !== "0") && !!opponentUserId && !!challengeDetail?.data,
   });
   const [isMine, setIsMine] = useState(false);
+
+  // WebSocket 연결
+  // useWebSocketTimer();
 
   // challengeId가 변경될 때 store 초기화
   useEffect(() => {
@@ -72,7 +76,7 @@ const ChallengeVSMatch = () => {
       } else {
         setThumbnail(null);
       }
-      if (challengeDetail?.data.participants.me.profileImage.uuid) {
+      if (challengeDetail?.data.participants?.me?.profileImage?.uuid) {
         getMyPhoto(
           { file_uuid: challengeDetail.data.participants.me.profileImage.uuid },
           {
@@ -82,9 +86,9 @@ const ChallengeVSMatch = () => {
           }
         );
       }
-      if (challengeDetail?.data.participants.opponent?.profileImage.uuid) {
+      if (challengeDetail?.data.participants?.opponent?.profileImage?.uuid) {
         getOpponentPhoto(
-          { file_uuid: challengeDetail.data.participants.opponent.profileImage.uuid },
+          { file_uuid: challengeDetail.data.participants?.opponent?.profileImage?.uuid },
           {
             onSuccess: (photo) => {
               setOpponentPhoto(photo);

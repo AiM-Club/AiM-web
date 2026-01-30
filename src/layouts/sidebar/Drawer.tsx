@@ -6,6 +6,7 @@ import arrowNext from "@/assets/icons/ArrowNext.svg";
 import { useAuthStore } from "@/stores/authStore";
 import ProfileImage from "@/components/image/ProfileImage";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
+import { useLogout } from "@/api/auth";
 
 interface DrawerProps {
     isOpen: boolean;
@@ -21,9 +22,9 @@ interface MenuItem {
 
 const Drawer = ({ isOpen, onClose }: DrawerProps) => {
     const navigate = useNavigate();
-    const { user, userPhoto } = useAuthStore();
+    const { user, userPhoto, logout } = useAuthStore();
     const photoUrl = useUserPhotoUrl(userPhoto);
-
+    const { mutate: logoutMutate } = useLogout();
     const menuItems: MenuItem[] = [
         {
             id: "home",
@@ -113,6 +114,13 @@ const Drawer = ({ isOpen, onClose }: DrawerProps) => {
                         </div>
                     ))}
                 </S.DrawerMenuList>
+                <S.LogOutItem onClick={() => {
+                    logoutMutate(undefined, {
+                        onSuccess: () => {
+                            logout();
+                        },
+                    });
+                }}>로그아웃</S.LogOutItem>
             </S.DrawerContainer>
         </>
     );

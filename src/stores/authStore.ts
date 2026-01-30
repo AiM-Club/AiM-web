@@ -18,5 +18,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({ user: null, userPhoto: null });
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    window.location.reload();
   },
 }));

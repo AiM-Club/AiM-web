@@ -345,8 +345,8 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
         color === "pink" ?
           <S.ProfileWrapper>
             <S.ProgressWrapper>
-              <ProgressBar text="성공률" progress={success} height={20} color={color} />
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
+              <ProgressBar text="성공률" progress={success} height={20} color={color} />
             </S.ProgressWrapper>
             <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
           </S.ProfileWrapper> :

@@ -23,10 +23,10 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
     }, [onLoadingChange]);
 
     useEffect(() => {
-        if (data.user.profileImage.uuid) {
-            getUserPhoto({ file_uuid: data.user.profileImage.uuid });
+        if (data.user?.profileImage?.uuid) {
+            getUserPhoto({ file_uuid: data.user?.profileImage?.uuid });
         }
-    }, [data.user.profileImage.uuid, getUserPhoto]);
+    }, [data.user?.profileImage?.uuid, getUserPhoto]);
 
     useEffect(() => {
         if (data.thumbnail) {
