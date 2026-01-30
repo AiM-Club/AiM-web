@@ -11,8 +11,10 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading/Loading";
 import { useAuthStore } from "@/stores/authStore";
+import useMedia from "@/hooks/useMedia";
 
 const ChallengeVSSoloDetail = () => {
+  const isMobile = useMedia(560);
   const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
@@ -68,8 +70,8 @@ const ChallengeVSSoloDetail = () => {
         <Banner isMine={isMine} />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
-          <CardChallenge topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
-            <ChallengeVSMatchContent commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" />
+          <CardChallenge isMobile={isMobile} mobileTopic="none" topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
+            <ChallengeVSMatchContent isMobile={isMobile} commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
       </S.ChallengeVSSoloDetailWrapper>
