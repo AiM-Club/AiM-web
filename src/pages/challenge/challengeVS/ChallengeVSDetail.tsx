@@ -150,7 +150,7 @@ const ChallengeVSMatch = () => {
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 {opponentUserId ?
                   <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" />
-                  : <ChallengeVSMatchContentInvite height={wholeWidth >= 938 ? cardHeight : null} isMine={isMine} />}
+                  : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} isMine={isMine} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
               <CardChallenge isMine={isMine} mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
