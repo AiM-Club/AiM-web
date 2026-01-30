@@ -41,10 +41,10 @@ const InviteContent = ({ item }: { item: ChallengeRequestContent }) => {
   }, [contentElement]);
 
   useEffect(() => {
-    if (item.requester.profileImage.uuid) {
+    if (item.requester?.profileImage?.uuid) {
       getUserPhoto({ file_uuid: item.requester.profileImage.uuid });
     }
-  }, [item.requester.profileImage.uuid, getUserPhoto]);
+  }, [item.requester?.profileImage?.uuid, getUserPhoto]);
 
 
   const requestHandle = (type: "approve" | "reject") => {

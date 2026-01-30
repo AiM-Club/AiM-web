@@ -26,14 +26,14 @@ const Comment = ({ data, onReplyClick, type = "comment", isSelected }: CommentCo
   const isMobile = useMedia(560);
 
   useEffect(() => {
-    if (data.writerInfo.profileImage.uuid) {
-      getThumbnail({ file_uuid: data.writerInfo.profileImage.uuid }, {
+    if (data.writerInfo?.profileImage?.uuid) {
+      getThumbnail({ file_uuid: data.writerInfo?.profileImage?.uuid }, {
         onSuccess: (photo) => {
           setThumbnail(photo);
         },
       });
     }
-  }, [data.writerInfo.profileImage.uuid, getThumbnail]);
+  }, [data.writerInfo?.profileImage?.uuid, getThumbnail]);
 
   const thumbnailUrl = useUserPhotoUrl(thumbnail ?? null);
 

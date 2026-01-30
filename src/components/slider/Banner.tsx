@@ -59,7 +59,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
       <S.BannerOverlay />
       <S.BannerContentWrapper>
         <S.BannerContent>{type === "challenge" ? challengeInfo?.name : recruitInfo?.title}</S.BannerContent>
-        {isMine &&
+        {!isMine &&
           <S.WriterWrapper>
             <p>{myInfo?.nickname}</p>
             {logined && <S.HeartWrapper>
