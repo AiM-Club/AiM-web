@@ -74,6 +74,20 @@ export const CardTopic = styled.div<{
   width: 100%;
 `;
 
+export const Topic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null }>`
+  word-break: break-all;
+  display: flex;
+  justify-content: ${(props) =>
+    props.$direction == "right"
+      ? "flex-end"
+      : props.$direction == "left"
+        ? "flex-start"
+        : props.$color === "green"
+          ? "flex-start"
+          : "flex-end"};
+  width: calc(100% - 7rem);
+`;
+
 export const OpenBtnWrapper = styled.div<{ $color: "green" | "pink" }>`
   display: flex;
   align-items: center;
