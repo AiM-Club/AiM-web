@@ -1,7 +1,7 @@
 import { buildPath } from "@/utils/buildPath";
 import { useFetch, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { ChallengeRecruitDetailResponse, PostCommentResponse, PostLikeResponse } from "@/types/posts";
+import type { ChallengeRecruitDetailResponse, PostCommentResponse, PostLikeResponse, QnaResponse } from "@/types/posts";
 import type { ApiResponse } from "./types";
 
 //챌린지 모집글 생성
@@ -37,4 +37,20 @@ export const usePostReview = () => {
 //qna 작성
 export const usePostQna = () => {
     return usePost<FormData, { postId: number }>(ApiEndpoints.QNA);
+}
+
+//qna 조회
+export const useGetQna = ({ category, sort, keyword, page = 0, size = 8 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+    const params: Record<string, string | number> = { page, size };
+
+    if (category && category !== "ALL") {
+        params.category = category;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    return useFetch<ApiResponse<QnaResponse>>(ApiEndpoints.QNA, params);
 }

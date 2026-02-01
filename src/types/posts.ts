@@ -29,3 +29,28 @@ export interface PostLikeResponse {
     id: number;
     isLiked: boolean;
 }
+
+export interface QnaResponse {
+    content: QnaType[];
+    page: PageResponse;
+}
+
+export interface QnaType {
+    postId: number;
+    challengeId?: number;
+    thumbnail: ImageResponse | null;
+    user: PostUser;
+    name: string;
+    fields: string[];
+    tags: string[];
+    job: string;
+    isLiked: boolean;
+    likeCount: number;
+}
+
+export interface PostUser {
+    userId: number;
+    nickname: string;
+    tier: string;
+    profileImage: ImageResponse;
+}

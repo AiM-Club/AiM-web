@@ -7,9 +7,10 @@ import { useGetPhoto } from "@/api/photo.ts";
 import { useEffect, useRef } from "react";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
+import type { QnaType } from "@/types/posts";
 
 interface CardVSItems {
-    data: ChallengeVSResponse | ChallengeRecruitResponse;
+    data: ChallengeVSResponse | ChallengeRecruitResponse | QnaType;
     onLoadingChange?: (isLoading: boolean) => void;
     onClick?: () => void;
 }
