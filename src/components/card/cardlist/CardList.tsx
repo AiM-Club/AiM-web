@@ -4,25 +4,33 @@ import Heart from "@/assets/GrayHeart.svg";
 import { useNavigate } from "react-router-dom";
 import { CardChallenge } from "../cardChallenge/CardChallenge";
 import useMedia from "@/hooks/useMedia";
+import type { TopUser } from "@/types/user";
+import { buildPath } from "@/utils/buildPath";
+import { PageEndPoints } from "@/constants/endpoints";
 
 interface CardListProps {
   title: string;
   color: "green" | "pink";
-  data: ChallengeRecruitHotResponse[] | ChallengeReviewHotResponse[];
+  data: ChallengeRecruitHotResponse[] | ChallengeReviewHotResponse[] | TopUser[];
+  type: "post" | "user";
 }
 
-const CardList = ({ title, color = "green", data }: CardListProps) => {
+const CardList = ({ title, color = "green", data, type }: CardListProps) => {
   const isMobile = useMedia(560);
   const navigate = useNavigate();
 
   const navigateToDetail = (postId: number) => {
-    if (data as ChallengeRecruitHotResponse[]) {
-      navigate(`/challenge/recruit/detail/${postId}`);
-    } else if (data as ChallengeReviewHotResponse[]) {
-      navigate(`/community/review/detail/${postId}`);
-    } else {
-      return;
-    }
+    if (type === "user") {
+      navigate(PageEndPoints.CHALLENGE_RANKING);
+    } else if (type === "post") {
+      if (data as ChallengeRecruitHotResponse[]) {
+        navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: postId }));
+      } else if (data as ChallengeReviewHotResponse[]) {
+        navigate(buildPath(PageEndPoints.REVIEW_DETAIL, { id: postId }));
+      } else {
+        return;
+      }
+    };
   };
 
   return (
@@ -30,18 +38,25 @@ const CardList = ({ title, color = "green", data }: CardListProps) => {
       <S.CardWrapper $color={color}>
         {data.length === 0 ?
           <S.EmptyState>
-            <span>현재 HOT한 글이 없어요!</span>
+            {type === "user" ? <span>현재 TOP 10 유저가 없어요!</span> : <span>현재 HOT한 글이 없어요!</span>}
           </S.EmptyState> :
           isMobile ? <S.ListBox>
             {data?.slice(0, 5).map((item) => (
-              <S.ListItem key={item.postId} onClick={() => navigateToDetail(item.postId)}>
-                <span>{item.title}</span>
+              <S.ListItem
+                key={type === "user" ? (item as TopUser).userId : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId}
+                onClick={() => type === "user" ? undefined : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
+              >
+                <span>{type === "user" ? (item as TopUser).nickname : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).title}</span>
                 <S.TagWrapper>
-                  {(item as ChallengeRecruitHotResponse).fields.map((field) => (
-                    <span className="tag" key={field}>#{field}</span>
-                  ))}
+                  {type === "user" ? (
+                    <span className="tag">Lv.{(item as TopUser).level}</span>
+                  ) : (
+                    (item as ChallengeRecruitHotResponse).fields?.map((field) => (
+                      <span className="tag" key={field}>#{field}</span>
+                    ))
+                  )}
                 </S.TagWrapper>
-                {(item as ChallengeReviewHotResponse).likeCount
+                {type === "post" && (item as ChallengeReviewHotResponse).likeCount
                   &&
                   <>
                     <S.HeartImg src={Heart} />
@@ -51,14 +66,21 @@ const CardList = ({ title, color = "green", data }: CardListProps) => {
             ))}
           </S.ListBox> : <S.ListBox>
             {data?.map((item) => (
-              <S.ListItem key={item.postId} onClick={() => navigateToDetail(item.postId)}>
-                <span>{item.title}</span>
+              <S.ListItem
+                key={type === "user" ? (item as TopUser).userId : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId}
+                onClick={() => type === "user" ? undefined : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
+              >
+                <span>{type === "user" ? (item as TopUser).nickname : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).title}</span>
                 <S.TagWrapper>
-                  {(item as ChallengeRecruitHotResponse).fields.map((field) => (
-                    <span className="tag" key={field}>#{field}</span>
-                  ))}
+                  {type === "user" ? (
+                    <span className="tag">Lv.{(item as TopUser).level}</span>
+                  ) : (
+                    (item as ChallengeRecruitHotResponse).fields?.map((field) => (
+                      <span className="tag" key={field}>#{field}</span>
+                    ))
+                  )}
                 </S.TagWrapper>
-                {(item as ChallengeReviewHotResponse).likeCount
+                {type === "post" && (item as ChallengeReviewHotResponse).likeCount
                   &&
                   <>
                     <S.HeartImg src={Heart} />
