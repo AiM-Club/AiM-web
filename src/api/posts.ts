@@ -54,3 +54,19 @@ export const useGetQna = ({ category, sort, keyword, page = 0, size = 8 }: { cat
     }
     return useFetch<ApiResponse<QnaResponse>>(ApiEndpoints.QNA, params);
 }
+
+//후기기 조회
+export const useGetReview = ({ category, sort, keyword, page = 0, size = 8 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+    const params: Record<string, string | number> = { page, size };
+
+    if (category && category !== "ALL") {
+        params.category = category;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    return useFetch<ApiResponse<QnaResponse>>(ApiEndpoints.REVIEW, params);
+}
