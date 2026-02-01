@@ -6,3 +6,16 @@ export interface TopUser {
 }
 
 export type TopUserResponse = TopUser[];
+
+export interface UserChallengeRecordResponse {
+    allSuccessRate: number;
+    soloRecord: Record;
+    vsRecord: Record;
+}
+
+export interface Record {
+    successRate: number;
+    attemptCount: number;
+    successCount: number;
+    failCount: number;
+}

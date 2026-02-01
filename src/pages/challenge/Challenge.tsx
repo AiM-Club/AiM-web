@@ -9,32 +9,36 @@ import SearchField from "@/components/field/SearchField";
 import CardBoard from "@/components/board/CardBoard";
 import useMedia from "@/hooks/useMedia";
 import CardSlider from "@/components/slider/CardSlider";
+import { userGetChallengeRecord } from "@/api/user";
+import Loading from "@/components/loading/Loading";
 
 const Challenge = () => {
   const isMobile = useMedia(800);
+  const { data: userChallengeRecord, isLoading } = userGetChallengeRecord();
 
+  if (isLoading) return <Loading />;
   return (
     <DefaultLayout>
       <S.ChallengeWrapper>
         <S.ChallengeRecordWrapper>
           <S.RecordTop>
             <PageTopic text="챌린지 기록" size="l" />
-            <ProgressBar text="ALL 성공률" progress={90} height={40} color="pink" />
+            <ProgressBar text="ALL 성공률" progress={userChallengeRecord?.data?.allSuccessRate || 0} height={40} color="pink" />
             {isMobile ?
               <CardSlider>
                 <CardChallenge minWidth={20} color="green" topic="SOLO" openBtn={false} isMobile={isMobile}>
-                  <ChallengeMainContent color="green" progress={90} tryCount={10} successCount={9} failCount={1} />
+                  <ChallengeMainContent color="green" progress={userChallengeRecord?.data?.soloRecord?.successRate || 0} tryCount={userChallengeRecord?.data?.soloRecord?.attemptCount || 0} successCount={userChallengeRecord?.data?.soloRecord?.successCount || 0} failCount={userChallengeRecord?.data?.soloRecord?.failCount || 0} />
                 </CardChallenge>
                 <CardChallenge minWidth={20} color="pink" topic="VS 대결" openBtn={false} isMobile={isMobile}>
-                  <ChallengeMainContent color="pink" progress={40} tryCount={10} successCount={9} failCount={1} />
+                  <ChallengeMainContent color="pink" progress={userChallengeRecord?.data?.vsRecord?.successRate || 0} tryCount={userChallengeRecord?.data?.vsRecord?.attemptCount || 0} successCount={userChallengeRecord?.data?.vsRecord?.successCount || 0} failCount={userChallengeRecord?.data?.vsRecord?.failCount || 0} />
                 </CardChallenge>
               </CardSlider> :
               <S.ProgressWrapper>
                 <CardChallenge minWidth={20} color="green" topic="SOLO" openBtn={false}>
-                  <ChallengeMainContent color="green" progress={90} tryCount={10} successCount={9} failCount={1} />
+                  <ChallengeMainContent color="green" progress={userChallengeRecord?.data?.soloRecord?.successRate || 0} tryCount={userChallengeRecord?.data?.soloRecord?.attemptCount || 0} successCount={userChallengeRecord?.data?.soloRecord?.successCount || 0} failCount={userChallengeRecord?.data?.soloRecord?.failCount || 0} />
                 </CardChallenge>
                 <CardChallenge minWidth={20} color="pink" topic="VS 대결" openBtn={false}>
-                  <ChallengeMainContent color="pink" progress={40} tryCount={10} successCount={9} failCount={1} />
+                  <ChallengeMainContent color="pink" progress={userChallengeRecord?.data?.vsRecord?.successRate || 0} tryCount={userChallengeRecord?.data?.vsRecord?.attemptCount || 0} successCount={userChallengeRecord?.data?.vsRecord?.successCount || 0} failCount={userChallengeRecord?.data?.vsRecord?.failCount || 0} />
                 </CardChallenge>
               </S.ProgressWrapper>}
           </S.RecordTop>
@@ -42,7 +46,7 @@ const Challenge = () => {
         <S.AllChallengeWrapper>
           <PageTopic text="ALL 챌린지" size="l" />
           <SearchField />
-          <CardBoard data={cardVSData} />
+          <CardBoard data={cardVSData} type="vs" />
         </S.AllChallengeWrapper>
       </S.ChallengeWrapper>
     </DefaultLayout>
