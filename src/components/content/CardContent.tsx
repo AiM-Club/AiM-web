@@ -93,7 +93,7 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
 }
 
 const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo } = useChallengeDetailStore();
+  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo, opponentInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const { downloadFile } = useFileDownload();
@@ -335,7 +335,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
         <S.ProfileWrapper>
           <S.ProfileTopWrapper>
             <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
-            {isMobile && <S.ProfileName>유저_닉네임</S.ProfileName>}
+            {isMobile && <S.ProfileName>{kind === "opponent" ? opponentInfo?.nickname : myInfo?.nickname}</S.ProfileName>}
           </S.ProfileTopWrapper>
           <S.RowProgressWrapper>
             <ProgressBar text="진도율" progress={progress} height={32} color={color} />

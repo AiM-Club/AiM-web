@@ -26,13 +26,24 @@ export const CardWrapper = styled.div`
 
   @media (max-width: 1378px) {
     flex-wrap: wrap;
-    
+
     & > *:nth-child(3) {
       width: 100%;
       margin-top: 1rem;
       flex: 1 1 100%;
     }
   }
+
+  @media (max-width: 560px) {
+    width: 100%;
+    gap: 0rem;
+  }
+`;
+
+export const TopWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
 `;
 
 export const FieldWrapper = styled.div`
@@ -40,6 +51,10 @@ export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+
+  @media (max-width: 560px) {
+    gap: 1.5rem;
+  }
 `;
 
 export const FieldList = styled.div`
@@ -48,6 +63,18 @@ export const FieldList = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: flex-start;
+
+  @media (max-width: 560px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 export const FieldItem = styled.div`
@@ -57,23 +84,34 @@ export const FieldItem = styled.div`
   gap: 0.5rem;
   flex: 0 0 calc((100% - 9rem) / 10);
   min-width: 5.688rem;
-  font: var(--test-primary-default);
+  color: var(--text-primary-default);
+  font: var(--body-r-xl);
   cursor: pointer;
-  
+
   @media (max-width: 1200px) {
     flex: 0 0 calc((100% - 8rem) / 9);
   }
-  
+
   @media (max-width: 1000px) {
     flex: 0 0 calc((100% - 7rem) / 8);
   }
-  
+
   @media (max-width: 800px) {
     flex: 0 0 calc((100% - 6rem) / 7);
   }
-  
+
   @media (max-width: 600px) {
     flex: 0 0 calc((100% - 5rem) / 6);
+  }
+  @media (max-width: 560px) {
+    flex: 0 0 auto;
+    min-width: 0;
+    scroll-snap-align: start;
+    font: var(--body-r-m);
+    img {
+      width: 3rem;
+      height: 3rem;
+    }
   }
 `;
 
@@ -83,11 +121,16 @@ export const BattleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+
+  @media (max-width: 560px) {
+    margin-top: 0;
+    gap: 1.5rem;
+  }
 `;
 
 export const BattleTitle = styled.div`
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
 `;

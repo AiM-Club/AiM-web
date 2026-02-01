@@ -11,4 +11,8 @@ export const ChallengeVSSoloDetailContentWrapper = styled.div`
   flex-direction: column;
   gap: 3rem;
   padding: 0 10%;
+
+  @media (max-width: 560px) {
+    padding: 0 5%;
+  }
 `;
