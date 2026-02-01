@@ -6,7 +6,7 @@ import type { TopUserResponse, UserChallengeRecordResponse } from "@/types/user"
 
 //TOP 10 유저 랭킹 조회
 export const userGetTop10 = () => {
-    return useFetch<TopUserResponse>(ApiEndpoints.TOP_10_USER);
+    return useFetch<ApiResponse<TopUserResponse>>(ApiEndpoints.TOP_10_USER);
 }
 
 //유저 챌린지 기록 조회

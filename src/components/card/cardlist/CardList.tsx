@@ -44,7 +44,7 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
             {data?.slice(0, 5).map((item) => (
               <S.ListItem
                 key={type === "user" ? (item as TopUser).userId : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId}
-                onClick={() => type === "user" ? undefined : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
+                onClick={() => type === "user" ? navigateToDetail(0) : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
               >
                 <span>{type === "user" ? (item as TopUser).nickname : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).title}</span>
                 <S.TagWrapper>
@@ -68,7 +68,7 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
             {data?.map((item) => (
               <S.ListItem
                 key={type === "user" ? (item as TopUser).userId : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId}
-                onClick={() => type === "user" ? undefined : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
+                onClick={() => type === "user" ? navigateToDetail(0) : navigateToDetail((item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).postId)}
               >
                 <span>{type === "user" ? (item as TopUser).nickname : (item as ChallengeRecruitHotResponse | ChallengeReviewHotResponse).title}</span>
                 <S.TagWrapper>

@@ -24,6 +24,7 @@ const Home = () => {
   const { data: hotChallengeReviewList } = useGetHotChallengeReview();
   const { data: top10UserList } = userGetTop10();
 
+  console.log(top10UserList?.data);
   return (
     <DefaultLayout variant="home">
       <MainSlider />
@@ -40,7 +41,7 @@ const Home = () => {
               <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="post" />
               <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="post" />
             </S.TopWrapper>
-            <CardList data={hotChallengeRecruitList?.data || []} title="TOP 10" color="pink" type="user" />
+            <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </S.CardWrapper>}
         <S.FieldWrapper>
           <SearchField />
