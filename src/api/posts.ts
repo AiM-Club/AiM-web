@@ -28,3 +28,13 @@ export const usePostPostComment = (postId: string) => {
 export const usePostPostLike = (postId: string) => {
     return usePost<void, PostLikeResponse>(buildPath(ApiEndpoints.POST_LIKE, { postId }));
 }
+
+//후기 작성
+export const usePostReview = () => {
+    return usePost<FormData, { postId: number }>(ApiEndpoints.REVIEW);
+}
+
+//qna 작성
+export const usePostQna = () => {
+    return usePost<FormData, { postId: number }>(ApiEndpoints.QNA);
+}
