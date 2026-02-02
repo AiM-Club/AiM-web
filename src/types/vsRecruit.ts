@@ -11,8 +11,8 @@ export interface ChallengeRecruitResponse {
   challengeId?: number;
   thumbnail: ImageResponse | null;
   user: RecruitUser;
-  startDate: string;
-  duration: string;
+  startedAt: string;
+  durationWeek: number;
   name: string;
   fields: string[];
   tags: string[];

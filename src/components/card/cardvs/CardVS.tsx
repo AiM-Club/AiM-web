@@ -53,8 +53,8 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
                 <S.VSInfoWrapper>
                     <S.VSInfo>
                         <S.InfoDate>
-                            <span>시작일 | {data.startDate}</span>
-                            <span>{data.duration}</span>
+                            <span>시작일 | {data.startedAt}</span>
+                            <span>{data.durationWeek}주</span>
                         </S.InfoDate>
 
                         <S.Title>{data.name}</S.Title>

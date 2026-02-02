@@ -24,8 +24,8 @@ export interface ChallengeVSResponse {
     postId?: number;
     thumbnail: ImageResponse | null;
     user: ChallengeUser;
-    startDate: string;
-    duration: string;
+    startedAt: string;
+    durationWeek: number;
     name: string;
     fields: string[];
     tags: string[];
