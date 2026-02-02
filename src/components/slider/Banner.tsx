@@ -7,6 +7,7 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import { useChallengeLike } from "@/api/challengeDetail";
 import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
 import { usePostPostLike } from "@/api/posts";
+import { useAuthStore } from "@/stores/authStore";
 
 interface BannerProps {
   isMine?: boolean;
@@ -19,7 +20,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
   const { mutate: recruitLike } = usePostPostLike(String(recruitInfo?.challengeId ?? "0"));
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(challengeInfo?.isLiked ?? false);
-  const logined = true;
+  const { user } = useAuthStore();
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
   const thumbnailUrl = type === "challenge" ? useUserPhotoUrl(thumbnail) || image : useUserPhotoUrl(recruitThumbnail) || image;
 
@@ -62,7 +63,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
         {!isMine &&
           <S.WriterWrapper>
             <p>{myInfo?.nickname}</p>
-            {logined && <S.HeartWrapper>
+            {user && <S.HeartWrapper>
               <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handleRecruitLike} />
               <p>{type === "challenge" ? challengeInfo?.likedCount : recruitInfo?.likeCount}</p>
             </S.HeartWrapper>}

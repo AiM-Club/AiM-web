@@ -18,7 +18,7 @@ export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
-  const { setUser, setUserPhoto } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const {
     register,

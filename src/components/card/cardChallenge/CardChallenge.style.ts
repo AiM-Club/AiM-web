@@ -74,7 +74,7 @@ export const CardTopic = styled.div<{
   width: 100%;
 `;
 
-export const Topic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null }>`
+export const Topic = styled.div<{ $color: "green" | "pink"; $direction: "right" | "left" | null; $openBtn: boolean }>`
   word-break: break-all;
   display: flex;
   justify-content: ${(props) =>
@@ -85,7 +85,7 @@ export const Topic = styled.div<{ $color: "green" | "pink"; $direction: "right" 
         : props.$color === "green"
           ? "flex-start"
           : "flex-end"};
-  width: calc(100% - 7rem);
+  width: ${(props) => (props.$openBtn ? "calc(100% - 7rem)" : "100%")};
 `;
 
 export const OpenBtnWrapper = styled.div<{ $color: "green" | "pink" }>`

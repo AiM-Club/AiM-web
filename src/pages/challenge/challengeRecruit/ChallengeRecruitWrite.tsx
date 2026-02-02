@@ -9,9 +9,9 @@ import * as S from "@/styles/WritePage.style";
 import { useRef } from "react";
 import { z } from "zod";
 import { usePostChallengeRecruit } from "@/api/posts";
-import { buildPath } from "@/utils/buildPath";
-import { PageEndPoints } from "@/constants/endpoints";
-import { useNavigate } from "react-router-dom";
+// import { buildPath } from "@/utils/buildPath";
+// import { PageEndPoints } from "@/constants/endpoints";
+// import { useNavigate } from "react-router-dom";
 
 const recruitWriteSchema = z.object({
   challengeId: z.string().min(1, "챌린지를 선택해 주세요"),
@@ -28,7 +28,7 @@ const recruitWriteSchema = z.object({
 type RecruitWriteForm = z.infer<typeof recruitWriteSchema>;
 
 const ChallengeRecruitWrite = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { mutate: createChallengeRecruitMutate } = usePostChallengeRecruit();
   const bannerTitleRef = useRef<BannerTitleFieldRef>(null);
   const writeElementsRef = useRef<WriteElementsSelectRef>(null);
