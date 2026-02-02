@@ -1,11 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import * as S from "./Modal.style";
-import close from "/public/modal_cancle.svg";
 
 interface ModalProps {
     trigger?: React.ReactNode; // optional 처리
-    title: string;
     children:
     | React.ReactNode
     | ((setOpen: (open: boolean) => void) => React.ReactNode);
@@ -15,7 +13,6 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({
     trigger,
-    title,
     children,
     open: controlledOpen,
     onOpenChange: controlledOnOpenChange,
