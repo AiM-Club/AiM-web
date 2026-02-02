@@ -183,7 +183,7 @@ export const InputOverlay = styled.div`
   gap: 0.5rem;
   background-color: color-mix(in oklch, var(--surpace-secondary), transparent 20%);
   border-radius: 0.25rem;
-  border: 1.5px solid var(--pink-500);
+  border: 1.5px solid var(--gray-600);
   font: var(--body-r-xl);
   color: var(--text-primary-default);
   z-index: 10;

@@ -19,9 +19,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import XIcon from "@/assets/X.png";
+import Lock from "@/assets/Lock.svg";
 import SubPagination from "../pagination/SubPagination";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useAuthStore } from "@/stores/authStore";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -120,6 +122,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const {user} = useAuthStore();
 
   // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
   const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
@@ -453,35 +456,43 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                           <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
                         </S.ReplyIndicator>
                       )}
-                      <S.WeekCommentInputWrapper>
-                        <S.WeekCommentInput
-                          {...register("content")}
-                          placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
-                        />
-                        <S.FileIconWrapper>
-                          <S.FileIconContentWrapper>
-                            <S.FileIconLabel>
-                              <S.FileIconInput
-                                ref={fileInputRef}
-                                type="file"
-                                onChange={handleFileChange}
-                              />
-                              <S.FileIconButton>
-                                <img src={FileIcon} alt="파일 업로드" />
-                              </S.FileIconButton>
-                            </S.FileIconLabel>
-                            {commentFile && (
-                              <S.FileNameWrapper>
-                                <S.FileName>{commentFile.name}</S.FileName>
-                                <S.FileNameDeleteBtn onClick={handleFileDelete}>
-                                  <img src={XIcon} alt="파일 삭제" />
-                                </S.FileNameDeleteBtn>
-                              </S.FileNameWrapper>
-                            )}
-                          </S.FileIconContentWrapper>
-                          <S.FinishBtn type="submit">완료</S.FinishBtn>
-                        </S.FileIconWrapper>
-                      </S.WeekCommentInputWrapper>
+                      <S.InputWrapperContainer>
+                        <S.WeekCommentInputWrapper>
+                          <S.WeekCommentInput
+                            {...register("content")}
+                            placeholder={user ? (selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요") : ""}
+                          />
+                          <S.FileIconWrapper>
+                            <S.FileIconContentWrapper>
+                              <S.FileIconLabel>
+                                <S.FileIconInput
+                                  ref={fileInputRef}
+                                  type="file"
+                                  onChange={handleFileChange}
+                                />
+                                <S.FileIconButton>
+                                  <img src={FileIcon} alt="파일 업로드" />
+                                </S.FileIconButton>
+                              </S.FileIconLabel>
+                              {commentFile && (
+                                <S.FileNameWrapper>
+                                  <S.FileName>{commentFile.name}</S.FileName>
+                                  <S.FileNameDeleteBtn onClick={handleFileDelete}>
+                                    <img src={XIcon} alt="파일 삭제" />
+                                  </S.FileNameDeleteBtn>
+                                </S.FileNameWrapper>
+                              )}
+                            </S.FileIconContentWrapper>
+                            <S.FinishBtn type="submit">완료</S.FinishBtn>
+                          </S.FileIconWrapper>
+                        </S.WeekCommentInputWrapper>
+                        {!user && (
+                          <S.InputOverlay>
+                            <S.LockImg src={Lock} alt="" />
+                            <span>로그인 후 이용 가능합니다</span>
+                          </S.InputOverlay>
+                        )}
+                      </S.InputWrapperContainer>
                     </form>
                   )}
                 </S.WeekContentWrapper>
