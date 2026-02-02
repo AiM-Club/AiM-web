@@ -47,7 +47,7 @@ export const DotContainer = styled.ul`
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     &.slick-active div {
       width: 2.5rem;
       height: 0.5rem;

@@ -8,12 +8,13 @@ import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
 import { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
+import type { CommentType } from "@/types/comment";
 
 const QnADetail = () => {
-  const { id } = useParams<{ id: string }>();
+  // const { id } = useParams<{ id: string }>();
   const { user } = useAuthStore();
   const [commentFiles, setCommentFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -46,43 +47,109 @@ const QnADetail = () => {
 </p>
 `;
 
-  const weekCommentData = [
+  const weekCommentData: CommentType[] = [
     {
       commentId: 1,
-      comment: "댓글 ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd용",
-      userName: "작성자",
-      userGrade: "A",
-      userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-      time: "2026.01.01",
-      reply: [
-        {
-          commentId: 1,
-          comment: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          userName: "작성자1",
-          userGrade: "A",
-          userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-          time: "2026.01.01",
-        },
+      depth: 0,
+      writerInfo: {
+        id: 1,
+        loginId: "test",
+        email: "test@test.com",
+        nickname: "작성자",
+        birthday: "2000.01.01",
+        gender: "MALE",
+        badge: "badge",
+        tier: { name: "A" },
+        socialLogin: null,
+        isNewUser: false,
+        profileImage: { uuid: "1234567890", fileName: "profile.jpg", size: 0, filePath: "", handlingType: "" },
+        createdAt: "2026.01.01",
+        lastModifiedAt: "2026.01.01",
+      },
+      content: "댓글 ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd용",
+      attachedImages: [],
+      attachedFiles: [],
+      createdAt: "2026.01.01",
+      updatedAt: "2026.01.01",
+      childrenComments: [
         {
           commentId: 2,
-          comment: "Ldffffffffffdddddddddddddddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          userName: "작성자1",
-          userGrade: "A",
-          userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-          time: "2026.01.01",
-        }
-      ]
+          depth: 1,
+          writerInfo: {
+            id: 2,
+            loginId: "test2",
+            email: "test2@test.com",
+            nickname: "작성자1",
+            birthday: "2000.01.01",
+            gender: "MALE",
+            badge: "badge",
+            tier: { name: "A" },
+            socialLogin: null,
+            isNewUser: false,
+            profileImage: { uuid: "1234567891", fileName: "profile2.jpg", size: 0, filePath: "", handlingType: "" },
+            createdAt: "2026.01.01",
+            lastModifiedAt: "2026.01.01",
+          },
+          content: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
+          attachedImages: [],
+          attachedFiles: [],
+          createdAt: "2026.01.01",
+          updatedAt: "2026.01.01",
+          childrenComments: [],
+        },
+        {
+          commentId: 3,
+          depth: 1,
+          writerInfo: {
+            id: 3,
+            loginId: "test3",
+            email: "test3@test.com",
+            nickname: "작성자1",
+            birthday: "2000.01.01",
+            gender: "MALE",
+            badge: "badge",
+            tier: { name: "A" },
+            socialLogin: null,
+            isNewUser: false,
+            profileImage: { uuid: "1234567892", fileName: "profile3.jpg", size: 0, filePath: "", handlingType: "" },
+            createdAt: "2026.01.01",
+            lastModifiedAt: "2026.01.01",
+          },
+          content: "Ldffffffffffdddddddddddddddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
+          attachedImages: [],
+          attachedFiles: [],
+          createdAt: "2026.01.01",
+          updatedAt: "2026.01.01",
+          childrenComments: [],
+        },
+      ],
     },
     {
-      commentId: 2,
-      comment: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
-      userName: "작성자",
-      userGrade: "A",
-      userImg: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlwMHl4dXFnOHlxcW5hNzNiZ2V0bXczMXdhOXdmY3dsc3M2dDhiNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3Ky1RlGqJN4xadIyRW/giphy.gif",
-      time: "2026.01.01",
-      reply: [],
-    }
-  ]
+      commentId: 4,
+      depth: 0,
+      writerInfo: {
+        id: 4,
+        loginId: "test4",
+        email: "test4@test.com",
+        nickname: "작성자",
+        birthday: "2000.01.01",
+        gender: "MALE",
+        badge: "badge",
+        tier: { name: "A" },
+        socialLogin: null,
+        isNewUser: false,
+        profileImage: { uuid: "1234567893", fileName: "profile4.jpg", size: 0, filePath: "", handlingType: "" },
+        createdAt: "2026.01.01",
+        lastModifiedAt: "2026.01.01",
+      },
+      content: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
+      attachedImages: [],
+      attachedFiles: [],
+      createdAt: "2026.01.01",
+      updatedAt: "2026.01.01",
+      childrenComments: [],
+    },
+  ];
 
   const handleFileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
@@ -117,11 +184,11 @@ const QnADetail = () => {
             {weekCommentData.map((data, index: number) => (
               <S.CommentWrapper key={index}>
                 <Comment data={data} />
-                {data.reply.length > 0 && <S.ReplyWrapper>
-                  {data.reply.map((replyData, replyIndex: number) => (
-                    <div key={replyIndex}>
-                      <Comment data={replyData} />
-                    </div>
+                {data.childrenComments.length > 0 && <S.ReplyWrapper>
+                  {data.childrenComments.map((childrenCommentData) => (
+                    <S.ReplyWrapper key={childrenCommentData.commentId}>
+                      <Comment data={childrenCommentData} type="reply" />
+                    </S.ReplyWrapper>
                   ))}
                 </S.ReplyWrapper>}
               </S.CommentWrapper>

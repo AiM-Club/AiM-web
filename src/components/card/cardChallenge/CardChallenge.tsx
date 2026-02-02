@@ -147,7 +147,7 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
         <S.CardBackgroundTop $image={getCardImageTop().toString().split('/').pop()?.split('?')[0] || ''} src={getCardImageTop()} $ismobile={isMobile} />
         {!isMobile && <S.CardBackground src={getCardImageBottom()} $height={backgroundHeight} />}
       </S.CardBackgroundWrapper>
-      {!isMobile && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}><S.Topic $color={color} $direction={topicDirection}>{topic?.slice(0, 22)}{topic && topic?.length > 22 ? "..." : ""}</S.Topic></S.CardTopic>}
+      {!isMobile && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}><S.Topic $openBtn={openBtn} $color={color} $direction={topicDirection}>{topic?.slice(0, 22)}{topic && topic?.length > 22 ? "..." : ""}</S.Topic></S.CardTopic>}
       {openBtn && !isMobile && (
         color === "green" ?
           <S.OpenBtnWrapper $color={color}>

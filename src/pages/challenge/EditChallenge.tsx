@@ -4,10 +4,10 @@ import WriteElementsSelect from "@/components/field/WriteElementsSelect";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const EditChallenge = () => {
-  const { id } = useParams<{ id: string }>();
+  // const { id } = useParams<{ id: string }>();
 
   return (
     <DefaultLayout variant="home">

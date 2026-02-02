@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FieldBtn from "../button/FieldBtn";
 import * as S from "./ChallengeInfoField.style";
 import LinkIcon from "@/assets/Link.svg";
