@@ -40,3 +40,9 @@ export const LockImage = styled.img`
     width: 2.5rem;
     height: 2.5rem;
 `;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;

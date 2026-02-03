@@ -24,22 +24,21 @@ const Home = () => {
   const { data: hotChallengeReviewList } = useGetHotChallengeReview();
   const { data: top10UserList } = userGetTop10();
 
-  console.log(top10UserList?.data);
   return (
     <DefaultLayout variant="home">
       <MainSlider />
       <S.HomeWrapper>
         {isMobile ?
           <S.CardWrapper><CardSlider>
-            <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="post" />
-            <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="post" />
+            <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="recruit" />
+            <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="review" />
             <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </CardSlider>
           </S.CardWrapper> :
           <S.CardWrapper>
             <S.TopWrapper>
-              <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="post" />
-              <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="post" />
+              <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="recruit" />
+              <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="review" />
             </S.TopWrapper>
             <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </S.CardWrapper>}

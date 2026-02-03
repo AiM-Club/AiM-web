@@ -23,8 +23,8 @@ export interface PostDetailResponse {
 }
 
 export interface PostCommentResponse {
-    comments: CommentType[];
-    pageInfo: PageResponse;
+    content: CommentType[];
+    page: PageResponse;
 }
 
 export interface PostLikeResponse {

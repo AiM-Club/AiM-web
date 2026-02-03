@@ -94,7 +94,7 @@ const ReviewDetail = () => {
   useEffect(() => {
     if (postComments?.data) {
       setPostComments(postComments.data);
-      setTotalPage(postComments.data.pageInfo.totalPages);
+      setTotalPage(postComments.data.page.totalPages);
     }
   }, [postComments, setPostComments]);
 
@@ -192,13 +192,13 @@ const ReviewDetail = () => {
           </S.FileNameWrapper>
         </S.ContentWrapper>
         <S.CommentWholeWrapper>
-          <PageTopic text={`댓글 (${postComments?.data?.pageInfo?.totalElements || 0})`} size="l" />
+          <PageTopic text={`댓글 (${postComments?.data?.page?.totalElements || 0})`} size="l" />
           <S.CommentWrapper>
             {isLoadingPostComments ? (
               <SubLoading />
             ) : (
               <>
-                {postComments?.data.comments.map((data) => (
+                {postComments?.data.content.map((data) => (
                   <S.CommentWrapper key={data.commentId}>
                     <Comment
                       data={data}

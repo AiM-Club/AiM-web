@@ -12,7 +12,7 @@ interface CardListProps {
   title: string;
   color: "green" | "pink";
   data: ChallengeRecruitHotResponse[] | ChallengeReviewHotResponse[] | TopUser[];
-  type: "post" | "user";
+  type: "recruit" | "user" | "review";
 }
 
 const CardList = ({ title, color = "green", data, type }: CardListProps) => {
@@ -22,15 +22,11 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
   const navigateToDetail = (postId: number) => {
     if (type === "user") {
       navigate(PageEndPoints.CHALLENGE_RANKING);
-    } else if (type === "post") {
-      if (data as ChallengeRecruitHotResponse[]) {
-        navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: postId }));
-      } else if (data as ChallengeReviewHotResponse[]) {
-        navigate(buildPath(PageEndPoints.REVIEW_DETAIL, { id: postId }));
-      } else {
-        return;
-      }
-    };
+    } else if (type === "recruit") {
+      navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: postId }));
+    } else if (type === "review") {
+      navigate(buildPath(PageEndPoints.REVIEW_DETAIL, { id: postId }));
+    }
   };
 
   return (
@@ -56,7 +52,7 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
                     ))
                   )}
                 </S.TagWrapper>
-                {type === "post" && (item as ChallengeReviewHotResponse).likeCount
+                {type === "review" && (item as ChallengeReviewHotResponse).likeCount
                   &&
                   <>
                     <S.HeartImg src={Heart} />
@@ -80,7 +76,7 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
                     ))
                   )}
                 </S.TagWrapper>
-                {type === "post" && (item as ChallengeReviewHotResponse).likeCount
+                {type === "review" && (item as ChallengeReviewHotResponse).likeCount
                   &&
                   <>
                     <S.HeartImg src={Heart} />

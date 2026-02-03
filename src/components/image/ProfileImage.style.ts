@@ -11,6 +11,13 @@ export const ProfileImgWrapper = styled.div<{ $width: number; $color?: "green" |
     props.$color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"};
   aspect-ratio: 1;
   clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
+
+  ${(props) => props.$type === "winner" && `
+    @media (max-width: 768px) {
+      width: 10rem;
+      height: 10rem;
+    }
+  `}
 `;
 
 export const CrownBadge = styled.div`

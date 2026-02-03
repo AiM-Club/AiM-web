@@ -9,9 +9,10 @@ interface InputFieldProps {
   checkDuplicate?: boolean;
   register: UseFormRegisterReturn;
   onDuplicateCheck?: () => void;
+  disabled?: boolean;
 }
 
-export const InputField = ({ label, placeholder, checkDuplicate = false, register, onDuplicateCheck }: InputFieldProps) => {
+export const InputField = ({ label, placeholder, checkDuplicate = false, register, onDuplicateCheck, disabled = false }: InputFieldProps) => {
   return (
     <S.InputFieldWrapper>
       <S.LabelText>{label}</S.LabelText>
@@ -19,9 +20,10 @@ export const InputField = ({ label, placeholder, checkDuplicate = false, registe
         $checkDuplicate={checkDuplicate}
         $label={label}
         placeholder={placeholder}
+        disabled={disabled}
         {...register}
       />
-      {checkDuplicate &&
+      {checkDuplicate && !disabled &&
         <S.DuplicateBtnWrapper onClick={onDuplicateCheck}>
           중복 확인
         </S.DuplicateBtnWrapper>}
