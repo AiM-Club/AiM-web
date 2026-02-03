@@ -8,7 +8,6 @@ import Lock from "@/assets/Lock.svg";
 import usePagination from "@/hooks/usePagination";
 import useSearch from "@/hooks/useSearch";
 import { useEffect } from "react";
-import Loading from "@/components/loading/Loading";
 import { userGetMyLiked } from "@/api/user";
 
 const MyLiked = () => {
@@ -22,7 +21,6 @@ const MyLiked = () => {
         setTotalPage(myLikedData?.data.page.totalPages || 1);
     }, [myLikedData?.data.page.totalPages, setTotalPage]);
 
-    if (isLoading) return <Loading />;
     return (
         <DefaultLayout>
             {user ? (

@@ -9,7 +9,6 @@ import { userGetMyPost } from "@/api/user";
 import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import { useEffect } from "react";
-import Loading from "@/components/loading/Loading";
 
 const MyPost = () => {
     const { user } = useAuthStore();
@@ -23,7 +22,6 @@ const MyPost = () => {
         setTotalPage(myPostData?.data.page.totalPages || 1);
     }, [myPostData?.data.page.totalPages, setTotalPage]);
 
-    if (isLoading) return <Loading />;
     return (
         <DefaultLayout>
             {user ? (

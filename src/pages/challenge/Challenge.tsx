@@ -2,7 +2,6 @@ import { ProgressBar } from "@/components/bar/ProgressBar";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/challenge/Challenge.style";
-import { cardVSData } from "./Constants";
 import { CardChallenge } from "@/components/card/cardChallenge/CardChallenge";
 import { ChallengeMainContent } from "@/components/content/CardContent";
 import SearchField from "@/components/field/SearchField";
