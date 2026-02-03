@@ -46,6 +46,7 @@ export enum ApiEndpoints {
   PHOTO = "/files/images/:file_uuid",
   DOWNLOAD_PHOTO = "/files/downloads/:file_uuid",
   CHALLENGE = "/challenges",
+  CHALLENGE_ALL = "/challenges/all",
   CHALLENGE_VS = "/challenges/vs",
   CHALLENGE_SOLO = "/challenges/solo",
   CHALLENGE_VS_HOT = "/posts/hot/vs",

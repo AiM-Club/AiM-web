@@ -127,3 +127,17 @@ export const useGetHotChallengeSolo = ({ sort, keyword, page = 0, size = 8 }: { 
   }
   return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_SOLO_HOT, params);
 }
+
+
+//ALl 챌린지 조회
+export const useGetAllChallenge = ({ sort, keyword, page = 0, size = 16 }: { sort?: string, keyword?: string, page?: number, size?: number }) => {
+  const params: Record<string, string | number> = { page, size };
+
+  if (sort && sort !== "--") {
+    params.sort = sort;
+  }
+  if (keyword && keyword.trim() !== "") {
+    params.keyword = keyword.trim();
+  }
+  return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_ALL, params);
+}

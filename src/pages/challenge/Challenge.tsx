@@ -11,12 +11,26 @@ import useMedia from "@/hooks/useMedia";
 import CardSlider from "@/components/slider/CardSlider";
 import { userGetChallengeRecord } from "@/api/user";
 import Loading from "@/components/loading/Loading";
+import { useGetAllChallenge } from "@/api/challenge";
+import usePagination from "@/hooks/usePagination";
+import useSearch from "@/hooks/useSearch";
+import { useEffect } from "react";
 
 const Challenge = () => {
   const isMobile = useMedia(800);
   const { data: userChallengeRecord, isLoading } = userGetChallengeRecord();
+  const { currentPage, totalPage, setTotalPage, handlePageChange } = usePagination();
+  const { keyword, sort, handleKeywordChange, handleSortChange } = useSearch({
+    onSearchChange: () => handlePageChange(1),
+  });
+  const { data: allChallengeList, isLoading: isLoadingAllChallenge } = useGetAllChallenge({ sort: sort, page: currentPage - 1, size: 8, keyword });
 
-  if (isLoading) return <Loading />;
+
+  useEffect(() => {
+    setTotalPage(allChallengeList?.data.page.totalPages || 1);
+  }, [allChallengeList?.data.page.totalPages, setTotalPage]);
+
+  if (isLoading || isLoadingAllChallenge) return <Loading />;
   return (
     <DefaultLayout>
       <S.ChallengeWrapper>
@@ -45,8 +59,17 @@ const Challenge = () => {
         </S.ChallengeRecordWrapper>
         <S.AllChallengeWrapper>
           <PageTopic text="ALL 챌린지" size="l" />
-          <SearchField />
-          <CardBoard data={cardVSData} type="vs" />
+          <SearchField
+            sorts={[
+              { value: "LATEST", label: "최신순" },
+              { value: "OLDEST", label: "오래된순" },
+              { value: "LIKED", label: "좋아요순" },
+              { value: "TITLE", label: "가나다순" },
+            ]}
+            onKeywordChange={handleKeywordChange}
+            onSortChange={handleSortChange}
+          />
+          <CardBoard data={allChallengeList?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoadingAllChallenge} type="vs" />
         </S.AllChallengeWrapper>
       </S.ChallengeWrapper>
     </DefaultLayout>
