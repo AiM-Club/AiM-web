@@ -14,16 +14,16 @@ const WinnerModal = ({ trigger }: { trigger: React.ReactNode }) => {
                         <S.CrownImage src={Crown} />
                         WIN!
                         <S.CrownImage src={Crown} />
-                    </S.Title>  
+                    </S.Title>
                     <ProfileImage image={NoPhoto} width={11.25} color="pink" type="winner" />
                     <S.TitleText>
-                    00주간 진행된 VS 대결에서
-                    <br />
-                    000님이 승리했습니다
+                        00주간 진행된 VS 대결에서
+                        <br />
+                        000님이 승리했습니다
                     </S.TitleText>
                 </S.WinnerProfileWrapper>
                 <S.ButtonWrapper>
-                    <S.Button>나가기</S.Button>
+                    <S.ButtonCancel>나가기</S.ButtonCancel>
                     <S.Button>홈으로 이동</S.Button>
                 </S.ButtonWrapper>
             </S.WinnerModalContent>
