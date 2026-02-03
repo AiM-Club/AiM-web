@@ -23,6 +23,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ApiEndpoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
 import SubPagination from "@/components/pagination/SubPagination";
+import { useImageOpen } from "@/hooks/useImageOpen";
+import { useFileDownload } from "@/hooks/useFileDownload";
 
 const QnADetail = () => {
   const { user } = useAuthStore();
@@ -36,7 +38,8 @@ const QnADetail = () => {
   const queryClient = useQueryClient();
   const { data: postComments, isLoading: isLoadingPostComments } = useGetPostComments(id || "", currentPage);
   const { mutate: postComment } = usePostPostComment(id || "");
-
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
   // 답글 관련 state
   const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
   const [commentFile, setCommentFile] = useState<File | null>(null);
@@ -178,12 +181,12 @@ const QnADetail = () => {
           <S.FileNameWrapper>
             {qnaDetail?.data.attachedImages && qnaDetail?.data.attachedImages.length > 0 &&
               qnaDetail?.data.attachedImages.map((data, index) => (
-                <S.FileName key={index}>{data.fileName}</S.FileName>
+                <S.FileName key={index} onClick={() => openImage(data)}>{data.fileName}</S.FileName>
               ))
             }
             {qnaDetail?.data.attachedFiles && qnaDetail?.data.attachedFiles.length > 0 &&
               qnaDetail?.data.attachedFiles.map((data, index) => (
-                <S.FileName key={index}>{data.fileName}</S.FileName>
+                <S.FileName key={index} onClick={() => downloadFile(data)}>{data.fileName}</S.FileName>
               ))
             }
           </S.FileNameWrapper>

@@ -68,6 +68,7 @@ export enum ApiEndpoints {
   POST_COMMENTS = "/posts/:postId/comments",
   POST_LIKE = "/posts/:postId/likes",
   REVIEW = "/posts/review",
+  REVIEW_DETAIL = "/posts/review/:postId",
   QNA = "/posts/qna",
   QNA_DETAIL = "/posts/qna/:postId",
   TOP_10_USER = "/users/rank/top10",

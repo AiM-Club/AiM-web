@@ -75,3 +75,8 @@ export const useGetReview = ({ category, sort, keyword, page = 0, size = 8 }: { 
 export const useGetQnaDetail = (postId: string) => {
     return useFetch<ApiResponse<PostDetailResponse>>(buildPath(ApiEndpoints.QNA_DETAIL, { postId }));
 }
+
+//후기 상세조회
+export const useGetReviewDetail = (postId: string) => {
+    return useFetch<ApiResponse<PostDetailResponse>>(buildPath(ApiEndpoints.REVIEW_DETAIL, { postId }));
+}

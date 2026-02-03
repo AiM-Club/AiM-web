@@ -51,6 +51,7 @@ export const FileName = styled.div`
   background-color: var(--surpace-tertiary);
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 export const CommentWholeWrapper = styled.div`
