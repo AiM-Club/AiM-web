@@ -1,3 +1,5 @@
+import type { Tier } from "./auth";
+
 export interface TopUser {
     rank: number;
     userId: number;
@@ -18,4 +20,11 @@ export interface Record {
     attemptCount: number;
     successCount: number;
     failCount: number;
+}
+
+export interface UserLevelResponse {
+    tier: Tier;
+    level: number;
+    tierProgressPercent: number;
+    nextTier: Tier;
 }
