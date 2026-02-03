@@ -18,7 +18,7 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { PageEndPoints } from "@/constants/endpoints";
-// import { useWebSocketTimer } from "@/api/timer";
+import { useWebSocketTimer } from "@/api/timer";
 
 const ChallengeVSMatch = () => {
   const { user } = useAuthStore();
@@ -39,7 +39,7 @@ const ChallengeVSMatch = () => {
   const [isMine, setIsMine] = useState(false);
 
   // WebSocket 연결
-  // useWebSocketTimer();
+  useWebSocketTimer();
 
   // challengeId가 변경될 때 store 초기화
   useEffect(() => {
