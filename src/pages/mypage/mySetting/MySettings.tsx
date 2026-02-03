@@ -12,11 +12,12 @@ import { joinSchema, type JoinSchemaType } from "@/types/schemas/JoinSchemaType"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
-import { useExistNickname } from "@/api/auth";
+import { useExistNickname, useLogout } from "@/api/auth";
 import { useGetPhoto } from "@/api/photo";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import Lock from "@/assets/Lock.svg";
 import { userUpdateMyProfile } from "@/api/user";
+import { PageEndPoints } from "@/constants/endpoints";
 
 const MySettings = () => {
   const { user, userPhoto } = useAuthStore();
@@ -27,6 +28,8 @@ const MySettings = () => {
   const { mutate: existNickname } = useExistNickname();
   const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
   const { mutate: updateMyProfile } = userUpdateMyProfile();
+  const { mutate: logoutMutate } = useLogout();
+  const { logout } = useAuthStore();
   // gender 변환 함수
   const convertGender = (gender?: string): string => {
     if (!gender) return "";
@@ -204,6 +207,21 @@ const MySettings = () => {
     );
   }
 
+  const handleLogout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      logoutMutate(undefined, {
+        onSuccess: () => {
+          logout();
+          window.location.href = PageEndPoints.HOME;
+        },
+        onError: (error: any) => {
+          console.error("로그아웃 실패:", error);
+          alert("로그아웃에 실패했습니다.");
+        },
+      });
+    }
+  }
+
   return (
     <DefaultLayout>
       {user ? (
@@ -280,14 +298,20 @@ const MySettings = () => {
               <FieldError error={errors.profileImage?.message} />
             </div>
           </S.InputWrapper>
-          <div>
+          <S.ButtonWrapper>
             <SubmitBtn
-              text={isEditMode ? "완료" : "변경"}
+              text={isEditMode ? "완료" : "편집"}
               fill={true}
               active={true}
               onSubmit={handleEditToggle}
             />
-          </div>
+            <SubmitBtn
+              text="로그아웃"
+              fill={false}
+              active={true}
+              onSubmit={handleLogout}
+            />
+          </S.ButtonWrapper>
         </S.JoinWrapper>
       ) : (
         <S.EmptyState>
