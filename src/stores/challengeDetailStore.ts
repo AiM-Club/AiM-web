@@ -25,6 +25,7 @@ interface ChallengeDetailStore {
   setChallengeOpponentDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
   resetChallengeDetail: () => void;
   updateChallengeLike: (isLiked: boolean) => void;
+  updateTimer: (weekNumber: number, stopwatchTimeSeconds: number, isMy: boolean) => void;
 }
 
 export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
@@ -83,5 +84,23 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
         likedCount: isLiked ? state.challengeInfo.likedCount + 1 : Math.max(0, state.challengeInfo.likedCount - 1),
       },
     };
+  }),
+  updateTimer: (weekNumber, stopwatchTimeSeconds, isMy) => set((state) => {
+    const targetMap = isMy ? state.progressMyListMap : state.progressOpponentListMap;
+    const progress = targetMap[weekNumber];
+    if (progress) {
+      const updatedProgress = {
+        ...progress,
+        stopwatchTimeSeconds,
+      };
+      const updatedMap = {
+        ...targetMap,
+        [weekNumber]: updatedProgress,
+      };
+      return isMy
+        ? { progressMyListMap: updatedMap }
+        : { progressOpponentListMap: updatedMap };
+    }
+    return state;
   }),
 }));
