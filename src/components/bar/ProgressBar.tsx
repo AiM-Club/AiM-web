@@ -1,7 +1,7 @@
 import * as S from "./ProgressBar.style";
-import ProgressBarIconPink from "@/assets/progressBarPink.svg";
-import ProgressBarIconPinkSmall from "@/assets/progressBarSmallPink.svg";
-import ProgressBarIconGreen from "@/assets/progressBarGreen.svg";
+import ProgressBarIconPink from "@/assets/ProgressBarPink.svg";
+import ProgressBarIconPinkSmall from "@/assets/ProgressBarSmallPink.svg";
+import ProgressBarIconGreen from "@/assets/ProgressBarGreen.svg";
 
 //text는 bar의 topic, progress는 서버에서 받아온 진도율, height는 bar의 높이, color는 bar의 색깔깔
 interface ProgressBarProps {

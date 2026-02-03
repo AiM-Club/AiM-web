@@ -109,7 +109,7 @@ const WriteReview = () => {
 
       postReviewMutate(formData, {
         onSuccess: (response) => {
-          navigate(buildPath(PageEndPoints.REVIEW_DETAIL, { id: response.data.reviewId }));
+          navigate(buildPath(PageEndPoints.REVIEW_DETAIL, { id: String(response.data.postId) }));
         },
         onError: () => {
           alert("후기 작성에 실패했습니다. 다시 시도해주세요.");

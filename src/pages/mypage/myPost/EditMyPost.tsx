@@ -6,10 +6,10 @@ import WriteField from "@/components/field/WriteField";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/WritePage.style";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const EditMyPost = () => {
-  const { id } = useParams<{ id: string }>();
+  // const { id } = useParams<{ id: string }>();
 
   return (
     <DefaultLayout variant="home">
