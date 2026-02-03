@@ -1,4 +1,4 @@
-import type { ProfileImage, User } from "./auth";
+import type { User } from "./auth";
 import type { ImageResponse, PageResponse, RequestUser } from "./common";
 // 챌린지 생성/수정 요청 타입
 export interface ChallengeRequest {
