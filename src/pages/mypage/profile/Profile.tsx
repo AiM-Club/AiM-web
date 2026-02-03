@@ -21,13 +21,16 @@ const Profile = () => {
   const isMobile = useMedia(700);
   const { data: myProfileData, isLoading } = userGetMyProfile();
   const { data: photo, mutate: getPhoto } = useGetPhoto();
+  const profileImageUrl = useUserPhotoUrl(photo ?? null);
 
   useEffect(() => {
     if (myProfileData?.data?.profileImage?.uuid) {
       getPhoto({ file_uuid: myProfileData?.data?.profileImage?.uuid });
     }
   }, [myProfileData?.data?.profileImage?.uuid, getPhoto]);
+
   if (isLoading) return <Loading />;
+
   return (
     <DefaultLayout>
       {user ? (
@@ -36,7 +39,7 @@ const Profile = () => {
           <S.profileContainer>
             <S.profileHeader>
               <S.profileInfoWrapper>
-                <ProfileImage color="pink" image={useUserPhotoUrl(photo ?? null) || NoPhoto} width={isMobile ? 6 : 13.938} />
+                <ProfileImage color="pink" image={profileImageUrl || NoPhoto} width={isMobile ? 6 : 13.938} />
                 <S.profileInfo>
                   <S.Info>
                     <S.profileName>{myProfileData?.data?.nickname}</S.profileName>
