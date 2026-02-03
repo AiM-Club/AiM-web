@@ -20,8 +20,9 @@ const qnaWriteSchema = z.object({
   fields: z.string().min(1, "분야를 선택해 주세요"),
   startedAt: z.string().min(1, "시작일을 선택해 주세요"),
   durationWeek: z.number().min(1, "주차를 선택해 주세요"),
+  mode: z.string().min(1, "모드를 선택해 주세요"),
   job: z.string().min(1, "직무를 입력해 주세요"),
-  contents: z.string().min(1, "내용을 입력해 주세요"),
+  content: z.string().min(1, "내용을 입력해 주세요"),
   files: z.array(z.instanceof(File)).optional(),
   images: z.array(z.instanceof(File)).optional(),
   thumbnail: z.instanceof(File).optional(),
@@ -64,10 +65,11 @@ const WriteQnA = () => {
       title: bannerData?.title ?? "",
       tags: elementsData?.tags ?? [],
       fields: elementsData?.field ?? "",
+      mode: elementsData?.mode ?? "",
       job: elementsData?.job ?? "",
       startedAt: elementsData?.startDate ?? "",
       durationWeek: elementsData?.weeks ?? 0,
-      contents: content.trim(),
+      content: content.trim(),
       files: files.length > 0 ? files : undefined,
       images: images.length > 0 ? images : undefined,
       thumbnail: thumbnail ?? undefined,
@@ -89,7 +91,8 @@ const WriteQnA = () => {
       formData.append("job", result.data.job);
       formData.append("startedAt", result.data.startedAt);
       formData.append("durationWeek", String(result.data.durationWeek));
-      formData.append("content", result.data.contents);
+      formData.append("content", result.data.content);
+      formData.append("mode", result.data.mode);
       result.data.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
