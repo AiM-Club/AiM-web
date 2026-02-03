@@ -1,4 +1,5 @@
 import type { Tier } from "./auth";
+import type { ImageResponse } from "./common";
 
 export interface TopUser {
     rank: number;
@@ -27,4 +28,19 @@ export interface UserLevelResponse {
     level: number;
     tierProgressPercent: number;
     nextTier: Tier;
+}
+
+export interface UserProfileResponse {
+    userId: number;
+    profileImage: ImageResponse;
+    nickname: string;
+    loginId: string;
+    tier: Tier;
+    level: number;
+    tags: string[];
+    fields: string[];
+    allChallengeRecord: Record;
+    soloChallengeRecord: Record;
+    vsChallengeRecord: Record;
+    isMine: boolean;
 }

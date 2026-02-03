@@ -35,4 +35,5 @@ export const secureRoutes = [
     { method: Method.GET, url: ApiEndpoints.USER_CHALLENGE_RECORD },
     { method: Method.GET, url: ApiEndpoints.REVIEW_DETAIL },
     { method: Method.GET, url: ApiEndpoints.USER_MY_LEVEL },
+    { method: Method.GET, url: ApiEndpoints.USER_MY_PROFILE },
 ];

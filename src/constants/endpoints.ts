@@ -43,6 +43,7 @@ export enum ApiEndpoints {
   GOOGLE_LOGIN = "/auth/login/google",
   KAKAO_LOGIN = "/auth/login/kakao",
   MY_PROFILE = "/users/profile",
+  USER_MY_PROFILE = "/users/me/profile",
   PHOTO = "/files/images/:file_uuid",
   DOWNLOAD_PHOTO = "/files/downloads/:file_uuid",
   CHALLENGE = "/challenges",

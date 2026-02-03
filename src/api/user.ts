@@ -1,7 +1,7 @@
 import { useFetch } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
-import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse } from "@/types/user";
+import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse } from "@/types/user";
 
 
 //TOP 10 유저 랭킹 조회
@@ -17,4 +17,9 @@ export const userGetChallengeRecord = () => {
 //마이페이지 레벨 조회
 export const userGetMyLevel = () => {
     return useFetch<ApiResponse<UserLevelResponse>>(ApiEndpoints.USER_MY_LEVEL);
+}
+
+//내 프로필 조회
+export const userGetMyProfile = () => {
+    return useFetch<ApiResponse<UserProfileResponse>>(ApiEndpoints.USER_MY_PROFILE);
 }
