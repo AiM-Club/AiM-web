@@ -24,7 +24,6 @@ const Home = () => {
   const { data: hotChallengeReviewList } = useGetHotChallengeReview();
   const { data: top10UserList } = userGetTop10();
 
-  console.log(top10UserList?.data);
   return (
     <DefaultLayout variant="home">
       <MainSlider />
