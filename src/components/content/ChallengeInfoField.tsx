@@ -5,6 +5,7 @@ import LinkIcon from "@/assets/Link.svg";
 import { usePostDetailStore } from "@/stores/PostDetailStore";
 import { formatDateKR } from "@/utils/useTime";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useFieldName } from "@/utils/useField";
 
 const ChallengeInfoField = () => {
   const { postInfo } = usePostDetailStore();
@@ -23,7 +24,7 @@ const ChallengeInfoField = () => {
         <S.ContentTitle>분야</S.ContentTitle>
         <S.DataWrapper>
           {postInfo?.fields.map((data, index) => (
-            <FieldBtn key={index} text={data.name} />
+            <FieldBtn key={index} text={useFieldName(data.name) || data.name} />
           ))}
         </S.DataWrapper>
       </S.EachContentWrapper>
