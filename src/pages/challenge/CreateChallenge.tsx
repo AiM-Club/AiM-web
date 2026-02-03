@@ -63,7 +63,7 @@ const CreateChallenge = () => {
       const fromData = new FormData();
       fromData.append("name", bannerData?.title || "");
       fromData.append("startedAt", elementsData?.startDate || "");
-      fromData.append("duration", elementsData?.weeks?.toString() || "");
+      fromData.append("durationWeek", elementsData?.weeks?.toString() || "");
       fromData.append("tags", elementsData?.tags?.join(",") || "");
       fromData.append("fields", elementsData?.field || "");
       fromData.append("job", elementsData?.job || "");
