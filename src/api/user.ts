@@ -38,3 +38,18 @@ export const userGetMyPost = ({ category, sort, keyword, page = 0, size = 16 }: 
     }
     return useFetch<ApiResponse<UserPostResponse>>(ApiEndpoints.USER_MY_POST, params);
 }
+
+//내 좋아요 조회
+export const userGetMyLiked = ({ category, sort, keyword, page = 0, size = 16 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+    const params: Record<string, string | number> = { page, size };
+    if (category && category !== "ALL") {
+        params.category = category;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    return useFetch<ApiResponse<UserPostResponse>>(ApiEndpoints.USER_MY_LIKED, params);
+}
