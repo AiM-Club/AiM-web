@@ -4,6 +4,7 @@ import type { CommentType } from "./comment";
 
 export interface PostDetailResponse {
     challengeId: number;
+    challengeName: string;
     writerId: number;
     nickname: string;
     thumbnail: ImageResponse | null;
@@ -13,6 +14,7 @@ export interface PostDetailResponse {
     job: string;
     startDate: string;
     totalWeeks: number;
+    mode: string;
     isLiked: boolean;
     likeCount: number;
     content: string;

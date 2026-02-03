@@ -6,14 +6,17 @@ import { usePostDetailStore } from "@/stores/PostDetailStore";
 import { formatDateKR } from "@/utils/useTime";
 import { PageEndPoints } from "@/constants/endpoints";
 
-interface ChallengeInfoFieldProps {
-  mode?: string;
-}
-
-const ChallengeInfoField = ({ mode }: ChallengeInfoFieldProps) => {
+const ChallengeInfoField = () => {
   const { postInfo } = usePostDetailStore();
   const navigate = useNavigate();
 
+  const navigateToChallengeVS = () => {
+    if (postInfo?.mode === "VS") {
+      navigate(PageEndPoints.CHALLENGE_VS_DETAIL.replace(":id", String(postInfo?.challengeId || "0")));
+    } else {
+      navigate(PageEndPoints.CHALLENGE_SOLO_DETAIL.replace(":id", String(postInfo?.challengeId || "0")));
+    }
+  }
   return (
     <S.ChallengeInfoFieldWrapper>
       <S.EachContentWrapper>
@@ -50,16 +53,16 @@ const ChallengeInfoField = ({ mode }: ChallengeInfoFieldProps) => {
           <S.Data>{postInfo?.totalWeeks}주</S.Data>
         </S.DataWrapper>
       </S.EachContentWrapper>
-      {mode && <S.EachContentWrapper>
+      {postInfo?.mode && <S.EachContentWrapper>
         <S.ContentTitle>모드</S.ContentTitle>
         <S.DataWrapper>
-          <S.Data>{mode}</S.Data>
+          <S.Data>{postInfo?.mode}</S.Data>
         </S.DataWrapper>
       </S.EachContentWrapper>}
       <S.EachContentWrapper>
         <S.DataWrapper>
           <img src={LinkIcon} />
-          <S.LinkData onClick={() => { navigate(PageEndPoints.CHALLENGE_VS_DETAIL.replace(":id", String(postInfo?.challengeId || "0"))) }}>{postInfo?.title}(링크)</S.LinkData>
+          <S.LinkData onClick={navigateToChallengeVS}>{postInfo?.challengeName}(링크)</S.LinkData>
         </S.DataWrapper>
       </S.EachContentWrapper>
     </S.ChallengeInfoFieldWrapper>
