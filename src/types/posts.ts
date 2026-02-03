@@ -2,7 +2,7 @@ import type { ImageResponse, PageResponse } from "./common";
 import type { Detailfields, DetailTags } from "./challengeDetail";
 import type { CommentType } from "./comment";
 
-export interface ChallengeRecruitDetailResponse {
+export interface PostDetailResponse {
     challengeId: number;
     writerId: number;
     nickname: string;
