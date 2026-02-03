@@ -12,3 +12,19 @@ export interface ImageResponse {
     filePath: string;
     handlingType: string;
 }
+
+export interface RequestUser {
+    id: number;
+    loginId: string;
+    email: string;
+    nickname: string;
+    birthday: string;
+    gender: string;
+    tier: {
+        name: string;
+    };
+    level: number;
+    socialLogin: string | null;
+    isNewUser: boolean;
+    profileImage: ImageResponse;
+}

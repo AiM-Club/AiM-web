@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
 import type { QnaType } from "@/types/posts";
+import { useFieldName } from "@/utils/useField";
 
 interface CardVSItems {
     data: ChallengeVSResponse | ChallengeRecruitResponse | QnaType;
@@ -47,7 +48,7 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
             <S.CardContent>
                 <S.UserInfo>
                     <S.UserImg src={userPhotoUrl || NoPhoto} />
-                    <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg(data.user?.badge?.toLowerCase() || "bronze")} /></S.UserName>
+                    <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg((data.user as any)?.tier?.name?.toLowerCase() || "bronze")} /></S.UserName>
                 </S.UserInfo>
                 <S.VSImg src={thumbnailPhotoUrl || NoPhoto} />
                 <S.VSInfoWrapper>
@@ -62,7 +63,7 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
                         <S.FieldTagWrapper>
                             <S.InfoName>분야</S.InfoName>
                             {data.fields.map((f, i) => (
-                                <S.Field key={i}>{f}</S.Field>
+                                <S.Field key={i}>{useFieldName(f) || f}</S.Field>
                             ))}
                         </S.FieldTagWrapper>
 

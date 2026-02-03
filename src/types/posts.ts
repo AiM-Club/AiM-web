@@ -1,4 +1,4 @@
-import type { ImageResponse, PageResponse } from "./common";
+import type { ImageResponse, PageResponse, RequestUser } from "./common";
 import type { Detailfields, DetailTags } from "./challengeDetail";
 import type { CommentType } from "./comment";
 
@@ -41,18 +41,13 @@ export interface QnaType {
     postId: number;
     challengeId?: number;
     thumbnail: ImageResponse | null;
-    user: PostUser;
+    user: RequestUser;
     name: string;
+    startedAt: string;
+    durationWeek: number;
     fields: string[];
     tags: string[];
     job: string;
     isLiked: boolean;
     likeCount: number;
-}
-
-export interface PostUser {
-    userId: number;
-    nickname: string;
-    tier: string;
-    profileImage: ImageResponse;
 }
