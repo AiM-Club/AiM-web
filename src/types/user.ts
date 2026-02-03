@@ -1,5 +1,5 @@
 import type { Tier } from "./auth";
-import type { ImageResponse } from "./common";
+import type { ImageResponse, PageResponse, RequestUser } from "./common";
 
 export interface TopUser {
     rank: number;
@@ -43,4 +43,23 @@ export interface UserProfileResponse {
     soloChallengeRecord: Record;
     vsChallengeRecord: Record;
     isMine: boolean;
+}
+
+export interface UserPostResponse {
+    content: PostType[];
+    page: PageResponse;
+}
+
+export interface PostType {
+    postId: number;
+    thumbnail: ImageResponse | null;
+    user: RequestUser;
+    startedAt: string;
+    durationWeek: number;
+    name: string;
+    fields: string[];
+    tags: string[];
+    job: string;
+    liked: boolean;
+    likeCount: number;
 }

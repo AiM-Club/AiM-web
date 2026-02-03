@@ -1,7 +1,7 @@
 import { useFetch } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
-import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse } from "@/types/user";
+import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse, UserPostResponse } from "@/types/user";
 
 
 //TOP 10 유저 랭킹 조회
@@ -22,4 +22,19 @@ export const userGetMyLevel = () => {
 //내 프로필 조회
 export const userGetMyProfile = () => {
     return useFetch<ApiResponse<UserProfileResponse>>(ApiEndpoints.USER_MY_PROFILE);
+}
+
+//내 게시글 조회
+export const userGetMyPost = ({ category, sort, keyword, page = 0, size = 16 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+    const params: Record<string, string | number> = { page, size };
+    if (category && category !== "ALL") {
+        params.category = category;
+    }
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    return useFetch<ApiResponse<UserPostResponse>>(ApiEndpoints.USER_MY_POST, params);
 }
