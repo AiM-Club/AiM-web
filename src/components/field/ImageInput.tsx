@@ -1,16 +1,26 @@
 import * as S from "./ImageInput.style";
 import ImageIcon from "@/assets/ImageLogo.svg";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface ImageInputProps {
   onChange?: (file: File | null) => void;
+  initialPreview?: string | null;
+  disabled?: boolean;
 }
 
-export const ImageInput = ({ onChange }: ImageInputProps) => {
-  const [preview, setPreview] = useState<string | null>(null);
+export const ImageInput = ({ onChange, initialPreview, disabled = false }: ImageInputProps) => {
+  const [preview, setPreview] = useState<string | null>(initialPreview || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // initialPreview가 변경되면 preview 업데이트
+  useEffect(() => {
+    if (initialPreview) {
+      setPreview(initialPreview);
+    }
+  }, [initialPreview]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
     const file = e.target.files?.[0];
     if (file) {
 
@@ -37,13 +47,14 @@ export const ImageInput = ({ onChange }: ImageInputProps) => {
   };
 
   const handleClick = () => {
+    if (disabled) return;
     fileInputRef.current?.click();
   };
 
   return (
     <S.ImageInputWrapper>
       <S.LabelText>프로필 이미지</S.LabelText>
-      <S.ImageInputField onClick={handleClick}>
+      <S.ImageInputField onClick={handleClick} style={{ pointerEvents: disabled ? "none" : "auto", opacity: disabled ? 0.5 : 1 }}>
         <input
           type="file"
           ref={fileInputRef}

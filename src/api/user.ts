@@ -1,4 +1,4 @@
-import { useFetch } from "./hooks";
+import { useFetch, usePatch } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
 import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse, UserPostResponse } from "@/types/user";
@@ -52,4 +52,9 @@ export const userGetMyLiked = ({ category, sort, keyword, page = 0, size = 16 }:
         params.keyword = keyword.trim();
     }
     return useFetch<ApiResponse<UserPostResponse>>(ApiEndpoints.USER_MY_LIKED, params);
+}
+
+//내 프로필 수정
+export const userUpdateMyProfile = () => {
+    return usePatch<FormData, UserProfileResponse>(ApiEndpoints.USER_MY_PROFILE);
 }
