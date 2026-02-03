@@ -413,6 +413,34 @@ export const WeekCommentInputWrapper = styled.div`
   width: 100%;
 `;
 
+export const InputWrapperContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const InputOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: color-mix(in oklch, var(--surpace-secondary), transparent 20%);
+  border-radius: 0.25rem;
+  border: 1.5px solid var(--gray-600);
+  font: var(--body-r-xl);
+  color: var(--text-primary-default);
+  z-index: 10;
+`;
+
+export const LockImg = styled.img`
+  width: 1rem;
+  height: 1rem;
+`;
+
 export const FileIconWrapper = styled.div`
   width: 100%;
   display: flex;

@@ -42,14 +42,14 @@ export const cardVSData: ChallengeVSResponse[] = [
 ];
 
 export const fieldData = [
-    {id:1, name:"전체", img: AllField},
-    {id:2, name:"IT", img: IT},
-    {id:3, name:"경영", img: Economy},
-    {id:4, name:"경제", img: Manage},
-    {id:5, name:"정치", img: Politics},
-    {id:6, name:"어문", img: Language},
-    {id:7, name:"자연", img: Nature},
-    {id:8, name:"디자인", img: Design},
-    {id:9, name:"음악", img: Music},
-    {id:10, name:"체육", img: PE}
+    { id: 1, fieldName: "ALL", name: "전체", img: AllField },
+    { id: 2, fieldName: "IT", name: "IT", img: IT },
+    { id: 3, fieldName: "BUSINESS", name: "경영", img: Economy },
+    { id: 4, fieldName: "ECONOMICS", name: "경제", img: Manage },
+    { id: 5, fieldName: "POLITICS", name: "정치", img: Politics },
+    { id: 6, fieldName: "LANGUAGE", name: "어문", img: Language },
+    { id: 7, fieldName: "SCIENCE", name: "자연", img: Nature },
+    { id: 8, fieldName: "DESIGN", name: "디자인", img: Design },
+    { id: 9, fieldName: "MUSIC", name: "음악", img: Music },
+    { id: 10, fieldName: "SPORTS", name: "체육", img: PE }
 ];

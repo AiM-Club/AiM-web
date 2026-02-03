@@ -48,6 +48,8 @@ export enum ApiEndpoints {
   CHALLENGE = "/challenges",
   CHALLENGE_VS = "/challenges/vs",
   CHALLENGE_SOLO = "/challenges/solo",
+  CHALLENGE_VS_HOT = "/posts/hot/vs",
+  CHALLENGE_SOLO_HOT = "/posts/hot/solo",
   CHALLENGE_VS_DETAIL = "/challenges/vs/:challengeId/overview",
   CHALLENGE_SOLO_DETAIL = "/challenges/solo/:challengeId/overview",
   CHALLENGE_DETAIL_WEEKS = "/challenges/:challengeId/weeks",
@@ -66,5 +68,9 @@ export enum ApiEndpoints {
   POST_COMMENTS = "/posts/:postId/comments",
   POST_LIKE = "/posts/:postId/likes",
   REVIEW = "/posts/review",
+  REVIEW_DETAIL = "/posts/review/:postId",
   QNA = "/posts/qna",
+  QNA_DETAIL = "/posts/qna/:postId",
+  TOP_10_USER = "/users/rank/top10",
+  USER_CHALLENGE_RECORD = "/challenges/records",
 }

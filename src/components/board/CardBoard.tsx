@@ -8,9 +8,10 @@ import { PageEndPoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
 import { useNavigate } from "react-router-dom";
 import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
+import type { QnaType } from "@/types/posts";
 
 interface CardBoardProps {
-    data: ChallengeVSResponse[] | ChallengeRecruitResponse[];
+    data: ChallengeVSResponse[] | ChallengeRecruitResponse[] | QnaType[];
     currentPage?: number;
     totalPage?: number;
     handlePageChange?: (page: number) => void;
@@ -53,10 +54,10 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
                     <S.ResultListWrapper>
                         {data?.map((item) => (
                             <CardVS
-                                key={type === "recruit" ? item.postId : item.challengeId}
+                                key={type === "vs" || type === "solo" ? item.challengeId : item.postId}
                                 data={item}
                                 onLoadingChange={(isLoading) => handleCardLoadingChange(type === "recruit" ? item.postId! : item.challengeId!, isLoading)}
-                                onClick={() => navigateToDetail(type === "recruit" ? item.postId! : item.challengeId!)}
+                                onClick={() => navigateToDetail(type === "vs" || type === "solo" ? item.challengeId! : item.postId!)}
                             />
                         ))}
                     </S.ResultListWrapper>

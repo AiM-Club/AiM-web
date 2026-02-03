@@ -18,6 +18,8 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { PageEndPoints } from "@/constants/endpoints";
+import WinnerModal from "@/components/modal/WinnerModal";
+import Button from "@/components/button/Button";
 // import { useWebSocketTimer } from "@/api/timer";
 
 const ChallengeVSMatch = () => {
@@ -161,6 +163,7 @@ const ChallengeVSMatch = () => {
                 <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" isMine={isMine} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
+          <WinnerModal trigger={<Button>상대 보기</Button>} />
         </S.VSMatchContentWrapper>
       </S.VSMatchWrapper>
     </DefaultLayout>

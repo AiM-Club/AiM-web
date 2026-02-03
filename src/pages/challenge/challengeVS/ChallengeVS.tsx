@@ -55,8 +55,8 @@ const ChallengeVS = () => {
               { value: "LATEST", label: "최신순" },
               { value: "OLDEST", label: "오래된순" },
               { value: "TITLE", label: "가나다순" },
-              { value: "ONGOING", label: "진행중" },
-              { value: "FINISHED", label: "진행완료" },
+              { value: "IN_PROGRESS", label: "진행중" },
+              { value: "COMPLETED", label: "진행완료" },
 
             ]}
             onCategoryChange={handleCategoryChange}

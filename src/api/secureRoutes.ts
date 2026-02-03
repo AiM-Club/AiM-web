@@ -30,4 +30,7 @@ export const secureRoutes = [
     { method: Method.POST, url: ApiEndpoints.LOGOUT },
     { method: Method.POST, url: ApiEndpoints.REVIEW },
     { method: Method.POST, url: ApiEndpoints.QNA },
+    { method: Method.GET, url: ApiEndpoints.QNA_DETAIL },
+    { method: Method.GET, url: ApiEndpoints.USER_CHALLENGE_RECORD },
+    { method: Method.GET, url: ApiEndpoints.REVIEW_DETAIL },
 ];

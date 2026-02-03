@@ -97,9 +97,33 @@ export const useGetChallengeRequest = ({
 };
 
 //내 챌린지 리스트 조회(게시글 작성용)
-export const useGetMyChallengeList = (
-  { mode }: { mode: string },
-  options?: QueryOptions<ApiResponse<ChallengeMyListResponse[]>>
-) => {
+export const useGetMyChallengeList = ({ mode }: { mode: string }, options?: QueryOptions<ApiResponse<ChallengeMyListResponse[]>>) => {
   return useFetch<ApiResponse<ChallengeMyListResponse[]>>(ApiEndpoints.MY_CHALLENGE_LIST, { mode }, options);
-};
+}
+
+//HOT 게시물 조회(VS))
+export const useGetHotChallengeVS = ({ sort, keyword, page = 0, size = 8 }: { sort?: string, keyword?: string, page?: number, size?: number }) => {
+  const params: Record<string, string | number> = { page, size };
+
+  if (sort && sort !== "--") {
+    params.sort = sort;
+  }
+  if (keyword && keyword.trim() !== "") {
+    params.keyword = keyword.trim();
+  }
+
+  return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_VS_HOT, params);
+}
+
+//HOT 게시물 조회(SOLO)
+export const useGetHotChallengeSolo = ({ sort, keyword, page = 0, size = 8 }: { sort?: string, keyword?: string, page?: number, size?: number }) => {
+  const params: Record<string, string | number> = { page, size };
+
+  if (sort && sort !== "--") {
+    params.sort = sort;
+  }
+  if (keyword && keyword.trim() !== "") {
+    params.keyword = keyword.trim();
+  }
+  return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_SOLO_HOT, params);
+}

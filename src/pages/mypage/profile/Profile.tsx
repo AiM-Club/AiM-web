@@ -8,13 +8,17 @@ import { ChallengeMainContent } from "@/components/content/CardContent";
 import { CardChallenge } from "@/components/card/cardChallenge/CardChallenge";
 import useMedia from "@/hooks/useMedia";
 import Button from "@/components/button/Button";
+import { useAuthStore } from "@/stores/authStore";
+import Lock from "@/assets/Lock.svg";
 
 const Profile = () => {
+const {user} = useAuthStore();                   
   const isMobile = useMedia(700);
   const myProfileImg = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif";
 
   return (
-    <DefaultLayout>
+    <DefaultLayout>     
+      {user ? (
       <S.profileWrapper>
         <PageTopic text="프로필" size="l" />
         <S.profileContainer>
@@ -50,6 +54,12 @@ const Profile = () => {
         </S.profileContainer>
         <Button $variant="fixed" $color="green">편집</Button>
       </S.profileWrapper>
+      ):(
+        <S.EmptyState>
+          <S.LockImage src={Lock} />
+          로그인 후 이용 가능합니다
+        </S.EmptyState>
+      )}
     </DefaultLayout>
   )
 }

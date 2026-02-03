@@ -11,8 +11,11 @@ import { Controller, useForm } from "react-hook-form";
 import { joinSchema, type JoinSchemaType } from "@/types/schemas/JoinSchemaType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useAuthStore } from "@/stores/authStore";
+import Lock from "@/assets/Lock.svg";
 
 const MySettings = () => {
+  const {user} = useAuthStore();
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const {
     register,
@@ -41,6 +44,7 @@ const MySettings = () => {
 
   return (
     <DefaultLayout>
+      {user ? (
       <S.JoinWrapper>
         <PageTopic text="계정 설정" size="m" />
         <S.InputWrapper>
@@ -115,6 +119,12 @@ const MySettings = () => {
           {hasSubmitError && <FieldError error="*기입 하지 않은 정보가 있습니다" />}
         </div>
       </S.JoinWrapper>
+      ):(
+        <S.EmptyState>
+          <S.LockImage src={Lock} />
+          로그인 후 이용 가능합니다
+        </S.EmptyState>
+      )}
     </DefaultLayout>
   )
 }
