@@ -1,6 +1,5 @@
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
-import { searchVsData } from "@/pages/search/Constants";
 import CardBoard from "@/components/board/CardBoard";
 import SearchField from "@/components/field/SearchField";
 import * as S from "@/styles/mypage/myLiked/myLiked.style";
