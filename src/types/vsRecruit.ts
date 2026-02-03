@@ -1,5 +1,4 @@
 import type { ImageResponse, PageResponse, RequestUser } from "./common";
-import type { User } from "./auth";
 
 export interface ChallengeRecruitListResponse {
   content: ChallengeRecruitResponse[];

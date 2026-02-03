@@ -1,7 +1,6 @@
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/community/qna/QnA.style";
-import { searchVsData } from "@/pages/search/Constants";
 import CardBoard from "@/components/board/CardBoard";
 import SearchField from "@/components/field/SearchField";
 import Button from "@/components/button/Button";
@@ -18,7 +17,7 @@ const QnA = () => {
   const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
     onSearchChange: () => handlePageChange(1),
   });
-  const { data: qnaList, isLoading } = useGetQna({ category: category, sort: sort, page: currentPage - 1, size: 8, keyword });
+  const { data: qnaList, isLoading } = useGetQna({ filter: category, sort: sort, page: currentPage - 1, size: 8, keyword });
 
   useEffect(() => {
     setTotalPage(qnaList?.data.page.totalPages || 1);

@@ -9,7 +9,6 @@ import { userGetMyPost } from "@/api/user";
 import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import { useEffect } from "react";
-import Loading from "@/components/loading/Loading";
 
 const MyPost = () => {
     const { user } = useAuthStore();
@@ -17,13 +16,12 @@ const MyPost = () => {
     const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
         onSearchChange: () => handlePageChange(1),
     });
-    const { data: myPostData, isLoading } = userGetMyPost({ category: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
+    const { data: myPostData, isLoading } = userGetMyPost({ filter: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
 
     useEffect(() => {
         setTotalPage(myPostData?.data.page.totalPages || 1);
     }, [myPostData?.data.page.totalPages, setTotalPage]);
 
-    if (isLoading) return <Loading />;
     return (
         <DefaultLayout>
             {user ? (

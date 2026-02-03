@@ -1,6 +1,5 @@
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
-import { searchVsData } from "@/pages/search/Constants";
 import CardBoard from "@/components/board/CardBoard";
 import SearchField from "@/components/field/SearchField";
 import * as S from "@/styles/mypage/myPost/myPost.style";
@@ -9,7 +8,6 @@ import Lock from "@/assets/Lock.svg";
 import usePagination from "@/hooks/usePagination";
 import useSearch from "@/hooks/useSearch";
 import { useEffect } from "react";
-import Loading from "@/components/loading/Loading";
 import { userGetMyLiked } from "@/api/user";
 
 const MyLiked = () => {
@@ -18,12 +16,11 @@ const MyLiked = () => {
     const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
         onSearchChange: () => handlePageChange(1),
     });
-    const { data: myLikedData, isLoading } = userGetMyLiked({ category: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
+    const { data: myLikedData, isLoading } = userGetMyLiked({ filter: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
     useEffect(() => {
         setTotalPage(myLikedData?.data.page.totalPages || 1);
     }, [myLikedData?.data.page.totalPages, setTotalPage]);
 
-    if (isLoading) return <Loading />;
     return (
         <DefaultLayout>
             {user ? (

@@ -30,11 +30,11 @@ const Community = () => {
                 </S.ContentWrapper>
                 <S.ContentWrapper>
                     <PageTopic text="SOLO" size="l" />
-                    <CardBoard data={challengeSoloList?.data.content || []} isPagination={false} isLoading={isLoadingSolo} type="solo" />
+                    <CardBoard data={challengeSoloList?.data.content || []} isPagination={false} isLoading={isLoadingSolo} type="hotsolo" />
                 </S.ContentWrapper>
                 <S.ContentWrapper>
                     <PageTopic text="VS 대결" size="l" />
-                    <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoadingVS} type="vs" />
+                    <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoadingVS} type="hotvs" />
                 </S.ContentWrapper>
             </S.CommunityWrapper>
         </DefaultLayout>

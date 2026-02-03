@@ -40,11 +40,11 @@ export const usePostQna = () => {
 }
 
 //qna 목록 조회
-export const useGetQna = ({ category, sort, keyword, page = 0, size = 8 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+export const useGetQna = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (category && category !== "ALL") {
-        params.category = category;
+    if (filter && filter !== "ALL") {
+        params.filter = filter;
     }
     if (sort && sort !== "--") {
         params.sort = sort;
@@ -56,11 +56,11 @@ export const useGetQna = ({ category, sort, keyword, page = 0, size = 8 }: { cat
 }
 
 //후기 목록 조회
-export const useGetReview = ({ category, sort, keyword, page = 0, size = 8 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+export const useGetReview = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (category && category !== "ALL") {
-        params.category = category;
+    if (filter && filter !== "ALL") {
+        params.filter = filter;
     }
     if (sort && sort !== "--") {
         params.sort = sort;

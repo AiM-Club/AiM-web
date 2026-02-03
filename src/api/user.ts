@@ -25,10 +25,10 @@ export const userGetMyProfile = () => {
 }
 
 //내 게시글 조회
-export const userGetMyPost = ({ category, sort, keyword, page = 0, size = 16 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+export const userGetMyPost = ({ filter, sort, keyword, page = 0, size = 16 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
-    if (category && category !== "ALL") {
-        params.category = category;
+    if (filter && filter !== "ALL") {
+        params.filter = filter;
     }
     if (sort && sort !== "--") {
         params.sort = sort;
@@ -40,10 +40,10 @@ export const userGetMyPost = ({ category, sort, keyword, page = 0, size = 16 }: 
 }
 
 //내 좋아요 조회
-export const userGetMyLiked = ({ category, sort, keyword, page = 0, size = 16 }: { category?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
+export const userGetMyLiked = ({ filter, sort, keyword, page = 0, size = 16 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
-    if (category && category !== "ALL") {
-        params.category = category;
+    if (filter && filter !== "ALL") {
+        params.filter = filter;
     }
     if (sort && sort !== "--") {
         params.sort = sort;
