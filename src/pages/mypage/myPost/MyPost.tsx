@@ -17,7 +17,7 @@ const MyPost = () => {
     const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
         onSearchChange: () => handlePageChange(1),
     });
-    const { data: myPostData, isLoading } = userGetMyPost({ category: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
+    const { data: myPostData, isLoading } = userGetMyPost({ filter: category, sort: sort, keyword: keyword, page: currentPage - 1, size: 16 });
 
     useEffect(() => {
         setTotalPage(myPostData?.data.page.totalPages || 1);
