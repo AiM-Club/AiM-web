@@ -14,7 +14,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useGetChallengeRecruitDetail, useGetPostComments, usePostPostComment } from "@/api/posts";
 import { usePostChallengeRecruit } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
-import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
+import { usePostDetailStore } from "@/stores/PostDetailStore";
 import Loading from "@/components/loading/Loading";
 import SubLoading from "@/components/loading/SubLoading";
 import { z } from "zod";
@@ -30,7 +30,7 @@ const ChallengeRecruitDetail = () => {
   const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeRecruitDetail, isLoading } = useGetChallengeRecruitDetail(id || "");
-  const { setThumbnail, setRecruitInfo, setPostComments, resetRecruitDetail } = useRecruitDetailStore();
+  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail } = usePostDetailStore();
   const { mutate: getThumbnail } = useGetPhoto();
   const [isMine, setIsMine] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -64,13 +64,13 @@ const ChallengeRecruitDetail = () => {
   });
 
   useEffect(() => {
-    resetRecruitDetail();
-  }, [id, resetRecruitDetail]);
+    resetPostDetail();
+  }, [id, resetPostDetail]);
 
   // challengeRecruitDetail이 로드되면 즉시 store에 저장
   useEffect(() => {
     if (challengeRecruitDetail?.data) {
-      setRecruitInfo(challengeRecruitDetail.data);
+      setPostInfo(challengeRecruitDetail.data);
       setIsMine(challengeRecruitDetail.data.writerId === user?.id);
       if (challengeRecruitDetail.data.thumbnail?.uuid) {
         getThumbnail(
@@ -87,7 +87,7 @@ const ChallengeRecruitDetail = () => {
         );
       }
     }
-  }, [challengeRecruitDetail, user?.id, getThumbnail, setThumbnail, setRecruitInfo]);
+  }, [challengeRecruitDetail, user?.id, getThumbnail, setThumbnail, setPostInfo]);
 
   // postComments가 로드되면 store에 저장
   useEffect(() => {
