@@ -17,7 +17,7 @@ const QnA = () => {
   const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
     onSearchChange: () => handlePageChange(1),
   });
-  const { data: qnaList, isLoading } = useGetQna({ category: category, sort: sort, page: currentPage - 1, size: 8, keyword });
+  const { data: qnaList, isLoading } = useGetQna({ filter: category, sort: sort, page: currentPage - 1, size: 8, keyword });
 
   useEffect(() => {
     setTotalPage(qnaList?.data.page.totalPages || 1);

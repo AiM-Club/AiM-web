@@ -17,7 +17,7 @@ const Review = () => {
   const { category, keyword, sort, handleCategoryChange, handleKeywordChange, handleSortChange } = useSearch({
     onSearchChange: () => handlePageChange(1),
   });
-  const { data: reviewList, isLoading } = useGetReview({ category: category, sort: sort, page: currentPage - 1, size: 8, keyword });
+  const { data: reviewList, isLoading } = useGetReview({ filter: category, sort: sort, page: currentPage - 1, size: 8, keyword });
 
   useEffect(() => {
     setTotalPage(reviewList?.data.page.totalPages || 1);
