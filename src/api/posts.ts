@@ -43,7 +43,7 @@ export const usePostQna = () => {
 export const useGetQna = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (filter && filter !== "ALL") {
+    if (filter && filter !== "--") {
         params.filter = filter;
     }
     if (sort && sort !== "--") {
@@ -59,7 +59,7 @@ export const useGetQna = ({ filter, sort, keyword, page = 0, size = 8 }: { filte
 export const useGetReview = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (filter && filter !== "ALL") {
+    if (filter && filter !== "--") {
         params.filter = filter;
     }
     if (sort && sort !== "--") {
