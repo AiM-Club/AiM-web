@@ -87,7 +87,7 @@ const ChallengeVSSoloDetail = () => {
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner isMine={isMine} />
+        <Banner isWriter={isMine} />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
           <CardChallenge isMobile={isMobile} mobileTopic="none" topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">

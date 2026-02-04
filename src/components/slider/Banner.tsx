@@ -10,11 +10,11 @@ import { usePostPostLike } from "@/api/posts";
 import { useAuthStore } from "@/stores/authStore";
 
 interface BannerProps {
-  isMine?: boolean;
+  isWriter?: boolean;
   type?: "challenge" | "recruit";
 }
 
-const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
+const Banner = ({ isWriter = false, type = "challenge" }: BannerProps) => {
   const { challengeInfo, thumbnail, myInfo, challengeId, updateChallengeLike } = useChallengeDetailStore();
   const { postInfo, thumbnail: postThumbnail, updatePostLike } = usePostDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
@@ -60,7 +60,7 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
       <S.BannerOverlay />
       <S.BannerContentWrapper>
         <S.BannerContent>{type === "challenge" ? challengeInfo?.name : postInfo?.title}</S.BannerContent>
-        {!isMine &&
+        {!isWriter &&
           <S.WriterWrapper>
             <p>{myInfo?.nickname}</p>
             {user && <S.HeartWrapper>

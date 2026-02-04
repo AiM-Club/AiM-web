@@ -171,7 +171,7 @@ const QnADetail = () => {
 
   return (
     <DefaultLayout>
-      <Banner type="recruit" isMine={isMine} />
+      <Banner type="recruit" isWriter={isMine} />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
