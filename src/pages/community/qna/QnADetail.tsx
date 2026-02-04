@@ -25,6 +25,8 @@ import { buildPath } from "@/utils/buildPath";
 import SubPagination from "@/components/pagination/SubPagination";
 import { useImageOpen } from "@/hooks/useImageOpen";
 import { useFileDownload } from "@/hooks/useFileDownload";
+import Button from "@/components/button/Button";
+import DeleteModal from "@/components/modal/DeleteModal";
 
 const QnADetail = () => {
   const { user } = useAuthStore();
@@ -262,6 +264,12 @@ const QnADetail = () => {
             </CardS.FileIconWrapper>
           </CardS.WeekCommentInputWrapper>
         </form>
+        {isMine && (
+          <S.EditBtnWrapper>
+            <DeleteModal trigger={<Button $color="gray">삭제</Button>} postId={id || ""} />
+            <Button $color="gray">수정</Button>
+          </S.EditBtnWrapper>
+        )}
       </S.RecruitDetailWrapper>
     </DefaultLayout>
   );
