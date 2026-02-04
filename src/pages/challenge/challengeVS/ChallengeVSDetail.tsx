@@ -156,7 +156,7 @@ const ChallengeVSMatch = () => {
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner isMine={isMine} />
+        <Banner isWriter={isWriter} />
         <S.VSMatchContentWrapper ref={setContentElement}>
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}

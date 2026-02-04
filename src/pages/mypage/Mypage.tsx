@@ -1,7 +1,7 @@
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/mypage/mypage.style";
-import { levelInfoData } from "./Constants";
+import { levelInfoData } from "@/pages/mypage/Constants";
 import { getNextRank, getRankImg, getRankString } from "@/utils/userRank";
 import { ProgressBar } from "@/components/bar/ProgressBar";
 import { useAuthStore } from "@/stores/authStore";

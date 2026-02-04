@@ -1,5 +1,5 @@
 import { buildPath } from "@/utils/buildPath";
-import { useFetch, usePost } from "./hooks";
+import { useDelete, useFetch, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { PostDetailResponse, PostCommentResponse, PostLikeResponse, QnaResponse } from "@/types/posts";
 import type { ApiResponse } from "./types";
@@ -43,7 +43,7 @@ export const usePostQna = () => {
 export const useGetQna = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (filter && filter !== "ALL") {
+    if (filter && filter !== "--") {
         params.filter = filter;
     }
     if (sort && sort !== "--") {
@@ -59,7 +59,7 @@ export const useGetQna = ({ filter, sort, keyword, page = 0, size = 8 }: { filte
 export const useGetReview = ({ filter, sort, keyword, page = 0, size = 8 }: { filter?: string, sort?: string, keyword?: string, page?: number, size?: number }) => {
     const params: Record<string, string | number> = { page, size };
 
-    if (filter && filter !== "ALL") {
+    if (filter && filter !== "--") {
         params.filter = filter;
     }
     if (sort && sort !== "--") {
@@ -79,4 +79,9 @@ export const useGetQnaDetail = (postId: string) => {
 //후기 상세조회
 export const useGetReviewDetail = (postId: string) => {
     return useFetch<ApiResponse<PostDetailResponse>>(buildPath(ApiEndpoints.REVIEW_DETAIL, { postId }));
+}
+
+//게시글 삭제
+export const useDeletePost = (postId: string) => {
+    return useDelete<void>(buildPath(ApiEndpoints.POST_DETAIL, { postId }));
 }

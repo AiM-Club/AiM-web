@@ -33,7 +33,7 @@ export const DialogContent = styled(Dialog.Content)`
 `;
 
 export const ContentBody = styled.div`
-  padding: 1rem 1.2rem 1rem 1.3rem;
+  // padding: 1rem 1.2rem 1rem 1.3rem;
   overflow-y: auto;
   max-height: calc(85vh - 4.5rem);
 `;

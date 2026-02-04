@@ -38,4 +38,5 @@ export const secureRoutes = [
     { method: Method.GET, url: ApiEndpoints.USER_MY_PROFILE },
     { method: Method.GET, url: ApiEndpoints.USER_MY_POST },
     { method: Method.GET, url: ApiEndpoints.USER_MY_LIKED },
+    { method: Method.DELETE, url: ApiEndpoints.POST_DETAIL },
 ];

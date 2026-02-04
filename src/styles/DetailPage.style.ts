@@ -201,3 +201,11 @@ export const FileWrapper = styled.div`
   width: 100%;
   gap: 1rem;
 `;
+
+export const EditBtnWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1rem;
+`;
