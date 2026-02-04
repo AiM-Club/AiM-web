@@ -101,12 +101,12 @@ const WriteReview = () => {
       }
       if (result.data.images?.length) {
         result.data.images.forEach((image) => {
-          formData.append("images", image);
+          formData.append("attachedImages", image);
         });
       }
       if (result.data.files?.length) {
         result.data.files.forEach((file) => {
-          formData.append("files", file);
+          formData.append("attachedFiles", file);
         });
       }
 
