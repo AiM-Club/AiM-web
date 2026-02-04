@@ -4,7 +4,7 @@ import { useDeletePost } from "@/api/posts";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 
-const DeleteModal = ({ trigger, postId }: { trigger: React.ReactNode, postId: string }) => {
+const DeleteModal = ({ trigger, postId, type }: { trigger: React.ReactNode, postId: string, type: "review" | "qna" }) => {
     const navigate = useNavigate();
     const { mutate: deletePost } = useDeletePost(postId);
 
@@ -12,7 +12,7 @@ const DeleteModal = ({ trigger, postId }: { trigger: React.ReactNode, postId: st
         deletePost(undefined, {
             onSuccess: () => {
                 setOpen(false);
-                navigate(PageEndPoints.REVIEW);
+                navigate(type === "review" ? PageEndPoints.REVIEW : PageEndPoints.QNA);
             },
         });
     };

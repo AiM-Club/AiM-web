@@ -266,7 +266,7 @@ const QnADetail = () => {
         </form>
         {isMine && (
           <S.EditBtnWrapper>
-            <DeleteModal trigger={<Button $color="gray">삭제</Button>} postId={id || ""} />
+            <DeleteModal trigger={<Button $color="gray">삭제</Button>} postId={id || ""} type="qna" />
             <Button $color="gray">수정</Button>
           </S.EditBtnWrapper>
         )}
