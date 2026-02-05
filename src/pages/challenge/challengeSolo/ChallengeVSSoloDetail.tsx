@@ -87,11 +87,11 @@ const ChallengeVSSoloDetail = () => {
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner isWriter={isMine} />
+        <Banner />
         <S.ChallengeVSSoloDetailContentWrapper>
           <FieldTagWorkPeriod />
           <CardChallenge isMobile={isMobile} mobileTopic="none" topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
-            <ChallengeVSMatchContent isMobile={isMobile} commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" publishTimer={publishTimer} isMine={isMine} />
+            <ChallengeVSMatchContent isMobile={isMobile} commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" publishTimer={publishTimer} />
           </CardChallenge>
         </S.ChallengeVSSoloDetailContentWrapper>
       </S.ChallengeVSSoloDetailWrapper>

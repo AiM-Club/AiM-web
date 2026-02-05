@@ -10,12 +10,11 @@ import { usePostPostLike } from "@/api/posts";
 import { useAuthStore } from "@/stores/authStore";
 
 interface BannerProps {
-  isWriter?: boolean;
   type?: "challenge" | "recruit";
 }
 
-const Banner = ({ isWriter = false, type = "challenge" }: BannerProps) => {
-  const { challengeInfo, thumbnail, myInfo, challengeId, updateChallengeLike } = useChallengeDetailStore();
+const Banner = ({ type = "challenge" }: BannerProps) => {
+  const { challengeInfo, thumbnail, challengeId, updateChallengeLike, isWriter } = useChallengeDetailStore();
   const { postInfo, thumbnail: postThumbnail, updatePostLike } = usePostDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
   const { mutate: postLike } = usePostPostLike(String(postInfo?.challengeId ?? "0"));
@@ -62,7 +61,7 @@ const Banner = ({ isWriter = false, type = "challenge" }: BannerProps) => {
         <S.BannerContent>{type === "challenge" ? challengeInfo?.name : postInfo?.title}</S.BannerContent>
         {!isWriter &&
           <S.WriterWrapper>
-            <p>{myInfo?.nickname}</p>
+            <p>{challengeInfo?.writerNickname}</p>
             {user && <S.HeartWrapper>
               <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handlePostLike} />
               <p>{type === "challenge" ? challengeInfo?.likedCount : postInfo?.likeCount}</p>

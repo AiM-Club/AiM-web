@@ -57,7 +57,6 @@ interface CardChallengeProps {
   setViewCard?: (view: "left" | "right" | "both") => void;
   isMobile?: boolean;
   mobileTopic?: "none" | "top" | "normal";
-  isMine?: boolean;
   variant?: string;
 }
 
@@ -68,11 +67,11 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", isMine = false, variant }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", variant }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
-  const { myInfo, opponentInfo } = useChallengeDetailStore();
+  const { myInfo, opponentInfo, isMine } = useChallengeDetailStore();
 
   if (topic) {
     topic = topic;
