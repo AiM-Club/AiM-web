@@ -1,12 +1,17 @@
 import { useFetch, usePatch } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
 import type { ApiResponse } from "./types";
-import type { TopUserResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse, UserPostResponse } from "@/types/user";
+import type { TopUserResponse, TopUserDetailResponse, UserChallengeRecordResponse, UserLevelResponse, UserProfileResponse, UserPostResponse } from "@/types/user";
 
 
 //TOP 10 유저 랭킹 조회
 export const userGetTop10 = () => {
     return useFetch<ApiResponse<TopUserResponse>>(ApiEndpoints.TOP_10_USER);
+}
+
+//TOP 20 유저 랭킹 조회
+export const userGetTop20 = () => {
+    return useFetch<ApiResponse<TopUserDetailResponse>>(ApiEndpoints.TOP_20_USER);
 }
 
 //유저 챌린지 기록 조회

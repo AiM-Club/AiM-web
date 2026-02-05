@@ -74,6 +74,7 @@ export enum ApiEndpoints {
   QNA = "/posts/qna",
   QNA_DETAIL = "/posts/qna/:postId",
   TOP_10_USER = "/users/rank/top10",
+  TOP_20_USER = "/challenges/rank/top20",
   USER_CHALLENGE_RECORD = "/challenges/records",
   USER_MY_LEVEL = "/users/mypage",
   USER_MY_POST = "/posts/me",
