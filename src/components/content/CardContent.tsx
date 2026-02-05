@@ -579,8 +579,8 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   )
 }
 
-const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | null, isMine?: boolean }) => {
-  const { challengeId } = useChallengeDetailStore();
+const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
+  const { challengeId, isMine } = useChallengeDetailStore();
   const { mutate: postChallengeRecruit } = usePostChallengeRecruit(String(challengeId ?? "0"));
   const navigate = useNavigate();
   return (
@@ -588,7 +588,14 @@ const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | nu
       if (isMine) {
         navigate(`${PageEndPoints.CHALLENGE_VS_INVITE}`);
       } else {
-        postChallengeRecruit();
+        postChallengeRecruit(undefined, {
+          onSuccess: () => {
+            alert("대결 요청이 완료되었습니다.");
+          },
+          onError: () => {
+            alert("대결 요청에 실패했습니다. 다시 시도해주세요.");
+          },
+        });
       }
     }}>
       <S.PlusIcon src={Plus} />
