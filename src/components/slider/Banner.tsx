@@ -14,14 +14,15 @@ interface BannerProps {
 }
 
 const Banner = ({ type = "challenge" }: BannerProps) => {
-  const { challengeInfo, thumbnail, challengeId, updateChallengeLike, isWriter } = useChallengeDetailStore();
-  const { postInfo, thumbnail: postThumbnail, updatePostLike } = usePostDetailStore();
+  const { challengeInfo, thumbnail, challengeId, updateChallengeLike, isWriter: isWriterStore } = useChallengeDetailStore();
+  const { postInfo, thumbnail: postThumbnail, updatePostLike, isMine: isMineStore } = usePostDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
   const { mutate: postLike } = usePostPostLike(String(postInfo?.challengeId ?? "0"));
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(challengeInfo?.isLiked ?? false);
   const { user } = useAuthStore();
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
   const thumbnailUrl = type === "challenge" ? useUserPhotoUrl(thumbnail) || image : useUserPhotoUrl(postThumbnail) || image;
+  const isWriter = type === "challenge" ? isWriterStore : isMineStore;
 
   useEffect(() => {
     if (challengeInfo?.isLiked !== undefined) {
@@ -61,7 +62,7 @@ const Banner = ({ type = "challenge" }: BannerProps) => {
         <S.BannerContent>{type === "challenge" ? challengeInfo?.name : postInfo?.title}</S.BannerContent>
         {!isWriter &&
           <S.WriterWrapper>
-            <p>{challengeInfo?.writerNickname}</p>
+            <p>{type === "challenge" ? challengeInfo?.writerNickname : postInfo?.nickname}</p>
             {user && <S.HeartWrapper>
               <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handlePostLike} />
               <p>{type === "challenge" ? challengeInfo?.likedCount : postInfo?.likeCount}</p>

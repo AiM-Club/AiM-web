@@ -32,9 +32,8 @@ const QnADetail = () => {
   const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: qnaDetail, isLoading } = useGetQnaDetail(id || "");
-  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail } = usePostDetailStore();
+  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail, setIsMine, isMine: isMineStore } = usePostDetailStore();
   const { mutate: getThumbnail } = useGetPhoto();
-  const [isMine, setIsMine] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
   const queryClient = useQueryClient();
@@ -58,12 +57,16 @@ const QnADetail = () => {
     register,
     handleSubmit,
     reset,
+    watch,
   } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: "",
     },
   });
+
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue?.trim()?.length > 0);
 
   useEffect(() => {
     resetPostDetail();
@@ -173,7 +176,7 @@ const QnADetail = () => {
 
   return (
     <DefaultLayout>
-      <Banner type="recruit" isWriter={isMine} />
+      <Banner type="recruit" />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
@@ -260,11 +263,11 @@ const QnADetail = () => {
                   </CardS.FileNameWrapper>
                 )}
               </CardS.FileIconContentWrapper>
-              <CardS.FinishBtn type="submit">완료</CardS.FinishBtn>
+              <CardS.FinishBtn type="submit" $active={hasContent}>완료</CardS.FinishBtn>
             </CardS.FileIconWrapper>
           </CardS.WeekCommentInputWrapper>
         </form>
-        {isMine && (
+        {isMineStore && (
           <S.EditBtnWrapper>
             <DeleteModal trigger={<Button $color="gray">삭제</Button>} postId={id || ""} type="qna" />
             <Button $color="gray">수정</Button>

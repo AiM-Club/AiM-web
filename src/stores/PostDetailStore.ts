@@ -6,6 +6,8 @@ interface PostDetailStore {
     thumbnail: Blob | null;
     postInfo: PostDetailResponse | null;
     postComments: PostCommentResponse | null;
+    isMine: boolean;
+    setIsMine: (isMine: boolean) => void;
     setThumbnail: (thumbnail: Blob | null) => void;
     setPostInfo: (postInfo: PostDetailResponse | null) => void;
     setPostComments: (postComments: PostCommentResponse | null) => void;
@@ -17,6 +19,8 @@ export const usePostDetailStore = create<PostDetailStore>((set) => ({
     thumbnail: null,
     postInfo: null,
     postComments: null,
+    isMine: false,
+    setIsMine: (isMine) => set({ isMine: isMine }),
     setThumbnail: (thumbnail) => set({ thumbnail: thumbnail }),
     setPostInfo: (postInfo) => set({ postInfo: postInfo }),
     setPostComments: (postComments) => set({ postComments: postComments }),
@@ -24,6 +28,7 @@ export const usePostDetailStore = create<PostDetailStore>((set) => ({
         thumbnail: null,
         postInfo: null,
         postComments: null,
+        isMine: false,
     }),
     updatePostLike: (isLiked: boolean) => set((state) => {
         if (!state.postInfo) return state;

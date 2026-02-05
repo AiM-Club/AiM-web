@@ -91,7 +91,7 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
                             const getPostId = () => {
                                 if (type === "mypage") {
                                     return (item as PostType).postId;
-                                } else if (type === "recruit") {
+                                } else if (type === "recruit" || type === "qna" || type === "review") {
                                     return (item as ChallengeRecruitResponse).postId;
                                 } else {
                                     return (item as ChallengeVSResponse).challengeId;
