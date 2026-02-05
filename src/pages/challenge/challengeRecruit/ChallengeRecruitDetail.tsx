@@ -30,9 +30,8 @@ const ChallengeRecruitDetail = () => {
   const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeRecruitDetail, isLoading } = useGetChallengeRecruitDetail(id || "");
-  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail } = usePostDetailStore();
+  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail, setIsMine, isMine: isMineStore } = usePostDetailStore();
   const { mutate: getThumbnail } = useGetPhoto();
-  const [isMine, setIsMine] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
   const queryClient = useQueryClient();
@@ -56,12 +55,16 @@ const ChallengeRecruitDetail = () => {
     register,
     handleSubmit,
     reset,
+    watch,
   } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: "",
     },
   });
+
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue.trim().length > 0);
 
   useEffect(() => {
     resetPostDetail();
@@ -184,12 +187,12 @@ const ChallengeRecruitDetail = () => {
 
   return (
     <DefaultLayout >
-      <Banner type="recruit" isMine={isMine} />
+      <Banner type="recruit" />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
           <S.BtnWrapper>
-            {!isMine && (
+            {!isMineStore && (
               <Button $size="req" onClick={handleVSRequest}>VS 요청</Button>
             )}
           </S.BtnWrapper>
@@ -276,7 +279,7 @@ const ChallengeRecruitDetail = () => {
                   </CardS.FileNameWrapper>
                 )}
               </CardS.FileIconContentWrapper>
-              <CardS.FinishBtn type="submit">완료</CardS.FinishBtn>
+              <CardS.FinishBtn type="submit" $active={hasContent}>완료</CardS.FinishBtn>
             </CardS.FileIconWrapper>
           </CardS.WeekCommentInputWrapper>
         </form>

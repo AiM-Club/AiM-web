@@ -7,6 +7,7 @@ import useMedia from "@/hooks/useMedia";
 import type { TopUser } from "@/types/user";
 import { buildPath } from "@/utils/buildPath";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useFieldName } from "@/utils/useField";
 
 interface CardListProps {
   title: string;
@@ -48,11 +49,11 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
                     <span className="tag">Lv.{(item as TopUser).level}</span>
                   ) : (
                     (item as ChallengeRecruitHotResponse).fields?.map((field) => (
-                      <span className="tag" key={field}>#{field}</span>
+                      <span className="tag" key={field}>#{useFieldName(field) || field}</span>
                     ))
                   )}
                 </S.TagWrapper>
-                {type === "review" && (item as ChallengeReviewHotResponse).likeCount
+                {type === "review"
                   &&
                   <>
                     <S.HeartImg src={Heart} />
@@ -72,11 +73,11 @@ const CardList = ({ title, color = "green", data, type }: CardListProps) => {
                     <span className="tag">Lv.{(item as TopUser).level}</span>
                   ) : (
                     (item as ChallengeRecruitHotResponse).fields?.map((field) => (
-                      <span className="tag" key={field}>#{field}</span>
+                      <span className="tag" key={field}>#{useFieldName(field) || field}</span>
                     ))
                   )}
                 </S.TagWrapper>
-                {type === "review" && (item as ChallengeReviewHotResponse).likeCount
+                {type === "review"
                   &&
                   <>
                     <S.HeartImg src={Heart} />

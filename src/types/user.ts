@@ -10,6 +10,24 @@ export interface TopUser {
 
 export type TopUserResponse = TopUser[];
 
+export interface TopUserDetail {
+    rank: number;
+    userId: number;
+    userInfo: TopUserInfo;
+    allRecord: Record;
+    soloRecord: Record | null;
+    vsRecord: Record | null;
+}
+
+export type TopUserDetailResponse = TopUserDetail[];
+
+export interface TopUserInfo {
+    nickname: string;
+    profileImage: ImageResponse;
+    tier: Tier;
+    level: number;
+}
+
 export interface UserChallengeRecordResponse {
     allSuccessRate: number;
     soloRecord: Record;
@@ -52,6 +70,8 @@ export interface UserPostResponse {
 
 export interface PostType {
     postId: number;
+    postType: string;
+    challengeMode: string;
     thumbnail: ImageResponse | null;
     user: RequestUser;
     startedAt: string;

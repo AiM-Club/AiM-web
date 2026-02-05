@@ -27,7 +27,7 @@ const ChallengeVSMatch = () => {
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getMyPhoto } = useGetPhoto();
   const { mutate: getOpponentPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail, myInfo, updateTimer } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail, myInfo, updateTimer, setIsMine, setIsWriter } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
   const opponentUserId = challengeDetail?.data?.participants?.opponent ? String(challengeDetail.data.participants.opponent.id) : null;
   const { data: challengeMyDetailWeeks, isLoading: isLoadingMyWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
@@ -36,8 +36,6 @@ const ChallengeVSMatch = () => {
   const { data: challengeOpponentDetailWeeks, isLoading: isLoadingOpponentWeeks } = useGetChallengeDetailWeeks(id || "", opponentUserId || "", {
     enabled: !!(id && id !== "0") && !!opponentUserId && !!challengeDetail?.data,
   });
-  const [isMine, setIsMine] = useState(false);
-  const [isWriter, setIsWriter] = useState(false);
   const challengeId = challengeDetail?.data ? Number(id) : null;
 
   // WebSocket 연결 및 구독
@@ -115,7 +113,7 @@ const ChallengeVSMatch = () => {
         );
       }
     }
-  }, [challengeDetail, challengeMyDetailWeeks, challengeOpponentDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks]);
+  }, [challengeDetail, challengeMyDetailWeeks, challengeOpponentDetailWeeks, user, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, setIsMine, setIsWriter, id]);
 
   const isMobile = useMedia(770);
   const navigate = useNavigate();
@@ -156,7 +154,7 @@ const ChallengeVSMatch = () => {
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner isWriter={isWriter} />
+        <Banner />
         <S.VSMatchContentWrapper ref={setContentElement}>
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
@@ -172,11 +170,11 @@ const ChallengeVSMatch = () => {
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 {opponentUserId ?
                   <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
-                  : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} isMine={isMine} />}
+                  : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
-              <CardChallenge isMine={isWriter} mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
-                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" isMine={isMine} publishTimer={publishTimer} />
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>

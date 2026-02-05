@@ -2,7 +2,7 @@ import * as S from "./SearchField.style";
 import SearchInput from "./SearchInput";
 import Select from "../Select/Select";
 import CategoryBtn from "../button/CategoryBtn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CategoryOption {
   value: string;
@@ -26,12 +26,21 @@ const SearchField = ({
   onSortChange,
   sorts
 }: SearchFieldProps) => {
+  const firstCategoryValue = categories?.[0]?.value || "";
+  const initialCategory = defaultCategory || firstCategoryValue;
   const [selectedCategory, setSelectedCategory] = useState<string>(
-    defaultCategory || ""
+    initialCategory
   );
 
+  // 초기 마운트 시 기본값을 부모 컴포넌트에 알림
+  useEffect(() => {
+    if (initialCategory && !defaultCategory) {
+      onCategoryChange?.(initialCategory);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleCategoryClick = (value: string) => {
-    const newCategory = selectedCategory === value ? "" : value;
+    const newCategory = selectedCategory === value ? firstCategoryValue : value;
     setSelectedCategory(newCategory);
     onCategoryChange?.(newCategory);
   };

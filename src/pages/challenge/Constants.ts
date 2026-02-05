@@ -28,4 +28,4 @@ export const rankingListData = [
 ];
 
 export const rankingHeader =
-    { id: "순위", userImg: "프로필", userName: "닉네임", level: "레벨", tryNum: "시도 횟수", successNum: "성공 횟수", successPercent: "성공률" };
+    { rank: "순위", userImg: "프로필", nickname: "닉네임", level: "레벨", attemptCount: "시도 횟수", successCount: "성공 횟수", successRate: "성공률" };

@@ -30,6 +30,8 @@ const MyLiked = () => {
                         <SearchField
                             categories={[
                                 { value: "ALL", label: "ALL" },
+                                { value: "SOLO", label: "SOLO" },
+                                { value: "VS", label: "VS 대결" },
                                 { value: "VS_RECRUIT", label: "VS 모집글" },
                                 { value: "COMMUNITY", label: "커뮤니티" }
                             ]}
@@ -42,7 +44,7 @@ const MyLiked = () => {
                             onKeywordChange={handleKeywordChange}
                             onSortChange={handleSortChange}
                         />
-                        <CardBoard data={myLikedData?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+                        <CardBoard data={myLikedData?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} type="mypage" />
                     </S.ContentWrapper>
                 </S.myPostWrapper>
             ) : (

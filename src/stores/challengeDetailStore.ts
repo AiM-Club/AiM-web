@@ -13,6 +13,8 @@ interface ChallengeDetailStore {
   challengeDetailWeeks: ChallengeDetailWeeksResponse | null;
   progressMyListMap: Record<number, ProgressList>;
   progressOpponentListMap: Record<number, ProgressList>;
+  isMine: boolean;
+  isWriter: boolean;
   setChallengeInfo: (challengeInfo: ChallengeInfo) => void;
   setChallengeId: (challengeId: number | null) => void;
   setDominance: (dominance: Dominance) => void;
@@ -23,6 +25,8 @@ interface ChallengeDetailStore {
   setOpponentPhoto: (opponentPhoto: Blob | null) => void;
   setChallengeMyDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
   setChallengeOpponentDetailWeeks: (weeks: ChallengeDetailWeeksResponse) => void;
+  setIsMine: (isMine: boolean) => void;
+  setIsWriter: (isWriter: boolean) => void;
   resetChallengeDetail: () => void;
   updateChallengeLike: (isLiked: boolean) => void;
   updateTimer: (weekNumber: number, stopwatchTimeSeconds: number, isMy: boolean) => void;
@@ -40,6 +44,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   challengeDetailWeeks: null,
   progressMyListMap: {},
   progressOpponentListMap: {},
+  isMine: false,
+  isWriter: false,
   setChallengeId: (challengeId) => set({ challengeId: challengeId }),
   setChallengeInfo: (challengeInfo) => set({ challengeInfo: challengeInfo }),
   setDominance: (dominance) => set({ dominance: dominance }),
@@ -48,6 +54,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
   setThumbnail: (thumbnail) => set({ thumbnail: thumbnail }),
   setMyPhoto: (myPhoto) => set({ myPhoto: myPhoto }),
   setOpponentPhoto: (opponentPhoto) => set({ opponentPhoto: opponentPhoto }),
+  setIsMine: (isMine) => set({ isMine: isMine }),
+  setIsWriter: (isWriter) => set({ isWriter: isWriter }),
   setChallengeMyDetailWeeks: (weeks) => {
     const progressMyListMap: Record<number, ProgressList> = {};
     weeks.progressList.forEach((progress) => {
@@ -74,6 +82,8 @@ export const useChallengeDetailStore = create<ChallengeDetailStore>((set) => ({
     challengeDetailWeeks: null,
     progressMyListMap: {},
     progressOpponentListMap: {},
+    isMine: false,
+    isWriter: false,
   }),
   updateChallengeLike: (isLiked) => set((state) => {
     if (!state.challengeInfo) return state;

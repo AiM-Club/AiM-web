@@ -152,12 +152,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     register,
     handleSubmit,
     reset,
+    watch,
   } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: "",
     },
   });
+
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue.trim().length > 0);
 
   useEffect(() => {
     if (!contentElement) return;
@@ -547,7 +551,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                                 </S.FileNameWrapper>
                               )}
                             </S.FileIconContentWrapper>
-                            <S.FinishBtn type="submit">완료</S.FinishBtn>
+                            <S.FinishBtn type="submit" $active={hasContent}>완료</S.FinishBtn>
                           </S.FileIconWrapper>
                         </S.WeekCommentInputWrapper>
                         {!user && (

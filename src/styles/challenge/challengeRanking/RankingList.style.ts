@@ -5,7 +5,7 @@ export const RankingListWrapper = styled.div`
     flex-direction: column;
     gap: 4rem;
     //왜 이걸 추가해야 스크롤이 한개만 생기지 ;;
-    height: calc(100vh - 15.5rem);
+    // height: calc(100vh - 15.5rem);
 `;
 
 export const RankingListHeader = styled.div`
@@ -14,7 +14,7 @@ export const RankingListHeader = styled.div`
     align-items: center;
 `;
 
-export const RankContentWrapper =  styled.div`
+export const RankContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
