@@ -27,7 +27,7 @@ const ChallengeVSMatch = () => {
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getMyPhoto } = useGetPhoto();
   const { mutate: getOpponentPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail, myInfo, updateTimer, isMine: storeIsMine, isWriter: storeIsWriter, setIsMine, setIsWriter } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail, myInfo, updateTimer, setIsMine, setIsWriter } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
   const opponentUserId = challengeDetail?.data?.participants?.opponent ? String(challengeDetail.data.participants.opponent.id) : null;
   const { data: challengeMyDetailWeeks, isLoading: isLoadingMyWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {

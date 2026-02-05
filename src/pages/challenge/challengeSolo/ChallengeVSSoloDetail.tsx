@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useGetChallengeDetailWeeks, useGetChallengeSoloDetail } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Loading from "@/components/loading/Loading";
 import { useAuthStore } from "@/stores/authStore";
 import useMedia from "@/hooks/useMedia";
@@ -21,12 +21,11 @@ const ChallengeVSSoloDetail = () => {
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeMyDetailWeeks, resetChallengeDetail, myInfo, updateTimer } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeMyDetailWeeks, resetChallengeDetail, myInfo, updateTimer, setIsMine } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data.participant.id ? String(challengeDetail.data.participant.id) : "";
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
     enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
   });
-  const [isMine, setIsMine] = useState(false);
   const challengeId = challengeDetail?.data ? Number(id) : null;
 
   // WebSocket 연결 및 구독
