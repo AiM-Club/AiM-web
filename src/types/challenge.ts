@@ -21,6 +21,7 @@ export interface ChallengeVSListResponse {
 
 export interface ChallengeVSResponse {
     challengeId: number;
+    mode: string;
     postId?: number;
     thumbnail: ImageResponse | null;
     user: RequestUser;

@@ -70,6 +70,8 @@ export interface UserPostResponse {
 
 export interface PostType {
     postId: number;
+    postType: string;
+    challengeMode: string;
     thumbnail: ImageResponse | null;
     user: RequestUser;
     startedAt: string;

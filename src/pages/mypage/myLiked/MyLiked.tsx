@@ -44,7 +44,7 @@ const MyLiked = () => {
                             onKeywordChange={handleKeywordChange}
                             onSortChange={handleSortChange}
                         />
-                        <CardBoard data={myLikedData?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} />
+                        <CardBoard data={myLikedData?.data.content || []} currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange} isLoading={isLoading} type="mypage" />
                     </S.ContentWrapper>
                 </S.myPostWrapper>
             ) : (
