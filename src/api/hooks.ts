@@ -9,11 +9,18 @@ import {
   import type { QueryOptions } from "./types";
   import type { AxiosResponse } from "axios";
   
-  const fetcher = async <T>(context: QueryFunctionContext<QueryKey>) => {
+  const fetcher = async <T>(context: QueryFunctionContext<QueryKey>): Promise<T> => {
     const { queryKey } = context;
     const [url, params] = queryKey;
-    const res = await api.get<T>(url as string, params as object);
-    return res;
+    try {
+      const res = await api.get<T>(url as string, params as object);
+      if (res === undefined || res === null) {
+        throw new Error("Query returned undefined");
+      }
+      return res;
+    } catch (error) {
+      throw error;
+    }
   };
   
   /**

@@ -3,16 +3,15 @@ import * as S from "@/styles/community/Community.style";
 import { PageTopic } from "@/components/text/PageTopic";
 import SearchField from "@/components/field/SearchField";
 import CardBoard from "@/components/board/CardBoard";
-import { useGetChallengeVS } from "@/api/challenge";
+import { useGetHotChallengeSolo, useGetHotChallengeVS } from "@/api/challenge";
 import useSearch from "@/hooks/useSearch";
-import { useGetChallengeSolo } from "@/api/challenge";
 
 const Community = () => {
     const { keyword, sort, handleKeywordChange, handleSortChange } = useSearch({
         onSearchChange: () => { },
     });
-    const { data: challengeVSList, isLoading } = useGetChallengeVS({ sort: sort, page: 0, size: 16, keyword });
-    const { data: challengeSoloList, isLoading: isLoadingSolo } = useGetChallengeSolo({ sort: sort, page: 0, size: 16, keyword });
+    const { data: challengeVSList, isLoading: isLoadingVS } = useGetHotChallengeVS({ sort: sort, page: 0, size: 8, keyword });
+    const { data: challengeSoloList, isLoading: isLoadingSolo } = useGetHotChallengeSolo({ sort: sort, page: 0, size: 8, keyword });
 
     return (
         <DefaultLayout>
@@ -31,11 +30,11 @@ const Community = () => {
                 </S.ContentWrapper>
                 <S.ContentWrapper>
                     <PageTopic text="SOLO" size="l" />
-                    <CardBoard data={challengeSoloList?.data.content || []} isPagination={false} isLoading={isLoadingSolo} type="solo" />
+                    <CardBoard data={challengeSoloList?.data.content || []} isPagination={false} isLoading={isLoadingSolo} type="hotsolo" />
                 </S.ContentWrapper>
                 <S.ContentWrapper>
                     <PageTopic text="VS 대결" size="l" />
-                    <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoading} type="vs" />
+                    <CardBoard data={challengeVSList?.data.content || []} isPagination={false} isLoading={isLoadingVS} type="hotvs" />
                 </S.ContentWrapper>
             </S.CommunityWrapper>
         </DefaultLayout>

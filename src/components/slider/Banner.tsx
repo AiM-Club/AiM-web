@@ -5,33 +5,33 @@ import { useState, useEffect } from "react";
 import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import { useChallengeLike } from "@/api/challengeDetail";
-import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
+import { usePostDetailStore } from "@/stores/PostDetailStore";
 import { usePostPostLike } from "@/api/posts";
 import { useAuthStore } from "@/stores/authStore";
 
 interface BannerProps {
-  isMine?: boolean;
   type?: "challenge" | "recruit";
 }
 
-const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
-  const { challengeInfo, thumbnail, myInfo, challengeId, updateChallengeLike } = useChallengeDetailStore();
-  const { recruitInfo, thumbnail: recruitThumbnail, updateRecruitLike } = useRecruitDetailStore();
+const Banner = ({ type = "challenge" }: BannerProps) => {
+  const { challengeInfo, thumbnail, challengeId, updateChallengeLike, isWriter: isWriterStore } = useChallengeDetailStore();
+  const { postInfo, thumbnail: postThumbnail, updatePostLike, isMine: isMineStore } = usePostDetailStore();
   const { mutate: challengeLike } = useChallengeLike(String(challengeId ?? "0"));
-  const { mutate: recruitLike } = usePostPostLike(String(recruitInfo?.challengeId ?? "0"));
+  const { mutate: postLike } = usePostPostLike(String(postInfo?.challengeId ?? "0"));
   const [isHeartClicked, setIsHeartClicked] = useState<boolean>(challengeInfo?.isLiked ?? false);
   const { user } = useAuthStore();
   const image = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif"
-  const thumbnailUrl = type === "challenge" ? useUserPhotoUrl(thumbnail) || image : useUserPhotoUrl(recruitThumbnail) || image;
+  const thumbnailUrl = type === "challenge" ? useUserPhotoUrl(thumbnail) || image : useUserPhotoUrl(postThumbnail) || image;
+  const isWriter = type === "challenge" ? isWriterStore : isMineStore;
 
   useEffect(() => {
     if (challengeInfo?.isLiked !== undefined) {
       setIsHeartClicked(challengeInfo.isLiked);
     }
-    if (recruitInfo?.isLiked !== undefined) {
-      setIsHeartClicked(recruitInfo.isLiked);
+    if (postInfo?.isLiked !== undefined) {
+      setIsHeartClicked(postInfo.isLiked);
     }
-  }, [challengeInfo?.isLiked, recruitInfo?.isLiked]);
+  }, [challengeInfo?.isLiked, postInfo?.isLiked]);
 
   const handleChallengeLike = () => {
     challengeLike(undefined, {
@@ -44,13 +44,13 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
     });
   }
 
-  const handleRecruitLike = () => {
-    recruitLike(undefined, {
+  const handlePostLike = () => {
+    postLike(undefined, {
       onSuccess: (response) => {
         console.log(response);
         const isLiked = response.data.isLiked;
         setIsHeartClicked(isLiked);
-        updateRecruitLike(isLiked);
+        updatePostLike(isLiked);
       }
     });
   }
@@ -59,13 +59,13 @@ const Banner = ({ isMine = false, type = "challenge" }: BannerProps) => {
       <S.BannerImage src={thumbnailUrl} />
       <S.BannerOverlay />
       <S.BannerContentWrapper>
-        <S.BannerContent>{type === "challenge" ? challengeInfo?.name : recruitInfo?.title}</S.BannerContent>
-        {!isMine &&
+        <S.BannerContent>{type === "challenge" ? challengeInfo?.name : postInfo?.title}</S.BannerContent>
+        {!isWriter &&
           <S.WriterWrapper>
-            <p>{myInfo?.nickname}</p>
+            <p>{type === "challenge" ? challengeInfo?.writerNickname : postInfo?.nickname}</p>
             {user && <S.HeartWrapper>
-              <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handleRecruitLike} />
-              <p>{type === "challenge" ? challengeInfo?.likedCount : recruitInfo?.likeCount}</p>
+              <img src={isHeartClicked ? HeartFill : Heart} onClick={type === "challenge" ? handleChallengeLike : handlePostLike} />
+              <p>{type === "challenge" ? challengeInfo?.likedCount : postInfo?.likeCount}</p>
             </S.HeartWrapper>}
           </S.WriterWrapper>
         }

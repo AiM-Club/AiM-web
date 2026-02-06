@@ -7,9 +7,11 @@ import { useGetPhoto } from "@/api/photo.ts";
 import { useEffect, useRef } from "react";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
+import type { QnaType } from "@/types/posts";
+import { useFieldName } from "@/utils/useField";
 
 interface CardVSItems {
-    data: ChallengeVSResponse | ChallengeRecruitResponse;
+    data: ChallengeVSResponse | ChallengeRecruitResponse | QnaType;
     onLoadingChange?: (isLoading: boolean) => void;
     onClick?: () => void;
 }
@@ -46,14 +48,14 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
             <S.CardContent>
                 <S.UserInfo>
                     <S.UserImg src={userPhotoUrl || NoPhoto} />
-                    <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg(data.user?.badge?.toLowerCase() || "bronze")} /></S.UserName>
+                    <S.UserName>{data.user.nickname}<S.RankImg src={getRankImg((data.user as any)?.tier?.name?.toLowerCase() || "bronze")} /></S.UserName>
                 </S.UserInfo>
                 <S.VSImg src={thumbnailPhotoUrl || NoPhoto} />
                 <S.VSInfoWrapper>
                     <S.VSInfo>
                         <S.InfoDate>
-                            <span>시작일 | {data.startDate}</span>
-                            <span>{data.duration}</span>
+                            <span>시작일 | {data.startedAt}</span>
+                            <span>{data.durationWeek}주</span>
                         </S.InfoDate>
 
                         <S.Title>{data.name}</S.Title>
@@ -61,7 +63,7 @@ const CardVS = ({ data, onLoadingChange, onClick }: CardVSItems) => {
                         <S.FieldTagWrapper>
                             <S.InfoName>분야</S.InfoName>
                             {data.fields.map((f, i) => (
-                                <S.Field key={i}>{f}</S.Field>
+                                <S.Field key={i}>{useFieldName(f) || f}</S.Field>
                             ))}
                         </S.FieldTagWrapper>
 

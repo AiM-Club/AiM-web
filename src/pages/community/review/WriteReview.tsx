@@ -21,6 +21,7 @@ const reviewWriteSchema = z.object({
   job: z.string().min(1, "직무를 입력해 주세요"),
   startedAt: z.string().min(1, "시작일을 선택해 주세요"),
   durationWeek: z.number().min(1, "주차를 선택해 주세요"),
+  mode: z.string().min(1, "모드를 선택해 주세요"),
   contents: z.string().min(1, "내용을 입력해 주세요"),
   files: z.array(z.instanceof(File)).optional(),
   images: z.array(z.instanceof(File)).optional(),
@@ -71,6 +72,7 @@ const WriteReview = () => {
       files: files.length > 0 ? files : undefined,
       images: images.length > 0 ? images : undefined,
       thumbnail: thumbnail ?? undefined,
+      mode: elementsData?.mode ?? "",
     };
 
     const result = reviewWriteSchema.safeParse(formDataForValidation);
@@ -90,6 +92,7 @@ const WriteReview = () => {
       formData.append("startedAt", result.data.startedAt);
       formData.append("durationWeek", String(result.data.durationWeek));
       formData.append("content", result.data.contents);
+      formData.append("mode", result.data.mode);
       result.data.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
@@ -98,12 +101,12 @@ const WriteReview = () => {
       }
       if (result.data.images?.length) {
         result.data.images.forEach((image) => {
-          formData.append("images", image);
+          formData.append("attachedImages", image);
         });
       }
       if (result.data.files?.length) {
         result.data.files.forEach((file) => {
-          formData.append("files", file);
+          formData.append("attachedFiles", file);
         });
       }
 

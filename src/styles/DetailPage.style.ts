@@ -51,6 +51,7 @@ export const FileName = styled.div`
   background-color: var(--surpace-tertiary);
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 export const CommentWholeWrapper = styled.div`
@@ -183,7 +184,7 @@ export const InputOverlay = styled.div`
   gap: 0.5rem;
   background-color: color-mix(in oklch, var(--surpace-secondary), transparent 20%);
   border-radius: 0.25rem;
-  border: 1.5px solid var(--pink-500);
+  border: 1.5px solid var(--gray-600);
   font: var(--body-r-xl);
   color: var(--text-primary-default);
   z-index: 10;
@@ -198,5 +199,13 @@ export const FileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 1rem;
+`;
+
+export const EditBtnWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
   gap: 1rem;
 `;

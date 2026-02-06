@@ -14,7 +14,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useGetChallengeRecruitDetail, useGetPostComments, usePostPostComment } from "@/api/posts";
 import { usePostChallengeRecruit } from "@/api/challengeDetail";
 import { useGetPhoto } from "@/api/photo";
-import { useRecruitDetailStore } from "@/stores/RecruitDetailStore";
+import { usePostDetailStore } from "@/stores/PostDetailStore";
 import Loading from "@/components/loading/Loading";
 import SubLoading from "@/components/loading/SubLoading";
 import { z } from "zod";
@@ -30,9 +30,8 @@ const ChallengeRecruitDetail = () => {
   const { user } = useAuthStore();
   const { id } = useParams<{ id: string }>();
   const { data: challengeRecruitDetail, isLoading } = useGetChallengeRecruitDetail(id || "");
-  const { setThumbnail, setRecruitInfo, setPostComments, resetRecruitDetail } = useRecruitDetailStore();
+  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail, setIsMine, isMine: isMineStore } = usePostDetailStore();
   const { mutate: getThumbnail } = useGetPhoto();
-  const [isMine, setIsMine] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
   const queryClient = useQueryClient();
@@ -56,6 +55,7 @@ const ChallengeRecruitDetail = () => {
     register,
     handleSubmit,
     reset,
+    watch,
   } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
@@ -63,14 +63,17 @@ const ChallengeRecruitDetail = () => {
     },
   });
 
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue.trim().length > 0);
+
   useEffect(() => {
-    resetRecruitDetail();
-  }, [id, resetRecruitDetail]);
+    resetPostDetail();
+  }, [id, resetPostDetail]);
 
   // challengeRecruitDetail이 로드되면 즉시 store에 저장
   useEffect(() => {
     if (challengeRecruitDetail?.data) {
-      setRecruitInfo(challengeRecruitDetail.data);
+      setPostInfo(challengeRecruitDetail.data);
       setIsMine(challengeRecruitDetail.data.writerId === user?.id);
       if (challengeRecruitDetail.data.thumbnail?.uuid) {
         getThumbnail(
@@ -87,13 +90,13 @@ const ChallengeRecruitDetail = () => {
         );
       }
     }
-  }, [challengeRecruitDetail, user?.id, getThumbnail, setThumbnail, setRecruitInfo]);
+  }, [challengeRecruitDetail, user?.id, getThumbnail, setThumbnail, setPostInfo]);
 
   // postComments가 로드되면 store에 저장
   useEffect(() => {
     if (postComments?.data) {
       setPostComments(postComments.data);
-      setTotalPage(postComments.data.pageInfo.totalPages);
+      setTotalPage(postComments.data.page.totalPages);
     }
   }, [postComments, setPostComments]);
 
@@ -184,12 +187,12 @@ const ChallengeRecruitDetail = () => {
 
   return (
     <DefaultLayout >
-      <Banner type="recruit" isMine={isMine} />
+      <Banner type="recruit" />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
           <ChallengeInfoField />
           <S.BtnWrapper>
-            {!isMine && (
+            {!isMineStore && (
               <Button $size="req" onClick={handleVSRequest}>VS 요청</Button>
             )}
           </S.BtnWrapper>
@@ -210,13 +213,13 @@ const ChallengeRecruitDetail = () => {
           </S.FileNameWrapper>
         </S.ContentWrapper>
         <S.CommentWholeWrapper>
-          <PageTopic text={`댓글 (${postComments?.data?.pageInfo?.totalElements || 0})`} size="l" />
+          <PageTopic text={`댓글 (${postComments?.data?.page?.totalElements || 0})`} size="l" />
           <S.CommentWrapper>
             {isLoadingPostComments ? (
               <SubLoading />
             ) : (
               <>
-                {postComments?.data.comments.map((data) => (
+                {postComments?.data.content.map((data) => (
                   <S.CommentWrapper key={data.commentId}>
                     <Comment
                       data={data}
@@ -276,7 +279,7 @@ const ChallengeRecruitDetail = () => {
                   </CardS.FileNameWrapper>
                 )}
               </CardS.FileIconContentWrapper>
-              <CardS.FinishBtn type="submit">완료</CardS.FinishBtn>
+              <CardS.FinishBtn type="submit" $active={hasContent}>완료</CardS.FinishBtn>
             </CardS.FileIconWrapper>
           </CardS.WeekCommentInputWrapper>
         </form>

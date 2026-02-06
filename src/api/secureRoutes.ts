@@ -11,6 +11,7 @@ enum Method {
 export const secureRoutes = [
     { method: Method.GET, url: ApiEndpoints.PHOTO },
     { method: Method.POST, url: ApiEndpoints.CHALLENGE },
+    { method: Method.GET, url: ApiEndpoints.CHALLENGE_ALL },
     { method: Method.GET, url: ApiEndpoints.MY_PROFILE },
     { method: Method.GET, url: ApiEndpoints.CHALLENGE_SOLO },
     { method: Method.GET, url: ApiEndpoints.CHALLENGE_DETAIL_WEEKS },
@@ -30,4 +31,12 @@ export const secureRoutes = [
     { method: Method.POST, url: ApiEndpoints.LOGOUT },
     { method: Method.POST, url: ApiEndpoints.REVIEW },
     { method: Method.POST, url: ApiEndpoints.QNA },
+    { method: Method.GET, url: ApiEndpoints.QNA_DETAIL },
+    { method: Method.GET, url: ApiEndpoints.USER_CHALLENGE_RECORD },
+    { method: Method.GET, url: ApiEndpoints.REVIEW_DETAIL },
+    { method: Method.GET, url: ApiEndpoints.USER_MY_LEVEL },
+    { method: Method.GET, url: ApiEndpoints.USER_MY_PROFILE },
+    { method: Method.GET, url: ApiEndpoints.USER_MY_POST },
+    { method: Method.GET, url: ApiEndpoints.USER_MY_LIKED },
+    { method: Method.DELETE, url: ApiEndpoints.POST_DETAIL },
 ];

@@ -2,13 +2,16 @@ import * as S from "@/styles/challenge/challengeRanking/RankingList.style";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import { PageTopic } from "@/components/text/PageTopic";
 import RankInfoContent from "@/components/content/RankInfoContent";
-import { rankingHeader, rankingListData } from "../Constants";
+import { rankingHeader } from "../Constants";
 import Pagination from "@/components/pagination/Pagination";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
+import { userGetTop20 } from "@/api/user";
+import Loading from "@/components/loading/Loading";
 
 const RankingList = () => {
   const navigate = useNavigate();
+  const { data: top20Data, isLoading: isLoadingTop20 } = userGetTop20();
 
   const handlePageChange = (page: number) => {
     if (page === 1) {
@@ -16,6 +19,7 @@ const RankingList = () => {
     }
   };
 
+  if (isLoadingTop20) return <Loading />;
   return (
     <DefaultLayout>
       <S.RankingListWrapper>
@@ -23,8 +27,8 @@ const RankingList = () => {
         <S.RankContentWrapper>
           <RankInfoContent type="header" content={rankingHeader} />
           <S.RankContentContainer>
-            {rankingListData.map((item) => (
-              <RankInfoContent key={item.id} content={item} />
+            {top20Data?.data?.map((item) => (
+              <RankInfoContent key={item.userId} content={item} />
             ))}
           </S.RankContentContainer>
         </S.RankContentWrapper>

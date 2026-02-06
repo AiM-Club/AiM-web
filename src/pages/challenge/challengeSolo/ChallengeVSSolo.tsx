@@ -35,11 +35,12 @@ const ChallengeVSSolo = () => {
             <SearchField
               categories={[
                 { value: "IN_PROGRESS", label: "진행 중" },
-                { value: "COMPLETE", label: "진행 완료" }
+                { value: "COMPLETED", label: "진행 완료" }
               ]}
               sorts={[
                 { value: "LATEST", label: "최신순" },
                 { value: "OLDEST", label: "오래된순" },
+                { value: "LIKED", label: "좋아요순" },
                 { value: "TITLE", label: "가나다순" },
               ]}
               onCategoryChange={handleCategoryChange}

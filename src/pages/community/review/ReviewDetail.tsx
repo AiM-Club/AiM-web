@@ -1,6 +1,3 @@
-import FileIcon from "@/assets/FileClip.svg";
-import Lock from "@/assets/Lock.svg";
-import Files from "@/components/button/Files";
 import Comment from "@/components/comment/Comment";
 import ChallengeInfoField from "@/components/content/ChallengeInfoField";
 import Content from "@/components/content/Content";
@@ -8,215 +5,276 @@ import Banner from "@/components/slider/Banner";
 import { PageTopic } from "@/components/text/PageTopic";
 import DefaultLayout from "@/layouts/defaultLayout/DefaultLayout";
 import * as S from "@/styles/DetailPage.style";
-import { useState, useRef } from "react";
-// import { useParams } from "react-router-dom";
+import * as CardS from "@/components/content/CardContent.style";
+import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import type { CommentType } from "@/types/comment";
+import { useGetReviewDetail, useGetPostComments, usePostPostComment } from "@/api/posts";
+import { useGetPhoto } from "@/api/photo";
+import { usePostDetailStore } from "@/stores/PostDetailStore";
+import Loading from "@/components/loading/Loading";
+import SubLoading from "@/components/loading/SubLoading";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import XIcon from "@/assets/X.png";
+import FileIcon from "@/assets/FileClip.svg";
+import { useQueryClient } from "@tanstack/react-query";
+import { ApiEndpoints } from "@/constants/endpoints";
+import { buildPath } from "@/utils/buildPath";
+import SubPagination from "@/components/pagination/SubPagination";
+import { useImageOpen } from "@/hooks/useImageOpen";
+import { useFileDownload } from "@/hooks/useFileDownload";
+import Button from "@/components/button/Button";
+import DeleteModal from "@/components/modal/DeleteModal";
 
 const ReviewDetail = () => {
-  // const { id } = useParams<{ id: string }>();
   const { user } = useAuthStore();
-  const [commentFiles, setCommentFiles] = useState<File[]>([]);
+  const { id } = useParams<{ id: string }>();
+  const { data: reviewDetail, isLoading } = useGetReviewDetail(id || "");
+  const { setThumbnail, setPostInfo, setPostComments, resetPostDetail, setIsMine, isMine: isMineStore } = usePostDetailStore();
+  const { mutate: getThumbnail } = useGetPhoto();
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const queryClient = useQueryClient();
+  const { data: postComments, isLoading: isLoadingPostComments } = useGetPostComments(id || "", currentPage);
+  const { mutate: postComment } = usePostPostComment(id || "");
+  const { downloadFile } = useFileDownload();
+  const { openImage } = useImageOpen();
+
+  // 답글 관련 state
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [commentFile, setCommentFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const files: File[] = [];
-  const content = `<h2>제목입니다</h2>
-<p>
-  이건 <strong>굵은 글씨</strong>와
-  <em>기울임</em>,
-  <u>밑줄</u>이 포함된 문단입니다.
-</p>
 
-<p style="font-size: 22px;">
-  폰트 크기가 <strong>18px</strong>로 설정된 문장입니다.
-</p>
+  // 댓글 작성 스키마
+  const commentSchema = z.object({
+    content: z.string().min(1, "댓글을 입력해주세요"),
+  });
 
-<ul>
-  <li>리스트 아이템 1</li>
-  <li><strong>리스트 아이템dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd 2</strong></li>
-  <li><em>리스트 아이템 3</em></li>
-</ul>
+  type CommentForm = z.infer<typeof commentSchema>;
 
-<blockquote>
-  인용문입니다. 중요한 문장을 강조할 때 사용합니다.
-</blockquote>
-
-<p>
-  <a href="https://example.com" target="_blank">
-    링크 예시
-  </a>
-</p>
-`;
-
-  const weekCommentData: CommentType[] = [
-    {
-      commentId: 1,
-      depth: 0,
-      writerInfo: {
-        id: 1,
-        loginId: "test",
-        email: "test@test.com",
-        nickname: "작성자",
-        birthday: "2000.01.01",
-        gender: "MALE",
-        badge: "badge",
-        tier: { name: "A" },
-        socialLogin: null,
-        isNewUser: false,
-        profileImage: { uuid: "1234567890", fileName: "profile.jpg", size: 0, filePath: "", handlingType: "" },
-        createdAt: "2026.01.01",
-        lastModifiedAt: "2026.01.01",
-      },
-      content: "댓글 ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd용",
-      attachedImages: [],
-      attachedFiles: [],
-      createdAt: "2026.01.01",
-      updatedAt: "2026.01.01",
-      childrenComments: [
-        {
-          commentId: 2,
-          depth: 1,
-          writerInfo: {
-            id: 2,
-            loginId: "test2",
-            email: "test2@test.com",
-            nickname: "작성자1",
-            birthday: "2000.01.01",
-            gender: "MALE",
-            badge: "badge",
-            tier: { name: "A" },
-            socialLogin: null,
-            isNewUser: false,
-            profileImage: { uuid: "1234567891", fileName: "profile2.jpg", size: 0, filePath: "", handlingType: "" },
-            createdAt: "2026.01.01",
-            lastModifiedAt: "2026.01.01",
-          },
-          content: "Ldffffffffffddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          attachedImages: [],
-          attachedFiles: [],
-          createdAt: "2026.01.01",
-          updatedAt: "2026.01.01",
-          childrenComments: [],
-        },
-        {
-          commentId: 3,
-          depth: 1,
-          writerInfo: {
-            id: 3,
-            loginId: "test3",
-            email: "test3@test.com",
-            nickname: "작성자1",
-            birthday: "2000.01.01",
-            gender: "MALE",
-            badge: "badge",
-            tier: { name: "A" },
-            socialLogin: null,
-            isNewUser: false,
-            profileImage: { uuid: "1234567892", fileName: "profile3.jpg", size: 0, filePath: "", handlingType: "" },
-            createdAt: "2026.01.01",
-            lastModifiedAt: "2026.01.01",
-          },
-          content: "Ldffffffffffdddddddddddddddddddddddddddddddddfffffffffffft volutpat. Vestibulum",
-          attachedImages: [],
-          attachedFiles: [],
-          createdAt: "2026.01.01",
-          updatedAt: "2026.01.01",
-          childrenComments: [],
-        },
-      ],
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+  } = useForm<CommentForm>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      content: "",
     },
-    {
-      commentId: 4,
-      depth: 0,
-      writerInfo: {
-        id: 4,
-        loginId: "test4",
-        email: "test4@test.com",
-        nickname: "작성자",
-        birthday: "2000.01.01",
-        gender: "MALE",
-        badge: "badge",
-        tier: { name: "A" },
-        socialLogin: null,
-        isNewUser: false,
-        profileImage: { uuid: "1234567893", fileName: "profile4.jpg", size: 0, filePath: "", handlingType: "" },
-        createdAt: "2026.01.01",
-        lastModifiedAt: "2026.01.01",
-      },
-      content: "Lo iod bitasse platea dictumst. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Vestibulum",
-      attachedImages: [],
-      attachedFiles: [],
-      createdAt: "2026.01.01",
-      updatedAt: "2026.01.01",
-      childrenComments: [],
-    },
-  ];
+  });
 
-  const handleFileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles) {
-      const newFiles = Array.from(selectedFiles);
-      setCommentFiles([...commentFiles, ...newFiles]);
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue?.trim()?.length > 0);
+
+  useEffect(() => {
+    resetPostDetail();
+  }, [id, resetPostDetail]);
+
+  // reviewDetail이 로드되면 즉시 store에 저장
+  useEffect(() => {
+    if (reviewDetail?.data) {
+      setPostInfo(reviewDetail.data as any);
+      setIsMine(reviewDetail.data.writerId === user?.id);
+      if (reviewDetail.data.thumbnail?.uuid) {
+        getThumbnail(
+          { file_uuid: reviewDetail.data.thumbnail.uuid },
+          {
+            onSuccess: (photo) => {
+              setThumbnail(photo);
+            },
+            onError: (error) => {
+              console.log(error);
+              setThumbnail(null);
+            },
+          }
+        );
+      }
     }
-    // 같은 파일을 다시 선택할 수 있도록 input 값 초기화
+  }, [reviewDetail, user?.id, getThumbnail, setThumbnail, setPostInfo]);
+
+  // postComments가 로드되면 store에 저장
+  useEffect(() => {
+    if (postComments?.data) {
+      setPostComments(postComments.data);
+      setTotalPage(postComments.data.page.totalPages);
+    }
+  }, [postComments, setPostComments]);
+
+  // 댓글 작성 핸들러
+  const onSubmit = (data: CommentForm) => {
+    if (!id) return;
+
+    const formData = new FormData();
+    formData.append("content", data.content);
+    if (selectedCommentId) {
+      formData.append("parentCommentId", String(selectedCommentId));
+    }
+    if (commentFile) {
+      // 이미지인지 파일인지 구분
+      if (commentFile.type.startsWith("image/")) {
+        formData.append("attachedImages", commentFile);
+      } else {
+        formData.append("attachedFiles", commentFile);
+      }
+    }
+
+    postComment(formData, {
+      onSuccess: () => {
+        reset();
+        setCommentFile(null);
+        setSelectedCommentId(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        // 댓글 리스트 새로고침
+        queryClient.invalidateQueries({
+          queryKey: [buildPath(ApiEndpoints.POST_COMMENTS, { postId: id })],
+        });
+      },
+      onError: (error: unknown) => {
+        console.error("댓글 작성 실패:", error);
+        alert("댓글 작성에 실패했습니다.");
+      },
+    });
+  };
+
+  // 답글 클릭 핸들러
+  const handleReplyClick = (commentId: number) => {
+    setSelectedCommentId(commentId);
+  };
+
+  // 파일 변경 핸들러
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCommentFile(file);
+    }
+  };
+
+  // 파일 삭제 핸들러
+  const handleFileDelete = () => {
+    setCommentFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
-  }
+  };
 
-  const handleFileAddClick = () => {
-    fileInputRef.current?.click();
-  }
+  // 댓글 페이지 변경 핸들러
+  const handleCommentPageChange = (page: number) => {
+    if (!id) return;
+    setCurrentPage(page);
+    // 페이지 변경 시 댓글 리스트 다시 가져오기
+    queryClient.invalidateQueries({
+      queryKey: [buildPath(ApiEndpoints.POST_COMMENTS, { postId: id })],
+    });
+  };
+
+  if (isLoading) return <Loading />;
 
   return (
-    <DefaultLayout variant="home">
-      <Banner />
+    <DefaultLayout>
+      <Banner type="recruit" />
       <S.RecruitDetailWrapper>
         <S.TopWrapper>
-          <ChallengeInfoField mode="SOLO" />
+          <ChallengeInfoField />
         </S.TopWrapper>
         <S.ContentWrapper>
-          <Content content={content} />
-          <Files files={files} />
+          <Content content={reviewDetail?.data.content || ""} />
+          <S.FileNameWrapper>
+            {reviewDetail?.data.attachedImages && reviewDetail?.data.attachedImages.length > 0 &&
+              reviewDetail?.data.attachedImages.map((data, index) => (
+                <S.FileName key={index} onClick={() => openImage(data)}>{data.fileName}</S.FileName>
+              ))
+            }
+            {reviewDetail?.data.attachedFiles && reviewDetail?.data.attachedFiles.length > 0 &&
+              reviewDetail?.data.attachedFiles.map((data, index) => (
+                <S.FileName key={index} onClick={() => downloadFile(data)}>{data.fileName}</S.FileName>
+              ))
+            }
+          </S.FileNameWrapper>
         </S.ContentWrapper>
         <S.CommentWholeWrapper>
-          <PageTopic text={`댓글 (${10})`} size="l" />
+          <PageTopic text={`댓글 (${postComments?.data?.page?.totalElements || 0})`} size="l" />
           <S.CommentWrapper>
-            {weekCommentData.map((data, index: number) => (
-              <S.CommentWrapper key={index}>
-                <Comment data={data} />
-                {data.childrenComments.length > 0 && <S.ReplyWrapper>
-                  {data.childrenComments.map((replyData) => (
-                    <S.ReplyWrapper key={replyData.commentId}>
-                      <Comment data={replyData} type="reply" />
-                    </S.ReplyWrapper>
-                  ))}
-                </S.ReplyWrapper>}
-              </S.CommentWrapper>
-            ))}
+            {isLoadingPostComments ? (
+              <SubLoading />
+            ) : (
+              <>
+                {postComments?.data.content.map((data) => (
+                  <S.CommentWrapper key={data.commentId}>
+                    <Comment
+                      data={data}
+                      onReplyClick={handleReplyClick}
+                      isSelected={selectedCommentId === data.commentId}
+                    />
+                    {data.childrenComments?.map((replyData) => (
+                      <S.ReplyWrapper key={replyData.commentId}>
+                        <Comment data={replyData} type="reply" />
+                      </S.ReplyWrapper>
+                    ))}
+                  </S.CommentWrapper>
+                ))}
+                {totalPage > 1 && (
+                  <CardS.CommentPageNav>
+                    <SubPagination
+                      currentPage={currentPage + 1}
+                      totalPage={totalPage}
+                      callback={(page) => handleCommentPageChange(page - 1)}
+                    />
+                  </CardS.CommentPageNav>
+                )}
+              </>
+            )}
           </S.CommentWrapper>
         </S.CommentWholeWrapper>
-        <S.CommentFilesWrapper>
-          <S.InputWrapperContainer>
-            <S.InputWrapper>
-              <S.FileInput ref={fileInputRef} type="file" onChange={handleFileAdd} multiple />
-              <S.FileAddBtn onClick={handleFileAddClick}>
-                <S.FileImg src={FileIcon} />
-                <p>파일</p>
-              </S.FileAddBtn>
-              <S.InputField placeholder={user ? "댓글을 입력하세요" : ""} />
-              <S.SubmitBtn>완료</S.SubmitBtn>
-            </S.InputWrapper>
-            {!user && (
-              <S.InputOverlay>
-                <S.LockImg src={Lock} />
-                <span>로그인 후 이용 가능합니다</span>
-              </S.InputOverlay>
-            )}
-          </S.InputWrapperContainer>
-          {user && <Files files={commentFiles} setFiles={setCommentFiles} />}
-        </S.CommentFilesWrapper>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {selectedCommentId && (
+            <CardS.ReplyIndicator>
+              답글 작성 중...
+              <CardS.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</CardS.ReplyCancelBtn>
+            </CardS.ReplyIndicator>
+          )}
+          <CardS.WeekCommentInputWrapper>
+            <CardS.WeekCommentInput
+              {...register("content")}
+              placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
+            />
+            <CardS.FileIconWrapper>
+              <CardS.FileIconContentWrapper>
+                <CardS.FileIconLabel>
+                  <CardS.FileIconInput
+                    ref={fileInputRef}
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                  <CardS.FileIconButton>
+                    <img src={FileIcon} alt="파일 업로드" />
+                  </CardS.FileIconButton>
+                </CardS.FileIconLabel>
+                {commentFile && (
+                  <CardS.FileNameWrapper>
+                    <CardS.FileName>{commentFile.name}</CardS.FileName>
+                    <CardS.FileNameDeleteBtn onClick={handleFileDelete}>
+                      <img src={XIcon} alt="파일 삭제" />
+                    </CardS.FileNameDeleteBtn>
+                  </CardS.FileNameWrapper>
+                )}
+              </CardS.FileIconContentWrapper>
+              <CardS.FinishBtn type="submit" $active={hasContent}>완료</CardS.FinishBtn>
+            </CardS.FileIconWrapper>
+          </CardS.WeekCommentInputWrapper>
+        </form>
+        {isMineStore && (
+          <S.EditBtnWrapper>
+            <DeleteModal trigger={<Button $color="gray">삭제</Button>} postId={id || ""} type="review" />
+            <Button $color="gray">수정</Button>
+          </S.EditBtnWrapper>
+        )}
       </S.RecruitDetailWrapper>
-    </DefaultLayout >
+    </DefaultLayout>
   );
 }
 

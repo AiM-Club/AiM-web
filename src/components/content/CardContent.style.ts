@@ -208,23 +208,23 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0)
-        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
-      return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
-    }}
+    if (props.$direction === 0)
+      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+    return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
+  }}
   );
 
   @media (max-width: 770px) {
     transform: translateX(
       ${(props) => {
-        if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-          return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
-        if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-          return `calc(-8.5rem * (${props.$rowcount} - 1))`;
-        if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
-          return `calc(-8.5rem * (${props.$direction - 1}))`;
-        return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
-      }}
+    if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+    if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-8.5rem * (${props.$rowcount} - 1))`;
+    if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
+      return `calc(-8.5rem * (${props.$direction - 1}))`;
+    return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
+  }}
     );
   }
 `;
@@ -413,6 +413,34 @@ export const WeekCommentInputWrapper = styled.div`
   width: 100%;
 `;
 
+export const InputWrapperContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const InputOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: color-mix(in oklch, var(--surpace-secondary), transparent 20%);
+  border-radius: 0.25rem;
+  border: 1.5px solid var(--gray-600);
+  font: var(--body-r-xl);
+  color: var(--text-primary-default);
+  z-index: 10;
+`;
+
+export const LockImg = styled.img`
+  width: 1rem;
+  height: 1rem;
+`;
+
 export const FileIconWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -468,16 +496,16 @@ export const WeekCommentInput = styled.input`
   }
 `;
 
-export const FinishBtn = styled.button`
+export const FinishBtn = styled.button<{ $active?: boolean }>`
   display: flex;
   flex-shrink: 0;
   padding: 0.25rem 0.563rem;
-  background-color: var(--surpace-primary);
+  background-color: ${(props) => (props.$active ? "var(--surpace-tertiary)" : "var(--surpace-primary)")};
   width: fit-content;
   border-radius: 0.25rem;
-  border: 1px solid var(--text-secondary);
+  border: 1px solid var(--gray-700);
   font: var(--body-r-m);
-  color: var(--text-secondary);
+  color: ${(props) => (props.$active ? "var(--text-primary-default)" : "var(--text-secondary)")};
   cursor: pointer;
 `;
 

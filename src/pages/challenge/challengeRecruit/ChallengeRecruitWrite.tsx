@@ -9,9 +9,9 @@ import * as S from "@/styles/WritePage.style";
 import { useRef } from "react";
 import { z } from "zod";
 import { usePostChallengeRecruit } from "@/api/posts";
-// import { buildPath } from "@/utils/buildPath";
-// import { PageEndPoints } from "@/constants/endpoints";
-// import { useNavigate } from "react-router-dom";
+import { PageEndPoints } from "@/constants/endpoints";
+import { buildPath } from "@/utils/buildPath";
+import { useNavigate } from "react-router-dom";
 
 const recruitWriteSchema = z.object({
   challengeId: z.string().min(1, "챌린지를 선택해 주세요"),
@@ -19,7 +19,9 @@ const recruitWriteSchema = z.object({
   tags: z.array(z.string()).min(1, "태그를 1개 이상 입력해 주세요"),
   fields: z.string().min(1, "분야를 선택해 주세요"),
   job: z.string().min(1, "직무를 입력해 주세요"),
-  contents: z.string().min(1, "내용을 입력해 주세요"),
+  startedAt: z.string().min(1, "시작일을 선택해 주세요"),
+  durationWeek: z.number().min(1, "주차를 선택해 주세요"),
+  content: z.string().min(1, "내용을 입력해 주세요"),
   files: z.array(z.instanceof(File)).optional(),
   images: z.array(z.instanceof(File)).optional(),
   thumbnail: z.instanceof(File).optional(),
@@ -28,7 +30,7 @@ const recruitWriteSchema = z.object({
 type RecruitWriteForm = z.infer<typeof recruitWriteSchema>;
 
 const ChallengeRecruitWrite = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { mutate: createChallengeRecruitMutate } = usePostChallengeRecruit();
   const bannerTitleRef = useRef<BannerTitleFieldRef>(null);
   const writeElementsRef = useRef<WriteElementsSelectRef>(null);
@@ -65,7 +67,9 @@ const ChallengeRecruitWrite = () => {
       tags: elementsData?.tags || [],
       fields: elementsData?.field || "",
       job: elementsData?.job || "",
-      contents: content.trim(),
+      startedAt: elementsData?.startDate || "",
+      durationWeek: elementsData?.weeks || 0,
+      content: content.trim(),
       files: files.length > 0 ? files : undefined,
       images: images.length > 0 ? images : undefined,
       thumbnail: thumbnail || undefined,
@@ -87,7 +91,9 @@ const ChallengeRecruitWrite = () => {
       formData.append("title", result.data.title);
       formData.append("fields", result.data.fields);
       formData.append("job", result.data.job);
-      formData.append("contents", result.data.contents);
+      formData.append("content", result.data.content);
+      formData.append("startedAt", result.data.startedAt);
+      formData.append("durationWeek", result.data.durationWeek.toString());
       result.data.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
@@ -108,6 +114,7 @@ const ChallengeRecruitWrite = () => {
       createChallengeRecruitMutate(formData, {
         onSuccess: (data) => {
           console.log("챌린지 모집글 생성 성공:", data);
+          navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: String(data.data.challengeId) }));
         },
         onError: (error) => {
           console.error("챌린지 모집글 생성 실패:", error);

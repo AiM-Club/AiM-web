@@ -1,10 +1,3 @@
-export const myLevelData = {
-    id: 1,
-    tier: "bronze",
-    level: 1,
-    levelper: 70,
-};
-
 export const levelInfoData = [
     {
         tier: "bronze",

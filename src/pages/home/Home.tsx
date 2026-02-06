@@ -13,6 +13,7 @@ import { useGetChallengeVS } from "@/api/challenge";
 import { useGetChallengeRecruit, useGetHotChallengeRecruit, useGetHotChallengeReview } from "@/api/vsRecruit";
 import CardSlider from "@/components/slider/CardSlider";
 import useMedia from "@/hooks/useMedia";
+import { userGetTop10 } from "@/api/user";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Home = () => {
   const { data: challengeRecruitList, isLoading: isLoadingRecruit } = useGetChallengeRecruit({ page: 0, size: 8 });
   const { data: hotChallengeRecruitList } = useGetHotChallengeRecruit();
   const { data: hotChallengeReviewList } = useGetHotChallengeReview();
+  const { data: top10UserList } = userGetTop10();
 
   return (
     <DefaultLayout variant="home">
@@ -28,17 +30,17 @@ const Home = () => {
       <S.HomeWrapper>
         {isMobile ?
           <S.CardWrapper><CardSlider>
-            <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" />
-            <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" />
-            <CardList data={hotChallengeRecruitList?.data || []} title="TOP 10" color="pink" />
+            <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="recruit" />
+            <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="review" />
+            <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </CardSlider>
           </S.CardWrapper> :
           <S.CardWrapper>
             <S.TopWrapper>
-              <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" />
-              <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" />
+              <CardList data={hotChallengeRecruitList?.data || []} title="HOT 모집글" color="green" type="recruit" />
+              <CardList data={hotChallengeReviewList?.data || []} title="HOT 후기글" color="green" type="review" />
             </S.TopWrapper>
-            <CardList data={hotChallengeRecruitList?.data || []} title="TOP 10" color="pink" />
+            <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </S.CardWrapper>}
         <S.FieldWrapper>
           <SearchField />

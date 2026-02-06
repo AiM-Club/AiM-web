@@ -19,9 +19,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import XIcon from "@/assets/X.png";
+import Lock from "@/assets/Lock.svg";
 import SubPagination from "../pagination/SubPagination";
 import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
+import { useAuthStore } from "@/stores/authStore";
 
 interface ChallengeMainProps {
   color: "green" | "pink";
@@ -40,6 +42,7 @@ interface ChallengeVSMatchProps {
   commentView?: boolean;
   isMobile?: boolean;
   isMine?: boolean;
+  publishTimer?: (action: "START" | "STOP") => void;
 }
 
 interface WeekProps {
@@ -92,16 +95,16 @@ const ChallengeMainContent = ({ color, progress, tryCount, successCount, failCou
   )
 }
 
-const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false }: ChallengeVSMatchProps) => {
-  const { myPhoto, opponentPhoto, dominance, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo, opponentInfo } = useChallengeDetailStore();
+const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = true, isMobile = false, isMine = false, publishTimer }: ChallengeVSMatchProps) => {
+  const { myPhoto, opponentPhoto, challengeId, challengeInfo, challengeDetailWeeks, progressMyListMap, progressOpponentListMap, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myInfo, opponentInfo } = useChallengeDetailStore();
   const photo = kind === "opponent" ? opponentPhoto : myPhoto;
   const photoSrc = useUserPhotoUrl(photo);
   const { downloadFile } = useFileDownload();
   const { openImage } = useImageOpen();
   const progressListMap = kind === "opponent" ? progressOpponentListMap : progressMyListMap;
   const setChallengeDetailWeeks = kind === "opponent" ? setChallengeOpponentDetailWeeks : setChallengeMyDetailWeeks;
-  const progress = kind === "opponent" ? (dominance?.opponentPercent ?? 0) : (dominance?.myPercent ?? 0);
-  const success = kind === "opponent" ? (dominance?.opponentSuccessRate ?? 0) : (dominance?.mySuccessRate ?? 0);
+  const progress = kind === "opponent" ? (opponentInfo?.progressRate ?? 0) : (myInfo?.progressRate ?? 0);
+  const success = kind === "opponent" ? (opponentInfo?.successRate ?? 0) : (myInfo?.successRate ?? 0);
   const currentWeek = challengeDetailWeeks?.currentWeek;
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const [firstRowCount, setFirstRowCount] = useState<number>(0);
@@ -120,6 +123,15 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+  const [localTimerSeconds, setLocalTimerSeconds] = useState<number>(0);
+  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { user } = useAuthStore();
+
+  // 실시간 타이머 표시를 위한 현재 시간 계산
+  const currentTimerSeconds = selectedWeek === currentWeek && isTimerRunning && selectedWeek !== null
+    ? localTimerSeconds
+    : (progressListMap[selectedWeek ?? 0]?.stopwatchTimeSeconds ?? 0);
 
   // Hook 규칙을 준수하기 위해 항상 호출 (selectedWeek가 없을 때는 더미 값 사용)
   const currentWeeklyProgressId = selectedWeek && progressListMap[selectedWeek]?.weeklyProgressId
@@ -140,12 +152,16 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
     register,
     handleSubmit,
     reset,
+    watch,
   } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       content: "",
     },
   });
+
+  const contentValue = watch("content");
+  const hasContent = !!(contentValue && contentValue.trim().length > 0);
 
   useEffect(() => {
     if (!contentElement) return;
@@ -210,6 +226,49 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       getWeeklyCommentsData(weeklyProgressId, 0);
     }
   }
+
+  // 타이머 시작/종료 시 로컬 타이머 관리
+  useEffect(() => {
+    if (isTimerRunning && selectedWeek === currentWeek) {
+      // 서버에서 받은 최신 시간으로 초기화
+      const serverTime = progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0;
+      setLocalTimerSeconds(serverTime);
+
+      // 1초마다 로컬 타이머 증가
+      timerIntervalRef.current = setInterval(() => {
+        setLocalTimerSeconds((prev) => prev + 1);
+      }, 1000);
+    } else {
+      // 타이머 중지
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    };
+  }, [isTimerRunning, selectedWeek, currentWeek, progressListMap]);
+
+  // 서버에서 타이머 업데이트를 받으면 로컬 타이머 동기화
+  useEffect(() => {
+    if (selectedWeek && progressListMap[selectedWeek]?.stopwatchTimeSeconds !== undefined) {
+      const serverTime = progressListMap[selectedWeek].stopwatchTimeSeconds;
+      if (isTimerRunning && selectedWeek === currentWeek) {
+        // 서버 시간과 로컬 시간의 차이가 2초 이상이면 서버 시간으로 동기화
+        if (Math.abs(serverTime - localTimerSeconds) > 2) {
+          setLocalTimerSeconds(serverTime);
+        }
+      } else {
+        // 타이머가 실행 중이 아니면 서버 시간으로 설정
+        setLocalTimerSeconds(serverTime);
+      }
+    }
+  }, [progressListMap, selectedWeek, isTimerRunning, currentWeek]);
 
   const getWeeklyCommentsData = (weeklyProgressId: number, page: number = currentPage) => {
     if (weeklyProgressId && challengeId) {
@@ -409,14 +468,26 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                         </S.ProofFileIconLabel>
                       }
                     </S.ProofWrapper>
-                    {selectedWeek === currentWeek ? (
+                    {selectedWeek === currentWeek && isMine ? (
                       <S.TimerWrapper>
-                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
-                        <S.TimerBtn>Start</S.TimerBtn>
+                        <S.Timer>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
+                        <S.TimerBtn
+                          onClick={() => {
+                            if (isTimerRunning) {
+                              publishTimer?.("STOP");
+                              setIsTimerRunning(false);
+                            } else {
+                              publishTimer?.("START");
+                              setIsTimerRunning(true);
+                            }
+                          }}
+                        >
+                          {isTimerRunning ? "STOP" : "START"}
+                        </S.TimerBtn>
                       </S.TimerWrapper>
                     ) : (
                       <S.TimerWrapper>
-                        <S.Timer>{formatStopwatchTime(progressListMap[selectedWeek]?.stopwatchTimeSeconds ?? 0)}</S.Timer>
+                        <S.Timer>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
                       </S.TimerWrapper>
                     )}
                   </S.WeekTopicWrapper>
@@ -453,35 +524,43 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                           <S.ReplyCancelBtn onClick={() => setSelectedCommentId(null)}>취소</S.ReplyCancelBtn>
                         </S.ReplyIndicator>
                       )}
-                      <S.WeekCommentInputWrapper>
-                        <S.WeekCommentInput
-                          {...register("content")}
-                          placeholder={selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
-                        />
-                        <S.FileIconWrapper>
-                          <S.FileIconContentWrapper>
-                            <S.FileIconLabel>
-                              <S.FileIconInput
-                                ref={fileInputRef}
-                                type="file"
-                                onChange={handleFileChange}
-                              />
-                              <S.FileIconButton>
-                                <img src={FileIcon} alt="파일 업로드" />
-                              </S.FileIconButton>
-                            </S.FileIconLabel>
-                            {commentFile && (
-                              <S.FileNameWrapper>
-                                <S.FileName>{commentFile.name}</S.FileName>
-                                <S.FileNameDeleteBtn onClick={handleFileDelete}>
-                                  <img src={XIcon} alt="파일 삭제" />
-                                </S.FileNameDeleteBtn>
-                              </S.FileNameWrapper>
-                            )}
-                          </S.FileIconContentWrapper>
-                          <S.FinishBtn type="submit">완료</S.FinishBtn>
-                        </S.FileIconWrapper>
-                      </S.WeekCommentInputWrapper>
+                      <S.InputWrapperContainer>
+                        <S.WeekCommentInputWrapper>
+                          <S.WeekCommentInput
+                            {...register("content")}
+                            placeholder={user ? (selectedCommentId ? "답글을 입력하세요" : "댓글을 입력하세요") : ""}
+                          />
+                          <S.FileIconWrapper>
+                            <S.FileIconContentWrapper>
+                              <S.FileIconLabel>
+                                <S.FileIconInput
+                                  ref={fileInputRef}
+                                  type="file"
+                                  onChange={handleFileChange}
+                                />
+                                <S.FileIconButton>
+                                  <img src={FileIcon} alt="파일 업로드" />
+                                </S.FileIconButton>
+                              </S.FileIconLabel>
+                              {commentFile && (
+                                <S.FileNameWrapper>
+                                  <S.FileName>{commentFile.name}</S.FileName>
+                                  <S.FileNameDeleteBtn onClick={handleFileDelete}>
+                                    <img src={XIcon} alt="파일 삭제" />
+                                  </S.FileNameDeleteBtn>
+                                </S.FileNameWrapper>
+                              )}
+                            </S.FileIconContentWrapper>
+                            <S.FinishBtn type="submit" $active={hasContent}>완료</S.FinishBtn>
+                          </S.FileIconWrapper>
+                        </S.WeekCommentInputWrapper>
+                        {!user && (
+                          <S.InputOverlay>
+                            <S.LockImg src={Lock} alt="" />
+                            <span>로그인 후 이용 가능합니다</span>
+                          </S.InputOverlay>
+                        )}
+                      </S.InputWrapperContainer>
                     </form>
                   )}
                 </S.WeekContentWrapper>
@@ -507,7 +586,7 @@ const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | nu
   return (
     <S.PlusIconWrapper $height={height} onClick={() => {
       if (isMine) {
-        navigate(`${PageEndPoints.CHALLENGE_VS}?category=invite`);
+        navigate(`${PageEndPoints.CHALLENGE_VS_INVITE}`);
       } else {
         postChallengeRecruit();
       }

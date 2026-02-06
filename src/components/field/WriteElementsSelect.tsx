@@ -98,14 +98,14 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
 
     const options: SelectOption[] = [
       { value: "IT", label: "IT" },
-      { value: "경영", label: "경영" },
-      { value: "경제", label: "경제" },
-      { value: "정치", label: "정치" },
-      { value: "어문", label: "어문" },
-      { value: "자연", label: "자연" },
-      { value: "디자인", label: "디자인" },
-      { value: "음악", label: "음악" },
-      { value: "체육", label: "체육" },
+      { value: "BUSINESS", label: "경영" },
+      { value: "ECONOMICS", label: "경제" },
+      { value: "POLITICS", label: "정치" },
+      { value: "LANGUAGE", label: "어문" },
+      { value: "SCIENCE", label: "자연" },
+      { value: "DESIGN", label: "디자인" },
+      { value: "SPORTS", label: "체육" },
+      { value: "MUSIC", label: "음악" },
     ];
 
     //챌린지 선택 시 챌린지 정보 로드 (서버에서 받아오기)

@@ -18,7 +18,7 @@ import { useUserPhotoUrl } from "@/hooks/useUserPhotoUrl";
 import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { PageEndPoints } from "@/constants/endpoints";
-// import { useWebSocketTimer } from "@/api/timer";
+import { useWebSocketTimer } from "@/api/timer";
 
 const ChallengeVSMatch = () => {
   const { user } = useAuthStore();
@@ -27,7 +27,7 @@ const ChallengeVSMatch = () => {
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getMyPhoto } = useGetPhoto();
   const { mutate: getOpponentPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, myPhoto, opponentPhoto, resetChallengeDetail, myInfo, updateTimer, setIsMine, setIsWriter } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data?.participants?.me?.id ? String(challengeDetail.data.participants.me.id) : "";
   const opponentUserId = challengeDetail?.data?.participants?.opponent ? String(challengeDetail.data.participants.opponent.id) : null;
   const { data: challengeMyDetailWeeks, isLoading: isLoadingMyWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
@@ -36,10 +36,25 @@ const ChallengeVSMatch = () => {
   const { data: challengeOpponentDetailWeeks, isLoading: isLoadingOpponentWeeks } = useGetChallengeDetailWeeks(id || "", opponentUserId || "", {
     enabled: !!(id && id !== "0") && !!opponentUserId && !!challengeDetail?.data,
   });
-  const [isMine, setIsMine] = useState(false);
+  const challengeId = challengeDetail?.data ? Number(id) : null;
 
-  // WebSocket 연결
-  // useWebSocketTimer();
+  // WebSocket 연결 및 구독
+  const { publishTimer } = useWebSocketTimer({
+    challengeId,
+    enabled: !!(challengeId && challengeDetail?.data),
+    onTimerUpdate: (data) => {
+      // store에 타이머 업데이트 반영
+      const isMy = myInfo?.id === data.userId;
+      updateTimer(data.weekNumber, data.stopwatchTimeSeconds, isMy);
+    },
+    onError: (error) => {
+      console.error("=== 타이머 에러 ===");
+      console.error("에러 코드:", error.code);
+      console.error("에러 메시지:", error.message);
+      console.error("=== 에러 처리 완료 ===");
+      alert(error.message);
+    },
+  });
 
   // challengeId가 변경될 때 store 초기화
   useEffect(() => {
@@ -55,6 +70,7 @@ const ChallengeVSMatch = () => {
       setOpponentInfo(challengeDetail.data.participants.opponent);
       setChallengeMyDetailWeeks(challengeMyDetailWeeks.data);
       setIsMine(challengeDetail.data.participants.me.id === user?.id);
+      setIsWriter(challengeDetail.data.challengeInfo.writerId === user?.id);
 
       if (challengeOpponentDetailWeeks) {
         setChallengeOpponentDetailWeeks(challengeOpponentDetailWeeks.data);
@@ -97,7 +113,7 @@ const ChallengeVSMatch = () => {
         );
       }
     }
-  }, [challengeDetail, challengeMyDetailWeeks, challengeOpponentDetailWeeks, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks]);
+  }, [challengeDetail, challengeMyDetailWeeks, challengeOpponentDetailWeeks, user, getThumbnail, getMyPhoto, getOpponentPhoto, setThumbnail, setMyPhoto, setOpponentPhoto, setChallengeInfo, setDominance, setMyInfo, setOpponentInfo, setChallengeMyDetailWeeks, setChallengeOpponentDetailWeeks, setIsMine, setIsWriter, id]);
 
   const isMobile = useMedia(770);
   const navigate = useNavigate();
@@ -138,7 +154,7 @@ const ChallengeVSMatch = () => {
   return (
     <DefaultLayout variant="home">
       <S.VSMatchWrapper>
-        <Banner isMine={isMine} />
+        <Banner />
         <S.VSMatchContentWrapper ref={setContentElement}>
           <FieldTagWorkPeriod />
           {/* 나중에 상대가 있을 경우 보이게 설정 */}
@@ -153,12 +169,12 @@ const ChallengeVSMatch = () => {
             {(viewCard !== "right" && !isMobile) || (isMobile && viewCard === "left") ?
               <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
                 {opponentUserId ?
-                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" />
-                  : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} isMine={isMine} />}
+                  <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
+                  : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
-              <CardChallenge isMine={isMine} mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
-                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" isMine={isMine} />
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+                <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
         </S.VSMatchContentWrapper>

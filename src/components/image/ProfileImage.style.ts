@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const ProfileImgWrapper = styled.div<{ $width: number; $color?: "green" | "pink" }>`
+export const ProfileImgWrapper = styled.div<{ $width: number; $color?: "green" | "pink"; $type?: "default" | "winner" }>`
+  position: relative;
   display: flex;
   width: ${(props) => props.$width}rem;
   height: ${(props) => props.$width}rem;
@@ -10,6 +11,33 @@ export const ProfileImgWrapper = styled.div<{ $width: number; $color?: "green" |
     props.$color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"};
   aspect-ratio: 1;
   clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
+
+  ${(props) => props.$type === "winner" && `
+    @media (max-width: 768px) {
+      width: 10rem;
+      height: 10rem;
+    }
+  `}
+`;
+
+export const CrownBadge = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  height: auto;
+  aspect-ratio: 56 / 28;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  pointer-events: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left bottom;
+  }
 `;
 
 export const ProfileImg = styled.img`

@@ -2,6 +2,7 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 import FieldBtn from "../button/FieldBtn";
 import * as S from "./FieldTagWorkPeriod.style";
 import { formatDateKR } from "@/utils/useTime";
+import { useFieldName } from "@/utils/useField";
 
 
 const FieldTagWorkPeriod = () => {
@@ -14,7 +15,7 @@ const FieldTagWorkPeriod = () => {
           <S.Topic>분야</S.Topic>
           <S.Content>
             {challengeInfo?.fields.map((data, i) => (
-              <div key={i}><FieldBtn text={data.name} /></div>
+              <div key={i}><FieldBtn text={useFieldName(data.name) || data.name} /></div>
             ))}
           </S.Content>
         </S.EachWrapper>
