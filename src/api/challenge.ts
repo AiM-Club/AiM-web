@@ -1,9 +1,10 @@
 import { ApiEndpoints } from "@/constants/endpoints";
 import { useFetch, usePost } from "./hooks";
 // import { api } from "./utils";
-import type { ChallengeMyListResponse, ChallengeRequestListResponse, ChallengeVSListResponse } from "@/types/challenge";
+import type { ChallengeMyListResponse, ChallengeRequestListResponse, ChallengeVSListResponse, ChallengeWinnerResponse } from "@/types/challenge";
 import type { ApiResponse } from "./types";
 import type { QueryOptions } from "./types";
+import { buildPath } from "@/utils/buildPath";
 
 export const usePostChallenge = () => {
   return usePost<FormData, { challengeId: number }>(ApiEndpoints.CHALLENGE);
@@ -140,4 +141,13 @@ export const useGetAllChallenge = ({ sort, keyword, page = 0, size = 16 }: { sor
     params.keyword = keyword.trim();
   }
   return useFetch<ApiResponse<ChallengeVSListResponse>>(ApiEndpoints.CHALLENGE_ALL, params);
+}
+
+//위너 조회
+export const useGetWinner = ({ challengeId }: { challengeId: string }, options?: QueryOptions<ApiResponse<ChallengeWinnerResponse>>) => {
+  return useFetch<ApiResponse<ChallengeWinnerResponse>>(
+    buildPath(ApiEndpoints.CHALLENGE_WINNER, { challengeId }),
+    undefined,
+    options
+  );
 }

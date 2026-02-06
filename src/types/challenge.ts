@@ -78,3 +78,9 @@ export interface ChallengeMyListResponse {
     durationWeek: number;
     mode: string;
 }
+
+export interface ChallengeWinnerResponse {
+    challengeId: number;
+    durationWeek: number;
+    winnerInfo: RequestUser;
+}

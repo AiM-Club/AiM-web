@@ -19,6 +19,8 @@ import NoPhoto from "@/assets/NoPhoto.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useWebSocketTimer } from "@/api/timer";
+import { useGetWinner } from "@/api/challenge";
+import WinnerModal from "@/components/modal/WinnerModal";
 
 const ChallengeVSMatch = () => {
   const { user } = useAuthStore();
@@ -37,7 +39,12 @@ const ChallengeVSMatch = () => {
     enabled: !!(id && id !== "0") && !!opponentUserId && !!challengeDetail?.data,
   });
   const challengeId = challengeDetail?.data ? Number(id) : null;
-
+  const isCompleted = challengeDetail?.data?.challengeInfo?.status === "COMPLETED";
+  const { data: winner, isLoading: isLoadingWinner } = useGetWinner(
+    { challengeId: challengeId?.toString() || "" },
+    { enabled: !!(challengeId && challengeDetail?.data && isCompleted) }
+  );
+  const [winnerModalOpen, setWinnerModalOpen] = useState(false);
   // WebSocket 연결 및 구독
   const { publishTimer } = useWebSocketTimer({
     challengeId,
@@ -140,6 +147,12 @@ const ChallengeVSMatch = () => {
     setViewCard(isMobile ? "right" : "both");
   }, [isMobile]);
 
+  useEffect(() => {
+    if (isCompleted && winner?.data) {
+      setWinnerModalOpen(true);
+    }
+  }, [isCompleted, winner?.data]);
+
   const handleViewCard = (view: "left" | "right") => {
     if (isMobile && !opponentUserId && view === "left") {
       navigate(PageEndPoints.CHALLENGE_VS_INVITE);
@@ -149,10 +162,17 @@ const ChallengeVSMatch = () => {
     return;
   }
 
-  if (isLoading || isLoadingMyWeeks || isLoadingOpponentWeeks) return <Loading />;
+  if (isLoading || isLoadingMyWeeks || isLoadingOpponentWeeks || isLoadingWinner) return <Loading />;
 
   return (
     <DefaultLayout variant="home">
+      {isCompleted && winner?.data && (
+        <WinnerModal
+          open={winnerModalOpen}
+          onOpenChange={setWinnerModalOpen}
+          winnerData={winner.data}
+        />
+      )}
       <S.VSMatchWrapper>
         <Banner />
         <S.VSMatchContentWrapper ref={setContentElement}>
