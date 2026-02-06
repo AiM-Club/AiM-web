@@ -165,7 +165,7 @@ export const WeekItemWrapper = styled.div`
   }
 `;
 
-export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
+export const CurrentWeekItem = styled.div<{ $selected: boolean; $color: "green" | "pink" }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,7 +173,12 @@ export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
   padding: 1.5rem 0;
   background-color: var(--surpace-primary);
   border-radius: ${(props) => (props.$selected ? "0.25rem 0.25rem 0 0" : "0.25rem")};
-  color: ${(props) => (props.$selected ? "var(--text-primary-hover)" : "var(--text-primary-default)")};
+  color: ${(props) =>
+    !props.$selected
+      ? "var(--text-primary-default)"
+      : props.$color === "pink"
+        ? "var(--text-primary-hover)"
+        : "var(--green-200)"};
   padding-bottom: ${(props) => (props.$selected ? "2.5rem" : "1.5rem")};
   font: var(--body-r-xl);
   cursor: pointer;
@@ -338,11 +343,11 @@ export const TimerWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const Timer = styled.div`
+export const Timer = styled.div<{ $color: "green" | "pink" }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--pink-200);
+  background-color: ${(props) => (props.$color === "green" ? "var(--green-200)" : "var(--pink-200)")};
   padding: 0.625rem;
   font: var(--body-s-m);
   color: var(--text-tertiary);
