@@ -5,6 +5,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 //중복 확인이 inputfield에 있을 경우 checkDuplicate를 true로 넘깁니다.
 interface InputFieldProps {
   label: string;
+  value?: string;
   placeholder: string;
   checkDuplicate?: boolean;
   register: UseFormRegisterReturn;
@@ -12,7 +13,7 @@ interface InputFieldProps {
   disabled?: boolean;
 }
 
-export const InputField = ({ label, placeholder, checkDuplicate = false, register, onDuplicateCheck, disabled = false }: InputFieldProps) => {
+export const InputField = ({ label, value, placeholder, checkDuplicate = false, register, onDuplicateCheck, disabled = false }: InputFieldProps) => {
   return (
     <S.InputFieldWrapper>
       <S.LabelText>{label}</S.LabelText>
@@ -24,7 +25,7 @@ export const InputField = ({ label, placeholder, checkDuplicate = false, registe
         {...register}
       />
       {checkDuplicate && !disabled &&
-        <S.DuplicateBtnWrapper onClick={onDuplicateCheck}>
+        <S.DuplicateBtnWrapper $canCheckDuplicate={value?.trim() !== ""} onClick={onDuplicateCheck}>
           중복 확인
         </S.DuplicateBtnWrapper>}
     </S.InputFieldWrapper>

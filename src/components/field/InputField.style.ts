@@ -37,11 +37,12 @@ export const InputFieldInput = styled.input.attrs<{ $label: string; $checkDuplic
   }
 `;
 
-export const DuplicateBtnWrapper = styled.div`
+export const DuplicateBtnWrapper = styled.div<{ $canCheckDuplicate: boolean }>`
   display: flex;
   font: var(--body-r-m);
-  color: var(--text-secondary);
-  background-color: var(--text-tertiary);
+  color: ${({ $canCheckDuplicate }) => ($canCheckDuplicate ? "var(--text-primary-default)" : "var(--text-secondary)")};
+  background-color: ${({ $canCheckDuplicate }) =>
+    $canCheckDuplicate ? "var(--button-secondary-hover)" : "var(--text-tertiary)"};
   width: 4.75rem;
   height: 2.25rem;
   border-radius: 0.25rem;

@@ -83,6 +83,7 @@ const Ranking = () => {
                     topicDirection="left"
                   >
                     <RankingContent
+                      color="green"
                       progress={top3[2].allRecord.successRate}
                       tryCount={top3[2].allRecord.attemptCount}
                       successCount={top3[2].allRecord.successCount}

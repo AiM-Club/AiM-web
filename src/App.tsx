@@ -11,7 +11,7 @@ import Search from "./pages/search/Search"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from "./config/queryClient"
 import ChallengeVSMain from "./pages/challenge/challengeVS/ChallengeVS"
-import ChallengeVSMatch from "./pages/challenge/challengeVS/ChallengeVSDetail"
+import ChallengeVSMatch from "./pages/challenge/challengeVS/ChallengeVSMatch"
 import ChallengeVSSolo from "./pages/challenge/challengeSolo/ChallengeVSSolo"
 import QnA from "./pages/community/qna/QnA"
 import Review from "./pages/community/review/Review";
