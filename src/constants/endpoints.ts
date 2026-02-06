@@ -80,4 +80,5 @@ export enum ApiEndpoints {
   USER_MY_POST = "/posts/me",
   USER_MY_LIKED = "/posts/me/liked",
   POST_DETAIL = "/posts/:postId",
+  ALL_SEARCH = "/search",
 }

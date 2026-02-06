@@ -51,3 +51,27 @@ export interface QnaType {
     isLiked: boolean;
     likeCount: number;
 }
+
+
+export interface AllSearchResponse {
+    content: AllSearchContent[];
+    page: PageResponse;
+}
+
+export interface AllSearchContent {
+    type: string;
+    id: number;
+    postType: string;
+    challengeMode: string;
+    thumbnail: ImageResponse | null;
+    user: RequestUser;
+    startedAt: string;
+    durationWeek: number;
+    name: string;
+    fields: string[];
+    tags: string[];
+    job: string;
+    isLiked: boolean;
+    likeCount: number;
+    createdAt: string;
+}

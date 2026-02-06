@@ -8,18 +8,18 @@ import { PageEndPoints } from "@/constants/endpoints";
 import { buildPath } from "@/utils/buildPath";
 import { useNavigate } from "react-router-dom";
 import type { ChallengeRecruitResponse } from "@/types/vsRecruit";
-import type { QnaType } from "@/types/posts";
+import type { AllSearchContent, QnaType } from "@/types/posts";
 import type { PostType } from "@/types/user";
 
 interface CardBoardProps {
-    data: ChallengeVSResponse[] | ChallengeRecruitResponse[] | QnaType[] | PostType[];
+    data: ChallengeVSResponse[] | ChallengeRecruitResponse[] | QnaType[] | PostType[] | AllSearchContent[];
     currentPage?: number;
     totalPage?: number;
     handlePageChange?: (page: number) => void;
     isPagination?: boolean;
     isLoading?: boolean;
     //나중에 type 필수로 변경해야함
-    type?: "vs" | "solo" | "qna" | "review" | "recruit" | "hotvs" | "hotsolo" | "mypage";
+    type?: "vs" | "solo" | "qna" | "review" | "recruit" | "hotvs" | "hotsolo" | "mypage" | "all";
 }
 
 const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPagination = true, isLoading = false, type }: CardBoardProps) => {
