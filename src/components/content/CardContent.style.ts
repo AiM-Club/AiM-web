@@ -208,8 +208,15 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-      if (props.$direction === 0)
+      // width보다 주차가 많은 경우
+      if (props.$direction === 0 && props.$width <= 175 * props.$rowcount + 16 * (props.$rowcount - 1))
         return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+      // width보다 주차가 적은 경우, 끝
+      if (props.$direction === 0 && props.$width > 175 * props.$rowcount + 16 * (props.$rowcount - 1))
+        return `calc(-12rem * (${props.$rowcount} - 1))`;
+      //width보다 주차가 적은 경우, 중간 주차
+      if (props.$width > 175 * props.$rowcount + 16 * (props.$rowcount - 1))
+        return `calc(-12rem * (${props.$direction} - 1))`;
       return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
     }}
   );
@@ -217,8 +224,10 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   @media (max-width: 770px) {
     transform: translateX(
       ${(props) => {
+        // width보다 주차가 많은 경우
         if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
           return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+        // width보다 주차가 적은 경우
         if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
           return `calc(-8.5rem * (${props.$rowcount} - 1))`;
         if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
