@@ -61,7 +61,7 @@ export interface AllSearchResponse {
 export interface AllSearchContent {
     type: string;
     id: number;
-    postType: string;
+    postType: string | null;
     challengeMode: string;
     thumbnail: ImageResponse | null;
     user: RequestUser;
