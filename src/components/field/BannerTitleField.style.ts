@@ -6,7 +6,7 @@ export const BannerWrapper = styled.div`
   height: 22.5rem;
   position: relative;
   background-color: var(--gray-600);
-  @media(max-width: 500px){
+  @media (max-width: 500px) {
     height: 12.5rem;
   }
 `;
@@ -27,9 +27,9 @@ export const BannerOverlay = styled.div<{ $hasImage?: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background: ${({ $hasImage }) => 
-    $hasImage 
-      ? 'transparent' 
+  background: ${({ $hasImage }) =>
+    $hasImage
+      ? "linear-gradient(to bottom, transparent, var(--background-primary))"
       : `url(${BannerBackground}) no-repeat center center`};
   background-size: cover;
   cursor: pointer;
@@ -50,7 +50,7 @@ export const BannerContent = styled.input`
     color: var(--text-secondary);
   }
 
-  @media(max-width: 500px){
+  @media (max-width: 500px) {
     left: 5%;
     bottom: 2rem;
     font: var(--title-h-s);

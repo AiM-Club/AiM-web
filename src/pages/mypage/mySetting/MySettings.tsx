@@ -231,6 +231,7 @@ const MySettings = () => {
             <div>
               <InputField
                 label="아이디"
+                value={user?.loginId || ""}
                 placeholder="아이디를 입력해 주세요"
                 checkDuplicate={false}
                 register={register("loginId")}
@@ -259,6 +260,7 @@ const MySettings = () => {
             <div>
               <InputField
                 label="닉네임"
+                value={user?.nickname || ""}
                 placeholder="닉네임을 입력해 주세요"
                 checkDuplicate={true}
                 register={register("nickname")}
