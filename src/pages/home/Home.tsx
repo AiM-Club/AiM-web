@@ -43,7 +43,13 @@ const Home = () => {
             <CardList data={top10UserList?.data || []} title="TOP 10" color="pink" type="user" />
           </S.CardWrapper>}
         <S.FieldWrapper>
-          <SearchField />
+          <SearchField
+            onKeywordChange={(keyword) => {
+              if (keyword.trim()) {
+                navigate(`${PageEndPoints.SEARCH}?keyword=${encodeURIComponent(keyword.trim())}`);
+              }
+            }}
+          />
           <PageTopic text="VS 분야" size="l" />
           <S.FieldList>
             {fieldData.map((item) => (
