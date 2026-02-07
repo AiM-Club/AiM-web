@@ -1,7 +1,7 @@
 import { buildPath } from "@/utils/buildPath";
 import { useDelete, useFetch, usePost } from "./hooks";
 import { ApiEndpoints } from "@/constants/endpoints";
-import type { PostDetailResponse, PostCommentResponse, PostLikeResponse, QnaResponse } from "@/types/posts";
+import type { PostDetailResponse, PostCommentResponse, PostLikeResponse, QnaResponse, AllSearchResponse } from "@/types/posts";
 import type { ApiResponse } from "./types";
 
 //챌린지 모집글 생성
@@ -84,4 +84,16 @@ export const useGetReviewDetail = (postId: string) => {
 //게시글 삭제
 export const useDeletePost = (postId: string) => {
     return useDelete<void>(buildPath(ApiEndpoints.POST_DETAIL, { postId }));
+}
+
+//전체 검색
+export const useGetAllSearch = ({ sort, keyword, page = 0, size = 16 }: { sort?: string, keyword?: string, page?: number, size?: number }) => {
+    const params: Record<string, string | number> = { page, size };
+    if (sort && sort !== "--") {
+        params.sort = sort;
+    }
+    if (keyword && keyword.trim() !== "") {
+        params.keyword = keyword.trim();
+    }
+    return useFetch<ApiResponse<AllSearchResponse>>(ApiEndpoints.ALL_SEARCH, params);
 }

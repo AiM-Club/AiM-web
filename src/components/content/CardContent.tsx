@@ -393,7 +393,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
       {viewCard === "left" || viewCard === "right" ?
         <S.ProfileWrapper>
           <S.ProfileTopWrapper>
-            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
+            <ProfileImage image={photoSrc || NoPhoto} color={color} width={isMobile ? wholeWidth * 0.018 : 9} />
             {isMobile && <S.ProfileName>{kind === "opponent" ? opponentInfo?.nickname : myInfo?.nickname}</S.ProfileName>}
           </S.ProfileTopWrapper>
           <S.RowProgressWrapper>
@@ -407,10 +407,10 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
             </S.ProgressWrapper>
-            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
+            <ProfileImage image={photoSrc || NoPhoto} color={color} width={isMobile ? wholeWidth * 0.018 : 9} />
           </S.ProfileWrapper> :
           <S.ProfileWrapper>
-            <ProfileImage image={photoSrc || NoPhoto} width={isMobile ? wholeWidth * 0.018 : 9} />
+            <ProfileImage image={photoSrc || NoPhoto} color={color} width={isMobile ? wholeWidth * 0.018 : 9} />
             <S.ProgressWrapper>
               <ProgressBar text="진도율" progress={progress} height={20} color={color} />
               <ProgressBar text="성공률" progress={success} height={20} color={color} />
@@ -426,7 +426,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
 
           return weekNumber <= challengeInfo.totalWeeks ? (
             <S.WeekItemWrapper key={`week-${weekNumber}-${progressListMap[weekNumber]?.weeklyProgressId ?? index}`}>
-              <S.CurrentWeekItem onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
+              <S.CurrentWeekItem $color={color} onClick={() => handleWeekClick(weekNumber, progressListMap[weekNumber]?.weeklyProgressId)} $selected={selectedWeek === weekNumber}>
                 {weekNumber}주차
               </S.CurrentWeekItem>
               {selectedWeek === weekNumber ?
@@ -470,7 +470,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                     </S.ProofWrapper>
                     {selectedWeek === currentWeek && isMine ? (
                       <S.TimerWrapper>
-                        <S.Timer>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
+                        <S.Timer $color={color}>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
                         <S.TimerBtn
                           onClick={() => {
                             if (isTimerRunning) {
@@ -487,7 +487,7 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
                       </S.TimerWrapper>
                     ) : (
                       <S.TimerWrapper>
-                        <S.Timer>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
+                        <S.Timer $color={color}>{formatStopwatchTime(currentTimerSeconds)}</S.Timer>
                       </S.TimerWrapper>
                     )}
                   </S.WeekTopicWrapper>
@@ -579,8 +579,8 @@ const ChallengeVSMatchContent = ({ color, kind, value, viewCard, commentView = t
   )
 }
 
-const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | null, isMine?: boolean }) => {
-  const { challengeId } = useChallengeDetailStore();
+const ChallengeVSMatchContentInvite = ({ height }: { height: number | null }) => {
+  const { challengeId, isMine } = useChallengeDetailStore();
   const { mutate: postChallengeRecruit } = usePostChallengeRecruit(String(challengeId ?? "0"));
   const navigate = useNavigate();
   return (
@@ -588,7 +588,14 @@ const ChallengeVSMatchContentInvite = ({ height, isMine }: { height: number | nu
       if (isMine) {
         navigate(`${PageEndPoints.CHALLENGE_VS_INVITE}`);
       } else {
-        postChallengeRecruit();
+        postChallengeRecruit(undefined, {
+          onSuccess: () => {
+            alert("대결 요청이 완료되었습니다.");
+          },
+          onError: () => {
+            alert("대결 요청에 실패했습니다. 다시 시도해주세요.");
+          },
+        });
       }
     }}>
       <S.PlusIcon src={Plus} />

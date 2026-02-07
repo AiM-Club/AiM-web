@@ -6,6 +6,7 @@ import { getRankImg } from "@/utils/userRank";
 import useMedia from "@/hooks/useMedia";
 
 interface RankingContentProps {
+  color?: "green" | "pink";
   progress: number;
   tryCount: number;
   successCount: number;
@@ -13,14 +14,14 @@ interface RankingContentProps {
   contentType: "main" | "sub";
 }
 
-const RankingContent = ({ progress, tryCount, successCount, failCount, contentType }: RankingContentProps) => {
+const RankingContent = ({ color = "pink", progress, tryCount, successCount, failCount, contentType }: RankingContentProps) => {
   const isMobile = useMedia(560);
   const myProfileImg = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWE5bjl4cWtvcXA5cHF0NTA0MjlzNWZmZmRmZml0NXZ3YXZ2dGwyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZqlvCTNHpqrio/giphy.gif";
 
   return (
     <S.RankingContentWrapper $contentType={contentType}>
       <S.UserInfoWrapper $contentType={contentType}>
-        <ProfileImage image={myProfileImg} width={isMobile ? 5 : 9.25} />
+        <ProfileImage image={myProfileImg} color={color} width={isMobile ? 5 : 9.25} />
         <S.RankInfo>
           <S.RankImg src={getRankImg("diamond")} />
           <S.RankName>LV. 100</S.RankName>

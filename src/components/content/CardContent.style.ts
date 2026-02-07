@@ -165,7 +165,7 @@ export const WeekItemWrapper = styled.div`
   }
 `;
 
-export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
+export const CurrentWeekItem = styled.div<{ $selected: boolean; $color: "green" | "pink" }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,7 +173,12 @@ export const CurrentWeekItem = styled.div<{ $selected: boolean }>`
   padding: 1.5rem 0;
   background-color: var(--surpace-primary);
   border-radius: ${(props) => (props.$selected ? "0.25rem 0.25rem 0 0" : "0.25rem")};
-  color: ${(props) => (props.$selected ? "var(--text-primary-hover)" : "var(--text-primary-default)")};
+  color: ${(props) =>
+    !props.$selected
+      ? "var(--text-primary-default)"
+      : props.$color === "pink"
+        ? "var(--text-primary-hover)"
+        : "var(--green-200)"};
   padding-bottom: ${(props) => (props.$selected ? "2.5rem" : "1.5rem")};
   font: var(--body-r-xl);
   cursor: pointer;
@@ -208,23 +213,32 @@ export const WeekContentWrapper = styled.div<{ $direction: number; $rowcount: nu
   gap: 1rem;
   transform: translateX(
     ${(props) => {
-    if (props.$direction === 0)
-      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
-    return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
-  }}
+      // width보다 주차가 많은 경우
+      if (props.$direction === 0 && props.$width <= 175 * props.$rowcount + 16 * (props.$rowcount - 1))
+        return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 16) / props.$rowcount}px)`;
+      // width보다 주차가 적은 경우, 끝
+      if (props.$direction === 0 && props.$width > 175 * props.$rowcount + 16 * (props.$rowcount - 1))
+        return `calc(-12rem * (${props.$rowcount} - 1))`;
+      //width보다 주차가 적은 경우, 중간 주차
+      if (props.$width > 175 * props.$rowcount + 16 * (props.$rowcount - 1))
+        return `calc(-12rem * (${props.$direction} - 1))`;
+      return `calc(-${((props.$width - (props.$rowcount - 1) * 16) / props.$rowcount) * (props.$direction - 1) + 16 * (props.$direction - 1)}px)`;
+    }}
   );
 
   @media (max-width: 770px) {
     transform: translateX(
       ${(props) => {
-    if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
-    if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-8.5rem * (${props.$rowcount} - 1))`;
-    if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
-      return `calc(-8.5rem * (${props.$direction - 1}))`;
-    return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
-  }}
+        // width보다 주차가 많은 경우
+        if (props.$direction === 0 && props.$width <= 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-100% + ${(props.$width - (props.$rowcount - 1) * 8) / props.$rowcount}px)`;
+        // width보다 주차가 적은 경우
+        if (props.$direction === 0 && props.$width > 129 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-8.5rem * (${props.$rowcount} - 1))`;
+        if (props.$width > 122 * props.$rowcount + 8 * (props.$rowcount - 1))
+          return `calc(-8.5rem * (${props.$direction - 1}))`;
+        return `calc(-${((props.$width - (props.$rowcount - 1) * 8) / props.$rowcount) * (props.$direction - 1) + 8 * (props.$direction - 1)}px)`;
+      }}
     );
   }
 `;
@@ -329,11 +343,11 @@ export const TimerWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const Timer = styled.div`
+export const Timer = styled.div<{ $color: "green" | "pink" }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--pink-200);
+  background-color: ${(props) => (props.$color === "green" ? "var(--green-200)" : "var(--pink-200)")};
   padding: 0.625rem;
   font: var(--body-s-m);
   color: var(--text-tertiary);

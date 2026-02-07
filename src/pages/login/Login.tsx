@@ -76,7 +76,7 @@ export const Login = () => {
         </S.TopicText>
         <S.InputWrapper>
           <div>
-            <InputField label="아이디" register={register("id")} placeholder="아이디를 입력해 주세요" />
+            <InputField label="아이디" value={id || ""} register={register("id")} placeholder="아이디를 입력해 주세요" />
           </div>
           <div>
             <InputField label="비밀번호" register={register("password")} placeholder="비밀번호를 입력해 주세요" />
