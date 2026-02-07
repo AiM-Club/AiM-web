@@ -19,6 +19,7 @@ export interface ChallengeInfo {
     startDate: string;
     endDate: string;
     totalWeeks: number;
+    status: string;
 }
 
 export interface Detailfields {
