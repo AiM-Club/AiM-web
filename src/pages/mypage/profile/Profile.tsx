@@ -7,7 +7,6 @@ import { getRankImg } from "@/utils/userRank";
 import { ChallengeMainContent } from "@/components/content/CardContent";
 import { CardChallenge } from "@/components/card/cardChallenge/CardChallenge";
 import useMedia from "@/hooks/useMedia";
-import Button from "@/components/button/Button";
 import { useAuthStore } from "@/stores/authStore";
 import Lock from "@/assets/Lock.svg";
 import { userGetMyProfile } from "@/api/user";
@@ -19,6 +18,8 @@ import NoPhoto from "@/assets/NoPhoto.svg";
 const Profile = () => {
   const { user } = useAuthStore();
   const isMobile = useMedia(700);
+  const isTablet = useMedia(1024);
+  const isDesktop = useMedia(1440);
   const { data: myProfileData, isLoading } = userGetMyProfile();
   const { data: photo, mutate: getPhoto } = useGetPhoto();
   const profileImageUrl = useUserPhotoUrl(photo ?? null);
@@ -39,7 +40,7 @@ const Profile = () => {
           <S.profileContainer>
             <S.profileHeader>
               <S.profileInfoWrapper>
-                <ProfileImage color="pink" image={profileImageUrl || NoPhoto} width={isMobile ? 6 : 13.938} />
+                <ProfileImage color="pink" image={profileImageUrl || NoPhoto} width={isMobile ? 6 : isTablet ? 12 : isDesktop ? 10 : 13.938} />
                 <S.profileInfo>
                   <S.Info>
                     <S.profileName>{myProfileData?.data?.nickname}</S.profileName>
@@ -67,7 +68,6 @@ const Profile = () => {
               </S.ChallengeWrapper>
             </S.profileContent>
           </S.profileContainer>
-          <Button $variant="fixed" $color="green">편집</Button>
         </S.profileWrapper>
       ) : (
         <S.EmptyState>

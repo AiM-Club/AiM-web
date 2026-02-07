@@ -146,6 +146,7 @@ export const Join = () => {
           <div>
             <InputField
               label="아이디"
+              value={loginId || ""}
               placeholder="아이디를 입력해 주세요"
               checkDuplicate={true}
               register={register("loginId")}
@@ -174,6 +175,7 @@ export const Join = () => {
           <div>
             <InputField
               label="닉네임"
+              value={nickname || ""}
               placeholder="닉네임을 입력해 주세요"
               checkDuplicate={true}
               register={register("nickname")}
