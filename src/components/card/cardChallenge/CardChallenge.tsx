@@ -17,6 +17,9 @@ import PinkCardShortLeftHover from "@/assets/PinkCardLeftHover.png";
 import pinkCardStraightBottom from "@/assets/CardPinkStraightBottom.png"
 import pinkCardStraightHoverTop from "@/assets/CardPinkStraightHoverTop.png"
 import pinkCardStraightHoverBottom from "@/assets/CardPinkStraightHoverBottom.png"
+import grayCardStraightTop from "@/assets/CardGrayStraightTop.png";
+import grayCardBottom from "@/assets/CardGrayBottom.png";
+import grayMobileTop from "@/assets/CardGrayTopMobile.png";
 import PinkTopMobile from "@/assets/CardPinkTopMobile.png";
 import GreenTopMobile from "@/assets/CardGreenTopMobile.png";
 import RightArrow from "@/assets/BlackRightArrow.svg";
@@ -58,6 +61,7 @@ interface CardChallengeProps {
   isMobile?: boolean;
   mobileTopic?: "none" | "top" | "normal";
   variant?: string;
+  loser?: boolean;
 }
 
 //해당 컴포넌트를 호출하는 페이지의 이 컴포넌트를 감싸는 레이아웃에 
@@ -67,7 +71,7 @@ interface CardChallengeProps {
 
 //gap 설정도 상위 페이지의 wrapper에서 설정해주세야 합니다
 
-export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", variant }: CardChallengeProps) => {
+export const CardChallenge = ({ color, kind, topic, topicDirection = null, openBtn, children, cardNum = 3, minWidth = null, setCardHeight, viewCard, setViewCard, isMobile = false, mobileTopic = "normal", variant, loser = false }: CardChallengeProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [backgroundHeight, setBackgroundHeight] = useState<number>(0);
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(null);
@@ -80,9 +84,11 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
   }
   const getCardImageTop = () => {
     if (isMobile) {
-      if (color === "green") return GreenTopMobile;
+      if (loser) return grayMobileTop;
+      else if (color === "green") return GreenTopMobile;
       else if (color === "pink") return PinkTopMobile;
     }
+    if (loser) return grayCardStraightTop;
     if (color === "green") {
       return isHovered ? greenCardTopHover : greenCardTop;
     } else if (color === "pink" && topicDirection === "left") {
@@ -94,6 +100,7 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
 
   const getCardImageBottom = () => {
     if (isMobile) return;
+    if (loser) return grayCardBottom;
     if (color === "green") {
       return isHovered ? backgroundHeight > 600 ? greenCardBottomHoverLong : greenCardBottomHover : backgroundHeight > 600 ? greenCardBottomLong : greenCardBottom;
     } else if (color === "pink" && topicDirection === "left") {
@@ -150,14 +157,14 @@ export const CardChallenge = ({ color, kind, topic, topicDirection = null, openB
       {openBtn && !isMobile && (
         color === "green" ?
           <S.OpenBtnWrapper $color={color}>
-            <S.OpenBtn $color={color} onClick={handleOpenBtn}>{viewCard === "both" ? "펼치기" : "나가기"}<S.OpenBtnIcon src={RightArrow} /></S.OpenBtn>
+            <S.OpenBtn $loser={loser} $color={color} onClick={handleOpenBtn}>{viewCard === "both" ? "펼치기" : "나가기"}<S.OpenBtnIcon src={RightArrow} /></S.OpenBtn>
           </S.OpenBtnWrapper>
           :
           <S.OpenBtnWrapper $color={color}>
-            <S.OpenBtn $color={color} onClick={handleOpenBtn}><S.OpenBtnIcon src={LeftArrow} />{viewCard === "both" ? "펼치기" : "나가기"}</S.OpenBtn>
+            <S.OpenBtn $loser={loser} $color={color} onClick={handleOpenBtn}><S.OpenBtnIcon src={LeftArrow} />{viewCard === "both" ? "펼치기" : "나가기"}</S.OpenBtn>
           </S.OpenBtnWrapper>
       )}
-      <S.CardContentWrapper ref={setContentElement} $variant={variant} $ismobile={isMobile} $mobileTopic={mobileTopic} $color={color}>
+      <S.CardContentWrapper ref={setContentElement} $variant={variant} $ismobile={isMobile} $mobileTopic={mobileTopic} $color={color} $loser={loser}>
         {isMobile && mobileTopic === "normal" && <S.CardTopic $color={color} $direction={topicDirection} $ismobile={isMobile}>{topic}</S.CardTopic>}
         {children}
       </S.CardContentWrapper>

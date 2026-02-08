@@ -4,7 +4,7 @@ import { useChallengeDetailStore } from "@/stores/challengeDetailStore";
 
 
 
-const VSMatchBar = () => {
+const VSMatchBar = ({ loser }: { loser?: boolean }) => {
   const { dominance } = useChallengeDetailStore();
   const oppenentPercent = (dominance?.opponentPercent || 0) / ((dominance?.opponentPercent || 0) + (dominance?.myPercent || 0)) * 100;
   const myPercent = (dominance?.myPercent || 0) / ((dominance?.opponentPercent || 0) + (dominance?.myPercent || 0)) * 100;
@@ -16,10 +16,10 @@ const VSMatchBar = () => {
         <S.ProgressTextPink>{dominance?.myPercent || 0}%</S.ProgressTextPink>
       </S.TextWrapper>
       <S.ProgressBarWrapper>
-        <S.ProgressBarGreen $percent={oppenentPercent} />
+        <S.ProgressBarGreen $percent={oppenentPercent} $loser={loser || false} />
         {oppenentPercent === 100 && <S.ProgressBarPinkFill />}
         {myPercent === 100 && <S.ProgressBarGreenFill />}
-        <S.ProgressBarPink $percent={myPercent} />
+        <S.ProgressBarPink $percent={myPercent} $loser={!loser || false} />
       </S.ProgressBarWrapper>
     </S.VSMatchBarWrapper>
   )

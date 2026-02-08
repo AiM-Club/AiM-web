@@ -50,10 +50,10 @@ export const ProgressBarWrapper = styled.div`
   position: relative;
 `;
 
-export const ProgressBarGreen = styled.div<{ $percent: number }>`
+export const ProgressBarGreen = styled.div<{ $percent: number; $loser?: boolean }>`
   height: 2.5rem;
   background: linear-gradient(to left, var(--green-400) 0%, var(--green-200) 100%);
-  background-color: var(--green-200);
+  background: ${(props) => (props.$loser ? "var(--gray-500)" : "var(--green-200)")};
   border-radius: 0.5rem 0 0 0.5rem;
   width: ${(props) => props.$percent}%;
   clip-path: polygon(0 0, 100% 0, calc(100% - 1rem) 100%, 0 100%);
@@ -64,9 +64,10 @@ export const ProgressBarGreen = styled.div<{ $percent: number }>`
   }
 `;
 
-export const ProgressBarPink = styled.div<{ $percent: number }>`
+export const ProgressBarPink = styled.div<{ $percent: number; $loser?: boolean }>`
   height: 2.5rem;
   background: linear-gradient(to right, var(--pink-400) 0%, var(--pink-200) 100%);
+  background: ${(props) => (props.$loser ? "var(--gray-500)" : "var(--pink-400)")};
   border-radius: 0 0.5rem 0.5rem 0;
   width: ${(props) => props.$percent}%;
   clip-path: polygon(1rem 0, 0 100%, 100% 100%, 100% 0);
