@@ -12,19 +12,32 @@ interface SelectOption {
   label: string;
 }
 
-const writeElementsSchema = z.object({
-  field: z.string().min(1, "분야를 선택해 주세요"),
-  tags: z
-    .array(z.string().min(1, "태그를 입력해 주세요"))
-    .min(1, "태그를 1개 이상 입력해 주세요"),
-  job: z.string().min(1, "직무를 입력해 주세요"),
-  startDate: z.string().min(1, "시작일을 선택해 주세요"),
-  weeks: z.number().min(1, "기간을 선택해 주세요"),
-  mode: z.string().min(1, "모드를 선택해 주세요"),
-  challengeSelect: z.string().optional(),
-});
+const createWriteElementsSchema = (requireMode: boolean) => {
+  const baseSchema = {
+    field: z.string().min(1, "분야를 선택해 주세요"),
+    tags: z
+      .array(z.string().min(1, "태그를 입력해 주세요"))
+      .min(1, "태그를 1개 이상 입력해 주세요"),
+    job: z.string().min(1, "직무를 입력해 주세요"),
+    startDate: z.string().min(1, "시작일을 선택해 주세요"),
+    weeks: z.number().min(1, "기간을 선택해 주세요"),
+    challengeSelect: z.string().optional(),
+  };
 
-type WriteElementsForm = z.infer<typeof writeElementsSchema>;
+  if (requireMode) {
+    return z.object({
+      ...baseSchema,
+      mode: z.string().min(1, "모드를 선택해 주세요"),
+    });
+  } else {
+    return z.object({
+      ...baseSchema,
+      mode: z.string().optional(),
+    });
+  }
+};
+
+type WriteElementsForm = z.infer<ReturnType<typeof createWriteElementsSchema>>;
 
 export interface WriteElementsSelectRef {
   validate: () => Promise<{ isValid: boolean; data?: WriteElementsForm; error?: string }>;
@@ -113,10 +126,12 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
     const [selectedChallengeId, setSelectedChallengeId] = useState<string>("");
 
     // 모드 선택 시 챌린지 리스트 가져오기
+    // mode가 false면 VS 챌린지 리스트 가져오기
+    const challengeMode = mode ? (currentMode || "") : "VS";
     const { data: myChallengeListData } = useGetMyChallengeList({
-      mode: currentMode || "",
+      mode: challengeMode,
     }, {
-      enabled: !!(mode && currentMode && !inputtable && challenge),
+      enabled: !!((mode ? currentMode : true) && !inputtable && challenge),
     });
 
     // 챌린지 옵션 생성
@@ -174,10 +189,11 @@ const WriteElementsSelect = forwardRef<WriteElementsSelectRef, WriteElementsSele
           job,
           startDate,
           weeks: selectedWeek,
-          // mode가 true인 화면에서만 강제 검증되도록: mode prop이 false면 빈 문자열 허용 처리
-          mode: mode ? (currentMode ?? "") : (currentMode ?? ""),
+          // mode가 true인 화면에서만 모드 검증
+          mode: mode ? (currentMode ?? "") : undefined,
         };
 
+        const writeElementsSchema = createWriteElementsSchema(mode);
         const result = writeElementsSchema.safeParse(data);
         if (!result.success) {
           const newErrors: Record<string, string> = {};

@@ -98,14 +98,15 @@ export const OpenBtnWrapper = styled.div<{ $color: "green" | "pink" }>`
   padding: 0 1.5rem;
 `;
 
-export const OpenBtn = styled.div<{ $color: "green" | "pink" }>`
+export const OpenBtn = styled.div<{ $color: "green" | "pink"; $loser: boolean }>`
   display: flex;
   align-items: center;
   padding: 0.625rem 1rem;
   gap: 0.5rem;
   margin-right: ${(props) => (props.$color === "green" ? "3%" : "0%")};
   margin-left: ${(props) => (props.$color === "pink" ? "3%" : "0%")};
-  background-color: ${(props) => (props.$color === "pink" ? "var(--pink-400)" : "var(--green-200)")};
+  background-color: ${(props) =>
+    props.$loser ? "var(--gray-500)" : props.$color === "pink" ? "var(--pink-400)" : "var(--green-200)"};
   width: fit-content;
   border-radius: 0.25rem;
   font: var(--body-r-m);
@@ -123,6 +124,7 @@ export const CardContentWrapper = styled.div<{
   $ismobile: boolean;
   $color: "green" | "pink";
   $mobileTopic: "none" | "top" | "normal";
+  $loser: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -142,9 +144,9 @@ export const CardContentWrapper = styled.div<{
           : props.$ismobile
             ? "0 1rem"
             : "0 2rem"};
-  border-bottom: ${({ $ismobile, $color }) =>
+  border-bottom: ${({ $ismobile, $color, $loser }) =>
     $ismobile
-      ? `4px solid ${$color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"}`
+      ? `4px solid ${$loser ? "var(--gray-600)" : $color === "green" ? "var(--border-secondary-default)" : "var(--border-primary-default)"}`
       : "none"};
   @media (max-width: 560px) {
     min-height: ${(props) => (props.$variant === "home" ? "19rem" : "21rem")};

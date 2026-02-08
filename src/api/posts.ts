@@ -6,7 +6,7 @@ import type { ApiResponse } from "./types";
 
 //챌린지 모집글 생성
 export const usePostChallengeRecruit = () => {
-    return usePost<FormData, { challengeId: number }>(ApiEndpoints.VS_RECRUIT);
+    return usePost<FormData, { postId: number }>(ApiEndpoints.VS_RECRUIT);
 }
 
 //챌린지 모집글 상세조회

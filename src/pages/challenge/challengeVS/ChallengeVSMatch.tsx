@@ -183,17 +183,17 @@ const ChallengeVSMatch = () => {
               <div onClick={() => handleViewCard("left")}><ProfileImage color={viewCard === "left" && !isMobile ? "pink" : "green"} image={viewCard === "left" && !isMobile ? myPhotoUrl || NoPhoto : !opponentUserId && isMobile ? Plus : opponentPhotoUrl || NoPhoto} width={isMobile ? 2 : 4} /></div>
               {isMobile && <div onClick={() => handleViewCard("right")}><ProfileImage color={"pink"} image={myPhotoUrl || NoPhoto} width={isMobile ? 2 : 4} /></div>}
             </S.ProfileWrapper>}
-            {opponentUserId && <VSMatchBar />}
+            {opponentUserId && <VSMatchBar loser={winner && winner?.data?.winnerInfo?.id !== Number(myUserId)} />}
           </S.VSMatchProgressWrapper>
           <S.VSMatchCardWrapper>
             {(viewCard !== "right" && !isMobile) || (isMobile && viewCard === "left") ?
-              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="green" kind="opponent" minWidth={21} openBtn={true} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined} loser={winner && winner?.data?.winnerInfo?.id !== Number(myUserId)}>
                 {opponentUserId ?
                   <ChallengeVSMatchContent isMobile={isMobile} color="green" kind="opponent" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
                   : <ChallengeVSMatchContentInvite height={wholeWidth > 866 ? cardHeight : null} />}
               </CardChallenge> : <></>}
             {(viewCard !== "left" && !isMobile) || (isMobile && viewCard === "right") ?
-              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined}>
+              <CardChallenge mobileTopic="none" isMobile={isMobile} cardNum={3} color="pink" kind="my" minWidth={21} openBtn={true} setCardHeight={setCardHeight} viewCard={viewCard} setViewCard={!isMobile ? setViewCard : undefined} loser={winner && winner?.data?.winnerInfo?.id == Number(myUserId)}>
                 <ChallengeVSMatchContent isMobile={isMobile} color="pink" kind="my" viewCard={viewCard} value="VS" publishTimer={publishTimer} />
               </CardChallenge> : <></>}
           </S.VSMatchCardWrapper>
