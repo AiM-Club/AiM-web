@@ -13,6 +13,7 @@ import Loading from "@/components/loading/Loading";
 import { useAuthStore } from "@/stores/authStore";
 import useMedia from "@/hooks/useMedia";
 import { useWebSocketTimer } from "@/api/timer";
+import Lock from "@/assets/Lock.svg";
 
 const ChallengeVSSoloDetail = () => {
   const isMobile = useMedia(560);
@@ -21,7 +22,7 @@ const ChallengeVSSoloDetail = () => {
   const { data: challengeDetail, isLoading } = useGetChallengeSoloDetail(id || "");
   const { mutate: getThumbnail } = useGetPhoto();
   const { mutate: getPhoto } = useGetPhoto();
-  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeMyDetailWeeks, resetChallengeDetail, myInfo, updateTimer, setIsMine } = useChallengeDetailStore();
+  const { setChallengeId, setChallengeInfo, setMyInfo, setThumbnail, setMyPhoto, setChallengeMyDetailWeeks, resetChallengeDetail, myInfo, updateTimer, setIsMine, isMine } = useChallengeDetailStore();
   const myUserId = challengeDetail?.data.participant.id ? String(challengeDetail.data.participant.id) : "";
   const { data: challengeDetailWeeks, isLoading: isLoadingWeeks } = useGetChallengeDetailWeeks(id || "", myUserId, {
     enabled: !!(id && id !== "0") && !!myUserId && !!challengeDetail?.data,
@@ -86,13 +87,27 @@ const ChallengeVSSoloDetail = () => {
   return (
     <DefaultLayout variant="home">
       <S.ChallengeVSSoloDetailWrapper>
-        <Banner />
-        <S.ChallengeVSSoloDetailContentWrapper>
-          <FieldTagWorkPeriod />
-          <CardChallenge isMobile={isMobile} mobileTopic="none" topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
-            <ChallengeVSMatchContent isMobile={isMobile} commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" publishTimer={publishTimer} />
-          </CardChallenge>
-        </S.ChallengeVSSoloDetailContentWrapper>
+        {isMine ? (
+          <>
+            <Banner />
+            <S.ChallengeVSSoloDetailContentWrapper>
+              <FieldTagWorkPeriod />
+              <CardChallenge isMobile={isMobile} mobileTopic="none" topicDirection="left" cardNum={3} color="pink" kind="my" openBtn={false} viewCard="right">
+                <ChallengeVSMatchContent isMobile={isMobile} commentView={false} color="pink" kind="my" viewCard="right" value="SOLO" publishTimer={publishTimer} />
+              </CardChallenge>
+            </S.ChallengeVSSoloDetailContentWrapper>
+          </>
+        ) : user ? (
+          <S.EmptyState>
+            <S.LockImage src={Lock} />
+            챌린지 주최자만 이용 가능합니다
+          </S.EmptyState>
+        ) : (
+          <S.EmptyState>
+            <S.LockImage src={Lock} />
+            로그인 후 이용 가능합니다
+          </S.EmptyState>
+        )}
       </S.ChallengeVSSoloDetailWrapper>
     </DefaultLayout>
   )

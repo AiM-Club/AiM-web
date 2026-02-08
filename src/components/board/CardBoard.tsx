@@ -58,22 +58,24 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
             }
         } else if (type === "vs" || type === "hotvs") {
             endpoint = PageEndPoints.CHALLENGE_VS_DETAIL;
-        } else if (type === "solo" || type === "hotsolo") {
+        } else if (type === "solo") {
             endpoint = PageEndPoints.CHALLENGE_SOLO_DETAIL;
+        } else if (type === "hotsolo") {
+            return; // hotsolo는 navigate 하지 않음
         } else if (type === "qna") {
             endpoint = PageEndPoints.QNA_DETAIL;
         } else if (type === "review") {
             endpoint = PageEndPoints.REVIEW_DETAIL;
         } else if (type === "all") {
-            if(challengeMode === "VS") {
+            if (challengeMode === "VS") {
                 endpoint = PageEndPoints.CHALLENGE_VS_DETAIL;
-            } else if(challengeMode === "SOLO") {
+            } else if (challengeMode === "SOLO") {
                 endpoint = PageEndPoints.CHALLENGE_SOLO_DETAIL;
-            } else if(challengeMode === "VS_RECRUIT") {
+            } else if (challengeMode === "VS_RECRUIT") {
                 endpoint = PageEndPoints.CHALLENGE_RECRUIT_DETAIL;
-            } else if(challengeMode === "Q_AND_A") {
+            } else if (challengeMode === "Q_AND_A") {
                 endpoint = PageEndPoints.QNA_DETAIL;
-            } else if(challengeMode === "REVIEW") {
+            } else if (challengeMode === "REVIEW") {
                 endpoint = PageEndPoints.REVIEW_DETAIL;
             } else {
                 endpoint = PageEndPoints.CHALLENGE_RECRUIT_DETAIL;
@@ -123,13 +125,13 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
 
                             const getChallengeMode = () => {
                                 if (type === "all") {
-                                    if((item as AllSearchContent).type === "CHALLENGE") {
-                                        if((item as AllSearchContent).challengeMode === "VS") { 
+                                    if ((item as AllSearchContent).type === "CHALLENGE") {
+                                        if ((item as AllSearchContent).challengeMode === "VS") {
                                             return "VS";
-                                        } else if((item as AllSearchContent).challengeMode === "SOLO") {
+                                        } else if ((item as AllSearchContent).challengeMode === "SOLO") {
                                             return "SOLO";
                                         }
-                                    }else{
+                                    } else {
                                         return (item as AllSearchContent).postType || undefined;
                                     }
                                 }
@@ -141,7 +143,7 @@ const CardBoard = ({ data, currentPage, totalPage, handlePageChange, isPaginatio
                                     key={getKey()}
                                     data={item}
                                     onLoadingChange={(isLoading) => handleCardLoadingChange(type === "recruit" || type === "mypage" ? (item as ChallengeRecruitResponse | PostType).postId! : (item as ChallengeVSResponse).challengeId!, isLoading)}
-                                    onClick={() => navigateToDetail(getPostId()!, getPostType(), getChallengeMode())}
+                                    onClick={type === "hotsolo" ? undefined : () => navigateToDetail(getPostId()!, getPostType(), getChallengeMode())}
                                 />
                             );
                         })}
