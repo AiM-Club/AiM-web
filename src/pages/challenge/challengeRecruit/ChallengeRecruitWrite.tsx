@@ -114,7 +114,7 @@ const ChallengeRecruitWrite = () => {
       createChallengeRecruitMutate(formData, {
         onSuccess: (data) => {
           console.log("챌린지 모집글 생성 성공:", data);
-          navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: String(data.data.challengeId) }));
+          navigate(buildPath(PageEndPoints.CHALLENGE_RECRUIT_DETAIL, { id: String(data.data.postId) }));
         },
         onError: (error) => {
           console.error("챌린지 모집글 생성 실패:", error);
@@ -141,7 +141,7 @@ const ChallengeRecruitWrite = () => {
         </S.TopicWrapper>
         <BannerTitleField ref={bannerTitleRef} />
         <S.WriteContentWrapper>
-          <WriteElementsSelect ref={writeElementsRef} inputtable={false} challenge={true} mode={true} />
+          <WriteElementsSelect ref={writeElementsRef} inputtable={false} challenge={true} mode={false} />
           <S.WriteFieldWrapper>
             <WriteField ref={writeFieldRef} />
             <FileAddBtn ref={fileAddBtnRef} />
