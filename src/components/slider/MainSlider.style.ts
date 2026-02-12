@@ -19,7 +19,7 @@ export const SliderWrapper = styled.div`
 
 export const Banner = styled.div`
   width: 100%;
-  // height: 22.5rem;
+  height: 15rem;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -30,10 +30,9 @@ export const Banner = styled.div`
 export const BannerImg = styled.img`
   display: block;
   width: 100%;
-  // height: 100%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: fill;
   object-position: center center;
-  align-self: center;
 `;
 
 export const ArrowWrapper = styled.div<{ $position: "left" | "right" }>`

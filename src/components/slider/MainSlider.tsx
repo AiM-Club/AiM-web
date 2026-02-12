@@ -4,8 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NextArrowImg from "@/assets/NextArrow.png";
 import PrevArrowImg from "@/assets/PrevArrow.png";
-import Banner1 from "@/assets/banner1.png";
-import Banner2 from "@/assets/banner2.png";
+import Banner1 from "@/assets/Banner1.png";
+import Banner2 from "@/assets/Banner2.png";
 
 
 
