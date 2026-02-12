@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SliderWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 22.5rem;
+  height: 15rem;
   background-color: var(--gray-600);
 
   @media (max-width: 1024px) {
@@ -17,12 +17,29 @@ export const SliderWrapper = styled.div`
   }
 `;
 
+export const Banner = styled.div`
+  width: 100%;
+  height: 15rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-600);
+`;
+
+export const BannerImg = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center center;
+`;
+
 export const ArrowWrapper = styled.div<{ $position: "left" | "right" }>`
   position: absolute;
-  top: 11.25rem;
-  ${(props) => (props.$position === "left" ? "left: 2rem;" : "right: 2rem;")}
-  trans
-  z-index: 20;
+  top: 7.5rem;
+  ${(props) => (props.$position === "left" ? "left: 2rem;" : "right: 2rem;")};
+  z-index: 9999;
   cursor: pointer;
   transform: translateY(-50%);
   img {
@@ -33,7 +50,7 @@ export const ArrowWrapper = styled.div<{ $position: "left" | "right" }>`
 
 export const DotContainer = styled.ul`
   position: absolute;
-  top: 21rem;
+  top: 12rem;
   display: flex !important;
   justify-content: center;
   align-items: center;

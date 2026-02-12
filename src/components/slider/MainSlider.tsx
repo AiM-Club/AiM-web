@@ -4,6 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NextArrowImg from "@/assets/NextArrow.png";
 import PrevArrowImg from "@/assets/PrevArrow.png";
+import Banner1 from "@/assets/Banner1.png";
+import Banner2 from "@/assets/Banner2.png";
 
 
 
@@ -42,10 +44,8 @@ const MainSlider = () => {
   return (
     <S.SliderWrapper>
       <Slider {...settings}>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
+        <S.Banner><S.BannerImg src={Banner1} /></S.Banner>
+        <S.Banner><S.BannerImg src={Banner2} /></S.Banner>
       </Slider>
     </S.SliderWrapper>
   )
