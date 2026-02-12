@@ -15,7 +15,7 @@ const ChallengeInfoField = () => {
     if (postInfo?.mode === "VS") {
       navigate(PageEndPoints.CHALLENGE_VS_DETAIL.replace(":id", String(postInfo?.challengeId || "0")));
     } else {
-      navigate(PageEndPoints.CHALLENGE_SOLO_DETAIL.replace(":id", String(postInfo?.challengeId || "0")));
+      navigate(PageEndPoints.CHALLENGE_VS_DETAIL.replace(":id", String(postInfo?.challengeId || "0")));
     }
   }
   return (
