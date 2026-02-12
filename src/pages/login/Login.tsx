@@ -13,12 +13,14 @@ import { useNavigate } from "react-router-dom";
 import { PageEndPoints } from "@/constants/endpoints";
 import { useLogin } from "@/api/auth";
 import { useAuthStore } from "@/stores/authStore";
+import { useGetPhoto } from "@/api/photo";
 
 export const Login = () => {
   const [hasSubmitError, setHasSubmitError] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
-  const { setUser } = useAuthStore();
+  const { setUser, setUserPhoto } = useAuthStore();
+  const { mutate: getPhoto } = useGetPhoto();
 
   const {
     register,
@@ -57,7 +59,15 @@ export const Login = () => {
           setUser(response.data.user);
           localStorage.setItem("accessToken", response.data.token.accessToken);
           localStorage.setItem("refreshToken", response.data.token.refreshToken);
-          navigate(PageEndPoints.HOME);
+          getPhoto(
+            { file_uuid: response.data.user.profileImage?.uuid },
+            {
+              onSuccess: (photo) => {
+                setUserPhoto(photo);
+              }
+            }
+          );
+          window.location.href = PageEndPoints.HOME;
         },
         onError: (error: any) => {
           console.error("로그인 실패:", error);
